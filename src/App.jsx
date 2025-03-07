@@ -1,12 +1,22 @@
-import React from "react";
-import { formatDate } from "./utils/datetime";
-function App() {
-  const isoDate = "2025-03-07T12:34:56Z"; //예시 시간 설정
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/common/Navbar/Navbar.core";
+import HomePage from "./pages/Home/HomePage";
+import RollingPaperListPage from "./pages/RollingPaperList/RollingPaperListPage";
+import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPaperPage";
+import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
+import MessagePage from "./pages/Message/MessagePage";
 
+function App() {
   return (
     <>
-      <h1>Rolling 시작!</h1>
-      <h2>{formatDate(isoDate)}</h2>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/list" element={<RollingPaperListPage />} />
+        <Route path="/post" element={<CreateRollingPaperPage />} />
+        <Route path="/post1" element={<RollingPaperPage />} />
+        <Route path="/post1/message" element={<MessagePage />} />
+      </Routes>
     </>
   );
 }
