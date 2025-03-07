@@ -23,10 +23,10 @@ async function apiRequest(endpoint, method = "GET", body=null){
         console.error(`${method} 요청 실패..`, error)
         throw error;
     }
-    
 }
 
 // API 요청 함수들 
+
 // 대상(recipients) 함수
 export const postRecipients = (data) => apiRequest(`/recipients/`, "POST", data)
 export const getRecipients = () => apiRequest(`/recipients/`);
