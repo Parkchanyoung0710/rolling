@@ -5,8 +5,14 @@ import RollingPaperListPage from "./pages/RollingPaperList/RollingPaperListPage"
 import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPaperPage";
 import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
 import MessagePage from "./pages/Message/MessagePage";
+import messageService from "./api/services/messagesService";
+import { useEffect } from "react";
 
 function App() {
+
+  useEffect(() => {
+    messageService.getMessages(1).then(console.log)
+  },[])
   return (
     <>
       <Navbar />
