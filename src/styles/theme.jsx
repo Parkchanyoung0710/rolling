@@ -1,7 +1,7 @@
 import { css as _css } from "styled-components";
 export const theme = {
-  Colors: {
-    Purple: {
+  colors: {
+    purple: {
       100: "#F8F0FF",
       200: "#ECD9FF",
       300: "#DCB9FF",
@@ -12,28 +12,28 @@ export const theme = {
       800: "#6E0AD1",
       900: "#5603A7",
     },
-    Beige: {
+    beige: {
       100: "#FFF0D6",
       200: "#FFE2AD",
       300: "#FFC583",
       400: "#FFAE65",
       500: "#FF8832",
     },
-    Blue: {
+    blue: {
       100: "#E2F5FF",
       200: "#B1E4FF",
       300: "#7CD2FF",
       400: "#34B9FF",
       500: "#00A2FE",
     },
-    Green: {
+    green: {
       100: "#E4FBDC",
       200: "#D0F5C3",
       300: "#9BE282",
       400: "#60CF37",
       500: "#2BA600",
     },
-    Grayscale: {
+    grayScale: {
       100: "#F6F6F6",
       200: "#EEEEEE",
       300: "#CCCCCC",
@@ -44,103 +44,51 @@ export const theme = {
       800: "#2B2B2B",
       900: "#181818",
     },
-    White: {
-      white: "#FFFFFF",
-    },
-    Black: {
-      black: "#000000",
-    },
-    Error: {
-      error: "#DC3A3A",
-    },
-    Surface: {
-      Surface: "#F6F8FF",
-    },
+    white: "#FFFFFF",
+    black: "#000000",
+    error: "#DC3A3A",
+    surface: "#F6F8FF",
   },
   Typography: {
-    "12 Regular": {
-      FontSize: "12px",
-      LineHeight: "18px",
-      FontWeight: "400",
-      Color: "#000000",
+    12: {
+      fontSize: "12px",
+      lineHeight: 1.5,
+      letterSpacing: -0.5,
     },
-    "14 Bold": {
-      FontSize: "14px",
-      LineHeight: "20px",
-      FontWeight: "700",
-      Color: "#000000",
+    14: {
+      fontSize: "14px",
+      lineHeight: 1.43,
+      letterSpacing: -0.5,
     },
-    "14 Regular": {
-      FontSize: "14px",
-      LineHeight: "20px",
-      FontWeight: "400",
-      Color: "#000000",
+    15: {
+      fontSize: "15px",
+      lineHeight: 1.47,
+      letterSpacing: -1,
     },
-    "15 Bold": {
-      FontSize: "15px",
-      LineHeight: "22px",
-      FontWeight: "700",
-      Color: "#000000",
+    16: {
+      fontSize: "16px",
+      lineHeight: 1.625,
+      letterSpacing: -1,
     },
-    "15 Regular": {
-      FontSize: "15px",
-      LineHeight: "22px",
-      FontWeight: "400",
-      Color: "#000000",
+    18: {
+      fontSize: "18px",
+      lineHeight: 1.56,
+      letterSpacing: -1,
     },
-    "16 Regular": {
-      FontSize: "16px",
-      LineHeight: "26px",
-      FontWeight: "400",
-      Color: "#000000",
+    20: {
+      fontSize: "20px",
+      lineHeight: 1.5,
+      letterSpacing: -1,
     },
-    "16 Bold": {
-      FontSize: "16px",
-      LineHeight: "26px",
-      FontWeight: "700",
-      Color: "#000000",
+    24: {
+      fontSize: "24px",
+      lineHeight: 1.5,
+      letterSpacing: -1,
     },
-    "18 Regular": {
-      FontSize: "18px",
-      LineHeight: "28px",
-      FontWeight: "400",
-      Color: "#000000",
-    },
-    "18 Bold": {
-      FontSize: "18px",
-      LineHeight: "28px",
-      FontWeight: "700",
-      Color: "#000000",
-    },
-    "20 Regular": {
-      FontSize: "20px",
-      LineHeight: "30px",
-      FontWeight: "400",
-      Color: "#000000",
-    },
-    "20 Bold": {
-      FontSize: "20px",
-      LineHeight: "30px",
-      FontWeight: "700",
-      Color: "#000000",
-    },
-    "24 Regular": {
-      FontSize: "24px",
-      LineHeight: "36px",
-      FontWeight: "400",
-      Color: "#000000",
-    },
-    "24 Bold": {
-      FontSize: "24px",
-      LineHeight: "36px",
-      FontWeight: "700",
-      Color: "#000000",
-    },
-    "28 Bold": {
-      FontSize: "28px",
-      LineHeight: "42px",
-      FontWeight: "700",
-      Color: "#000000",
+    28: {
+      fontSize: "28px",
+      lineHeight: 1.5,
+      letterSpacing: -1,
     },
   },
 };
