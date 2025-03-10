@@ -6,26 +6,21 @@ import RollingPaperListPage from "./pages/RollingPaperList/RollingPaperListPage"
 import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPaperPage";
 import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
 import MessagePage from "./pages/Message/MessagePage";
-import { useEffect } from "react";
-import messageService from "./api/services/messagesService";
-
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
 function App() {
-  useEffect(() => {
-  messageService.getMessages(1).then(console.log)
-},[])
-
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/list" element={<RollingPaperListPage />} />
         <Route path="/post" element={<CreateRollingPaperPage />} />
-        <Route path="/post1" element={<RollingPaperPage />} />
-        <Route path="/post1/message" element={<MessagePage />} />
+        <Route path="/post/:id" element={<RollingPaperPage />} />
+        <Route path="/post/:id/message" element={<MessagePage />} />
       </Routes>
-    </>
+    </ThemeProvider>
   );
 }
 
