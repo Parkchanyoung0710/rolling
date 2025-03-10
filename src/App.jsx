@@ -5,10 +5,13 @@ import RollingPaperListPage from "./pages/RollingPaperList/RollingPaperListPage"
 import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPaperPage";
 import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
 import MessagePage from "./pages/Message/MessagePage";
-
+import { useEffect } from "react";
+import messageService from "./api/services/messagesService";
 
 function App() {
-
+  useEffect(() => {
+  messageService.getMessages(1).then(console.log)
+},[])
 
   return (
     <>
