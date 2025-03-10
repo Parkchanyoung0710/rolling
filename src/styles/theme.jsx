@@ -91,4 +91,34 @@ export const theme = {
       letterSpacing: -1,
     },
   },
+  ButtonSize: {
+    56: {
+      height: "56px",
+      fontSize: "18px",
+      fontWeight: 700,
+      padding: "14px 24px",
+      borderRadius: "12px",
+    },
+    40: {
+      height: "40px",
+      fontSize: "16px",
+      fontWeight: 400,
+      padding: "8px 16px",
+      borderRadius: "6px",
+    },
+    36: {
+      height: "36px",
+      fontSize: "14px",
+      fontWeight: 500,
+      padding: "6px 16px",
+      borderRadius: "6px",
+    },
+    28: {
+      height: "28px",
+      fontSize: "12px",
+      fontWeight: 400,
+      padding: "2px 16px",
+      borderRadius: "6px",
+    },
+  },
 };
