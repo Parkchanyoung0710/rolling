@@ -1,3 +1,5 @@
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
 import GlobalStyles from "./styles/GlobalStyles";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/common/Navbar/Navbar.core";
@@ -7,12 +9,9 @@ import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPape
 import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
 import MessagePage from "./pages/Message/MessagePage";
 
-
 function App() {
-
-
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Navbar />
       <Routes>
@@ -22,7 +21,7 @@ function App() {
         <Route path="/post1" element={<RollingPaperPage />} />
         <Route path="/post1/message" element={<MessagePage />} />
       </Routes>
-    </>
+    </ThemeProvider>
   );
 }
 
