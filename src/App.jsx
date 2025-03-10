@@ -6,7 +6,10 @@ import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPape
 import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
 import MessagePage from "./pages/Message/MessagePage";
 
+
 function App() {
+
+
   return (
     <>
       <Navbar />
