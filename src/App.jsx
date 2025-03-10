@@ -1,3 +1,4 @@
+import GlobalStyles from "./styles/GlobalStyles";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/common/Navbar/Navbar.core";
 import HomePage from "./pages/Home/HomePage";
@@ -15,6 +16,7 @@ function App() {
 
   return (
     <>
+      <GlobalStyles />
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
