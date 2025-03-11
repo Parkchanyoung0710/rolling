@@ -1,3 +1,5 @@
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
 import GlobalStyles from "./styles/GlobalStyles";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/common/Navbar/Navbar.core";
@@ -6,8 +8,7 @@ import RollingPaperListPage from "./pages/RollingPaperList/RollingPaperListPage"
 import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPaperPage";
 import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
 import MessagePage from "./pages/Message/MessagePage";
-import { ThemeProvider } from "styled-components";
-import { theme } from "./styles/theme";
+
 function App() {
   return (
     <ThemeProvider theme={theme}>

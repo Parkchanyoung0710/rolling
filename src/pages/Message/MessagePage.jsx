@@ -23,8 +23,4 @@ const flexCenter = css`
 
 const Bone = styled.div`
   ${flexCenter}
-  flex-direction: column; /* 세로 정렬 추가 */
-  gap: 1rem; /* 요소 간 간격 추가 */
-  width: 100%;
-  height: 100vh; /* 전체 화면 높이 */
 `;

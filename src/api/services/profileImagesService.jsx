@@ -1,8 +1,8 @@
 import requestor from "../client/requestor";
 
-class ProfileImageService{
-  getProfileImageService(){
-    return requestor.get(`/profile-images/`)
+class ProfileImageService {
+  getProfileImageService() {
+    return requestor.get(`/profile-images/`);
   }
 }
 
