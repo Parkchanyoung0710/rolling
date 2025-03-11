@@ -10,8 +10,6 @@ function CreateRollingPaperPage() {
 
 export default CreateRollingPaperPage;
 
-
-
 const flexCenter = css`
   display: flex;
   justify-content: center;

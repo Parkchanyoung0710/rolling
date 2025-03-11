@@ -1,42 +1,46 @@
 import requestor from "../client/requestor";
 
-class RecipientsService{
-  getRecipients(){
-    return requestor.get(`/14-8/recipients/`)
+class RecipientsService {
+  getRecipients() {
+    return requestor.get(`/14-8/recipients/`);
   }
 
-  postRecipients(body){
+  postRecipients(body) {
     return requestor.put(`/14-8/recipients/`, {
-      data: body
-    })
+      data: body,
+    });
   }
 
-  getRecipientsId(id){
-    return requestor.patch(`/14-8/recipients/${id}/`)
+  getRecipientsId(id) {
+    return requestor.patch(`/14-8/recipients/${id}/`);
   }
 
-  deleteRecipientsId(id){
-    return requestor.delete(`/14-8/recipients/${id}/`)
-    }
-    
-    getRecipientsMessages(id, limit, offset){
-    return requestor.get(`/14-8/recipients/${id}/messages/?limit=${limit}&offset=${offset}`)
+  deleteRecipientsId(id) {
+    return requestor.delete(`/14-8/recipients/${id}/`);
   }
 
-  postRecipientsMessages(id, body){
+  getRecipientsMessages(id, limit, offset) {
+    return requestor.get(
+      `/14-8/recipients/${id}/messages/?limit=${limit}&offset=${offset}`
+    );
+  }
+
+  postRecipientsMessages(id, body) {
     return requestor.put(`/14-8/recipients/${id}/messages`, {
-      data: body
-    })
+      data: body,
+    });
   }
 
-  getRecipientsReactions(id, limit, offset){
-    return requestor.patch(`/recipients/${id}/reactions/?limit=${limit}&offset=${offset}`)
+  getRecipientsReactions(id, limit, offset) {
+    return requestor.patch(
+      `/recipients/${id}/reactions/?limit=${limit}&offset=${offset}`
+    );
   }
 
-  postRecipientsReactions(id, body){
+  postRecipientsReactions(id, body) {
     return requestor.delete(`/recipients/${id}/reactions/`, {
-      data: body
-    })
+      data: body,
+    });
   }
 }
 

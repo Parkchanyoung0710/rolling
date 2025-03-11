@@ -1,24 +1,24 @@
 import requestor from "../client/requestor";
 
-class MessageService{
-  getMessages(id){
-    return requestor.get(`/14-8/messages/${id}/`);  
+class MessageService {
+  getMessages(id) {
+    return requestor.get(`/14-8/messages/${id}/`);
   }
 
-  putMessages(id, body){
+  putMessages(id, body) {
     return requestor.put(`/14-8/messages/${id}/`, {
-      data: body
-    })
+      data: body,
+    });
   }
 
-  patchMessages(id, body){
+  patchMessages(id, body) {
     return requestor.patch(`/14-8/messages/${id}/`, {
-      data: body
-    })
+      data: body,
+    });
   }
 
-  deleteMessages(id){
-    return requestor.delete(`/14-8/messages/${id}/`)
+  deleteMessages(id) {
+    return requestor.delete(`/14-8/messages/${id}/`);
   }
 }
 

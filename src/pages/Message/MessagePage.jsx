@@ -1,4 +1,4 @@
-import ProfileInput from "../../components/common/Input/ProfileInput";
+import ProfileInput from "../../components/common/Input/ProfileInput/ProfileInput";
 import styled, { css } from "styled-components";
 import { useParams } from "react-router-dom";
 

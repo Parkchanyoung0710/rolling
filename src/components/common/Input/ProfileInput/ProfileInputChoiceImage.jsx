@@ -1,10 +1,10 @@
-import "../../../styles/GlobalStyles";
-import "../../../styles/textStyle";
-import "../../../styles/theme";
+import "../../../../styles/GlobalStyles";
+import "../../../../styles/textStyle";
+import "../../../../styles/theme";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { textStyle } from "../../../styles/textStyle";
-import profileImageService from "../../../api/services/profileImagesService";
+import { textStyle } from "../../../../styles/textStyle";
+import profileImageService from "../../../../api/services/profileImagesService";
 
 const Bone = styled.div`
   margin: 3.125rem auto 3.125rem auto;

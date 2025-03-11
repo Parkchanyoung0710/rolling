@@ -135,7 +135,7 @@ table {
   width: 20rem;
   height: 3.125rem;
   margin-top: 0.5rem;
-  border: 1px solid #CCCCCC;
+  border: 1px solid #cccccc;
   cursor: pointer;
   border-radius: 50%;
   display: flex;
@@ -148,5 +148,5 @@ table {
   justify-content: space-between;
   flex-direction: row;
   border-radius: 50%;
-  color:#555555
+  color: #555555;
 }

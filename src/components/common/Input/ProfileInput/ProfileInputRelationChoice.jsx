@@ -1,9 +1,9 @@
-import "../../../styles/GlobalStyles";
-import "../../../styles/textStyle";
-import "../../../styles/theme";
+import "../../../../styles/GlobalStyles";
+import "../../../../styles/textStyle";
+import "../../../../styles/theme";
 import styled from "styled-components";
-import { textStyle } from "../../../styles/textStyle";
-import Dropdown from "../TextFiled/DropDown";
+import { textStyle } from "../../../../styles/textStyle";
+import Dropdown from "../../TextFiled/Dropdown";
 import { useState } from "react";
 
 const Bone = styled.div`

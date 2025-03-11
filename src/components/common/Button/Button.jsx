@@ -58,33 +58,27 @@ const variantStyles = {
 };
 
 const hoverStyles = {
-  primary: (theme) =>
-    css`
-      background-color: ${theme.colors.purple[700]};
-    `,
-  secondary: (theme) =>
-    css`
-      background-color: ${theme.colors.purple[100]};
-    `,
-  outlined: (theme) =>
-    css`
-      background-color: ${theme.colors.grayScale[100]};
-    `,
+  primary: (theme) => css`
+    background-color: ${theme.colors.purple[700]};
+  `,
+  secondary: (theme) => css`
+    background-color: ${theme.colors.purple[100]};
+  `,
+  outlined: (theme) => css`
+    background-color: ${theme.colors.grayScale[100]};
+  `,
 };
 
 const focusStyles = {
-  primary: (theme) =>
-    css`
-      border: 2px solid ${theme.colors.purple[900]};
-    `,
-  secondary: (theme) =>
-    css`
-      border: 1px solid ${theme.colors.purple[800]};
-    `,
-  outlined: (theme) =>
-    css`
-      border: 1px solid ${theme.colors.grayScale[500]};
-    `,
+  primary: (theme) => css`
+    border: 2px solid ${theme.colors.purple[900]};
+  `,
+  secondary: (theme) => css`
+    border: 1px solid ${theme.colors.purple[800]};
+  `,
+  outlined: (theme) => css`
+    border: 1px solid ${theme.colors.grayScale[500]};
+  `,
 };
 
 const imageMap = {

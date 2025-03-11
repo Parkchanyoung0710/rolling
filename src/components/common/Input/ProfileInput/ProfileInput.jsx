@@ -1,6 +1,6 @@
-import "../../../styles/GlobalStyles";
-import "../../../styles/textStyle";
-import "../../../styles/theme";
+import "../../../../styles/GlobalStyles";
+import "../../../../styles/textStyle";
+import "../../../../styles/theme";
 import styled from "styled-components";
 import ProfileInputName from "./ProfileInputName";
 import ProfileInputChoiceImage from "./ProfileInputChoiceImage";
@@ -20,13 +20,8 @@ function ProfileInput() {
       <ProfileInputChoiceImage />
       <ProfileInputRelationChoice />
       <ProfileInputText />
-      <FontChoice />
     </Bone>
   );
 }
 
 export default ProfileInput;
-
-function FontChoice() {
-  return <></>;
-}
