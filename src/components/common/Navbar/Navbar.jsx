@@ -20,8 +20,6 @@ const NavbarContainer = styled.nav`
   max-width: 1207px;
   height: 64px;
   padding: 11px 24px;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale[200]};
 `;
 
 const Logo = styled.img`
