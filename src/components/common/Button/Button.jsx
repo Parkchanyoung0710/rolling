@@ -38,6 +38,12 @@ const ButtonWrapper = styled.button`
     color: ${({ theme }) => theme.colors.white};
     cursor: not-allowed;
   }
+
+  ${({ width }) =>
+    width &&
+    css`
+      width: ${width}px;
+    `}
 `;
 
 const variantStyles = {
@@ -98,6 +104,7 @@ const Button = ({
   size = 40,
   state = "enabled",
   image = null,
+  width,
   children = null,
   onClick,
 }) => {
@@ -105,6 +112,7 @@ const Button = ({
     <ButtonWrapper
       variant={variant}
       size={size}
+      width={width}
       onClick={onClick}
       disabled={state === "disabled"}
     >
