@@ -80,7 +80,7 @@ function ProfileInputName() {
           placeholder="이름을 입력해 주세요"
         />
       </ToLabel>
-      {hasError && <ErrorMessage>값을 입력해 주세요.</ErrorMessage>}
+      {hasError && <ErrorMessage>이름을 입력해 주세요.</ErrorMessage>}
     </>
   );
 }

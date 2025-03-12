@@ -1,14 +1,14 @@
-import "../../../styles/GlobalStyles";
-import "../../../styles/textStyle";
-import "../../../styles/theme";
+import "../../../../styles/GlobalStyles";
+import "../../../../styles/textStyle";
+import "../../../../styles/theme";
 import styled from "styled-components";
-import ToggleButton from "../Button/ToggleButton";
+import ToggleButton from "../../Button/ToggleButton";
 import { useState } from "react";
 import InputName from "./InputName";
 import InputChoiceText from "./InputChoiceText";
-import ColorPicker from "./Picker/ColorPicker";
-import ImgPicker from "./Picker/ImgPicker";
-import Button from "../Button/Button";
+import ColorPicker from "../Picker/ColorPicker";
+import ImgPicker from "../Picker/ImgPicker";
+import Button from "../../Button/Button";
 
 const Bone = styled.div`
   margin: 3.562rem auto auto auto;

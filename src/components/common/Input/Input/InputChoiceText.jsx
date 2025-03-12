@@ -1,8 +1,8 @@
-import "../../../styles/GlobalStyles";
-import "../../../styles/textStyle";
-import "../../../styles/theme";
+import "../../../../styles/GlobalStyles";
+import "../../../../styles/textStyle";
+import "../../../../styles/theme";
 import styled from "styled-components";
-import { textStyle } from "../../../styles/textStyle";
+import { textStyle } from "../../../../styles/textStyle";
 
 const TextBone = styled.div`
   height: 4.125rem;

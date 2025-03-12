@@ -1,9 +1,9 @@
-import "../../../styles/GlobalStyles";
-import "../../../styles/textStyle";
-import "../../../styles/theme";
+import "../../../../styles/GlobalStyles";
+import "../../../../styles/textStyle";
+import "../../../../styles/theme";
 import styled from "styled-components";
 import { useState } from "react";
-import { textStyle } from "../../../styles/textStyle";
+import { textStyle } from "../../../../styles/textStyle";
 
 const ToText = styled.div`
   ${(props) => textStyle(24, 700)(props)}

@@ -139,11 +139,6 @@ function ProfileInputTextFont({ selectedFont, onChange }) {
               [{ header: 1 }, { header: 2 }],
               [{ color: [] }, { background: [] }],
               [{ align: [] }],
-              [
-                {
-                  font: Font.whitelist,
-                },
-              ],
             ],
           },
         }}
