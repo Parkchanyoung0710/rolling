@@ -7,8 +7,7 @@ import "../../../../styles/font.css";
 import ProfileInputTextFont from "./ProfileInputTextFont";
 import styled from "styled-components";
 import { textStyle } from "../../../../styles/textStyle";
-
-import Dropdown from "../../TextFiled/DropDown";
+import DropDown from "./DropDown";
 
 // 폰트 변경을 위한 스타일 추가
 const FontSelect = styled.select`
@@ -44,7 +43,6 @@ const ProfileInputText = () => {
     contentText: "", // 설교 내용 상태
   });
   console.log(sermonData);
-  const [selectedFont, setSelectedFont] = useState("noto-sans-kr"); // 기본 폰트 상태
 
   // 에디터 내용이 변경될 때 호출되는 함수
   const handleEditorChange = (content) => {
@@ -54,35 +52,27 @@ const ProfileInputText = () => {
     }));
   };
 
-  // 폰트 선택 시 호출되는 함수
-  const handleFontChange = (event) => {
-    setSelectedFont(event.target.value);
-  };
+  const options = ["Noto Sans", "프리텐다드", "마루부리", "나눔손편지"];
+  const [selectedOption, setSelectedOption] = useState("Noto Sans"); // 기본값
 
-  const optionData = [
-    { value: "noto-sans-kr", label: "Noto Sans" },
-    { value: "pretendard-regular", label: "프리텐다드" },
-    { value: "nanum-myeongjo", label: "나눔명조" },
-    { value: "handletter", label: "손글씨체" },
-  ];
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
 
   return (
     <Bone>
       <TextStory>내용을 입력해 주세요</TextStory>
 
       <ProfileInputTextFont
-        selectedFont={selectedFont} // 선택된 폰트를 전달
+        selectedOption={selectedOption}
         onChange={handleEditorChange}
       />
       {/* 폰트 선택 드롭다운 추가 */}
       <FontText>폰트 선택</FontText>
-      <Dropdown
-        styles={DropdownStyle}
-        options={optionData}
-        onChange={handleFontChange}
-        color="#CCCCCC"
-        textColor="#555555"
-        borderColor="#555555"
+      <DropDown
+        currentValue={selectedOption}
+        options={options}
+        onSelect={handleOptionSelect}
       />
     </Bone>
   );
