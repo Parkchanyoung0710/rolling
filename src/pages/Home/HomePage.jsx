@@ -82,11 +82,6 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-const StyledButton = styled(Button)`
-  width: 280px;
-  display: block;
-`;
-
 function HomePage() {
   const navigate = useNavigate();
 
@@ -128,13 +123,14 @@ function HomePage() {
           </TextSection>
         </Section>
         <ButtonWrapper>
-          <StyledButton
+          <Button
             variant="primary"
             size="56"
+            width={280}
             onClick={() => navigate("/list")}
           >
             구경해보기
-          </StyledButton>
+          </Button>
         </ButtonWrapper>
       </ContentWrapper>
     </HomeContainer>
