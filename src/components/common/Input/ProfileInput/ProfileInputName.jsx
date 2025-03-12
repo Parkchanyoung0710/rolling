@@ -11,7 +11,9 @@ const ToText = styled.div`
   height: 2.625rem;
 `;
 
-const ToLabel = styled.label`
+const ToLabel = styled.label.withConfig({
+  shouldForwardProp: (prop) => prop !== "error", // "error" prop은 DOM으로 전달되지 않음
+})`
   display: block;
   border: 1px solid #cccccc;
   width: 45rem;
@@ -25,8 +27,8 @@ const ToLabel = styled.label`
   }
 
   ${(props) =>
-    props.error &&
-    `
+    props.$error &&
+    `  /* $error로 처리 */
     border: 1px solid red;
     box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
   `}
@@ -68,7 +70,9 @@ function ProfileInputName() {
   return (
     <>
       <ToText>From.</ToText>
-      <ToLabel error={hasError}>
+      <ToLabel $error={hasError}>
+        {" "}
+        {/* $error로 수정 */}
         <ToInput
           value={inputValue}
           onChange={handleChange}

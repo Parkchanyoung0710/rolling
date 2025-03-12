@@ -3,8 +3,8 @@ import "../../../../styles/textStyle";
 import "../../../../styles/theme";
 import styled from "styled-components";
 import { textStyle } from "../../../../styles/textStyle";
-import Dropdown from "../../TextFiled/Dropdown";
 import { useState } from "react";
+import DropDown from "./DropDown";
 
 const Bone = styled.div`
   margin: 3.125rem auto 3.125rem auto;
@@ -16,36 +16,22 @@ const RelationText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
   margin-bottom: 1.333rem;
 `;
-const DropdownStyle = styled.div`
-  ${(props) => textStyle(16, 400)(props)}
-  color:#555555;
-`;
 
 function ProfileInputRelationChoice() {
-  const optionData = [
-    { value: "지인", label: "지인" },
-    { value: "동료", label: "동료" },
-    { value: "가족", label: "가족" },
-    { value: "친구", label: "친구" },
-  ];
+  const options = ["지인", "동료", "가족", "친구"];
+  const [selectedOption, setSelectedOption] = useState("지인"); // 기본값
 
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleSelectChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    console.log("Selected Option: ", selectedOption);
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
   };
 
   return (
     <Bone>
       <RelationText>상대와의 관계</RelationText>
-      <Dropdown
-        styles={DropdownStyle}
-        options={optionData}
-        onChange={handleSelectChange}
-        color="#CCCCCC"
-        textColor="#555555"
-        borderColor="#555555"
+      <DropDown
+        currentValue={selectedOption}
+        options={options}
+        onSelect={handleOptionSelect}
       />
     </Bone>
   );
