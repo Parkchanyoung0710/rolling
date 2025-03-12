@@ -36,5 +36,4 @@ function ProfileInputRelationChoice() {
     </Bone>
   );
 }
-
 export default ProfileInputRelationChoice;

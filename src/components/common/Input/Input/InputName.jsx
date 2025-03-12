@@ -50,7 +50,7 @@ function NameInput() {
   const handleBlur = () => {
     setIsTouched(true);
     if (!name) {
-      setError("값을 입력해 주세요.");
+      setError("이름을 입력해 주세요.");
     } else {
       setError("");
     }

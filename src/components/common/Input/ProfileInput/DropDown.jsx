@@ -4,7 +4,7 @@ import { textStyle } from "../../../../styles/textStyle";
 import { ArrowDown } from "../../../../assets/images/icon/IconIndex";
 
 const SelectBox = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen", // isOpen prop은 DOM으로 전달되지 않음
+  shouldForwardProp: (prop) => prop !== "isOpen",
 })`
   position: relative;
   width: 20rem;
@@ -34,14 +34,17 @@ const Label = styled.label`
 `;
 
 const IconStyle = styled.label.withConfig({
-  shouldForwardProp: (prop) => prop !== "isReversed", // isReversed prop은 DOM으로 전달되지 않음
+  shouldForwardProp: (prop) => prop !== "isReversed",
 })`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 1rem;
   cursor: pointer;
-  transform: ${(props) => (props.isReversed ? "rotate(180deg)" : "none")};
+  transform: ${(props) =>
+    props.$isReversed
+      ? "rotate(180deg)"
+      : "none"}; /* props 대신 $isReversed로 수정 */
 `;
 
 const SelectOptions = styled.ul`
@@ -124,7 +127,6 @@ function DropDown({ currentValue, options, onSelect }) {
     >
       <Label>{selectedValue}</Label>
       <IconStyle onClick={handleArrowDownClick} $isReversed={isReversed}>
-        {/* ArrowDown 아이콘 회전 */}
         <ArrowDown />
       </IconStyle>
       {isShowOptions && (
