@@ -12,25 +12,33 @@ const ButtonWrapper = styled.button`
   cursor: pointer;
   border: none;
 
-  ${({ size, theme }) => {
-    const buttonSize = theme.ButtonSize[size];
+  ${({ $width }) => $width && `width: ${$width};`}
+  ${({ $height }) => $height && `height: ${$height};`}
+  ${({ $padding }) => $padding && `padding: ${$padding};`}
+  
+  ${({ $borderRadius }) => $borderRadius && `border-radius: ${$borderRadius};`}
+  
+  ${({ $size, theme }) => {
+    const buttonSize = theme.ButtonSize[$size] || theme.ButtonSize.default;
     return css`
-      height: ${buttonSize.height};
-      font-size: ${buttonSize.fontSize};
-      font-weight: ${buttonSize.fontWeight};
-      padding: ${buttonSize.padding};
-      border-radius: ${buttonSize.borderRadius};
+      height: ${buttonSize?.height || "40px"};
+      font-size: ${buttonSize?.fontSize || "16px"};
+      font-weight: ${buttonSize?.fontWeight || "500"};
+      padding: ${buttonSize?.padding || "8px 16px"};
     `;
   }}
 
-  ${({ variant, theme }) => variantStyles[variant](theme)}
+  ${({ $variant, theme }) =>
+    variantStyles[$variant] && variantStyles[$variant](theme)}
 
   &:hover {
-    ${({ variant, theme }) => hoverStyles[variant](theme)}
+    ${({ $variant, theme }) =>
+      hoverStyles[$variant] && hoverStyles[$variant](theme)}
   }
 
   &:focus {
-    ${({ variant, theme }) => focusStyles[variant](theme)}
+    ${({ $variant, theme }) =>
+      focusStyles[$variant] && focusStyles[$variant](theme)}
   }
 
   &:disabled {
@@ -89,18 +97,26 @@ const imageMap = {
 
 const Button = ({
   variant = "primary",
-  size = 40,
+  size = "default",
   state = "enabled",
   image = null,
   children = null,
   onClick,
+  width = "auto",
+  height = "auto",
+  borderRadius = "null",
+  padding = "auto",
 }) => {
   return (
     <ButtonWrapper
-      variant={variant}
-      size={size}
+      $variant={variant}
+      $size={size}
       onClick={onClick}
       disabled={state === "disabled"}
+      $width={width}
+      $height={height}
+      $borderRadius={borderRadius}
+      $padding={padding}
     >
       {image && (
         <img

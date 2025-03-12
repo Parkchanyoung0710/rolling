@@ -11,24 +11,29 @@ const Bone = styled.div`
   width: 44.813rem;
   height: 8.875rem;
 `;
+
 const ProfileText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
   margin-bottom: 1.333rem;
 `;
+
 const ProfileBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
 `;
+
 const ProfileImg = styled.img`
   width: 5rem;
   height: 5rem;
   margin-right: 2rem;
   border-radius: 50%;
 `;
+
 const ProfileCoiceText = styled.div`
   ${(props) => textStyle(16, 400)(props)}
 `;
+
 const ProfileImgChoice = styled.div`
   display: flex;
   align-items: center;
@@ -37,6 +42,7 @@ const ProfileImgChoice = styled.div`
   height: 3.5rem;
   margin: 0.75rem 0 0 0;
 `;
+
 const Image = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "image",
 })`
@@ -49,7 +55,12 @@ const Image = styled.div.withConfig({
   background-image: ${(props) => `url(${props.image})`};
   background-size: cover;
   background-position: center;
-  border: ${(props) => (props.selected ? "4px solid #00a2fe" : "none")};
+  border: ${(props) => (props.selected ? "3px solid #00a2fe" : "none")};
+  transition: box-shadow 0 0 5px rgba(0, 162, 254, 0.5); /* 부드러운 전환 효과 추가 */
+  box-shadow: ${(props) =>
+    props.selected
+      ? "0 0 5px rgba(0, 162, 254, 0.5)"
+      : "none"}; /* 선택 시 box-shadow 추가 */
 `;
 
 function ProfileInputChoiceImage() {
@@ -69,6 +80,7 @@ function ProfileInputChoiceImage() {
     };
     fetchImages();
   }, []);
+
   const handleImageChange = (image) => {
     setSelectedImg(image);
   };

@@ -7,7 +7,6 @@ function MessagePage() {
   return (
     <Bone>
       <ProfileInput />
-      <h1>Message Page</h1>
       <p>Post ID: {id}</p> {/* 동적 ID 출력 */}
     </Bone>
   );

@@ -8,15 +8,24 @@ import InputName from "./InputName";
 import InputChoiceText from "./InputChoiceText";
 import ColorPicker from "./Picker/ColorPicker";
 import ImgPicker from "./Picker/ImgPicker";
+import Button from "../Button/Button";
 
 const Bone = styled.div`
   margin: 3.562rem auto auto auto;
   width: 45rem;
   height: 33.875rem;
 `;
+
 const Picker = styled.div`
   width: 45rem;
   height: 10.5rem;
+`;
+
+const PostMove = styled.a`
+  margin-top: 4.313rem;
+  display: block;
+  width: 45rem;
+  height: 28px;
 `;
 
 function Input() {
@@ -40,13 +49,22 @@ function Input() {
         {selected === 0 && <ColorPicker />}
         {selected === 1 && <ImgPicker />}
       </Picker>
-      <a
+      <PostMove
         href="http://localhost:5173/post/1/message"
         target="_blank"
-        class="privacy"
+        className="privacy"
       >
-        생성하기 버튼
-      </a>
+        <Button
+          variant="primary"
+          size="18"
+          width="100%"
+          height="3.5rem"
+          borderRadius="12px"
+          padding="12px"
+        >
+          생성하기
+        </Button>
+      </PostMove>
     </Bone>
   );
 }
