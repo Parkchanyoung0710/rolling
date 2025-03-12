@@ -117,40 +117,40 @@ function ProfileInputTextFont({ selectedFont, onChange }) {
   render() {
     const { selectedFont } = this.props; // 선택된 폰트
 
-  return (
-    <EditorWrapper>
-      <ReactQuill
-        theme="snow"
-        onChange={handleChange}
-        value={editorHtml}
-        placeholder="내용을 입력하세요..."
-        modules={{
-          toolbar: {
-            container: [
-              ["bold", "italic", "underline"], // 텍스트 스타일
-              ["blockquote", "code-block"],
-              [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-              [{ header: 1 }, { header: 2 }], // 헤더 크기
-              [{ indent: "-1" }, { indent: "+1" }], // 들여쓰기 조정
-              [{ color: [] }, { background: [] }], // 색상 선택
-              [{ align: [] }], // 정렬
-            ],
-          },
-        }}
-        formats={[
-          "bold",
-          "italic",
-          "underline",
-          "header",
-          "align",
-          "color",
-          "background",
-          "list",
-        ]}
-        className={`ql-font-${selectedFont}`} // 동적으로 선택된 폰트 클래스 적용
-      />
-    </EditorWrapper>
-  );
+    return (
+      <EditorWrapper>
+        <ReactQuill
+          theme="snow"
+          onChange={handleChange}
+          value={editorHtml}
+          placeholder="내용을 입력하세요..."
+          modules={{
+            toolbar: {
+              container: [
+                ["bold", "italic", "underline"], // 텍스트 스타일
+                ["blockquote", "code-block"],
+                [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+                [{ header: 1 }, { header: 2 }], // 헤더 크기
+                [{ indent: "-1" }, { indent: "+1" }], // 들여쓰기 조정
+                [{ color: [] }, { background: [] }], // 색상 선택
+                [{ align: [] }], // 정렬
+              ],
+            },
+          }}
+          formats={[
+            "bold",
+            "italic",
+            "underline",
+            "header",
+            "align",
+            "color",
+            "background",
+            "list",
+          ]}
+          className={`ql-font-${selectedFont}`} // 동적으로 선택된 폰트 클래스 적용
+        />
+      </EditorWrapper>
+    );
+  }
 }
-
 export default ProfileInputTextFont;
