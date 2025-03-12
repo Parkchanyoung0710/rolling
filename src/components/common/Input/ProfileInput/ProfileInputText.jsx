@@ -43,6 +43,7 @@ const ProfileInputText = () => {
   const [sermonData, setSermonData] = useState({
     contentText: "", // 설교 내용 상태
   });
+  console.log(sermonData);
   const [selectedFont, setSelectedFont] = useState("noto-sans-kr"); // 기본 폰트 상태
 
   // 에디터 내용이 변경될 때 호출되는 함수

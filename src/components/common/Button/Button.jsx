@@ -12,11 +12,12 @@ const ButtonWrapper = styled.button`
   cursor: pointer;
   border: none;
 
-  ${({ $width }) => $width && `width: ${$width};`}
-  ${({ $height }) => $height && `height: ${$height};`}
-  ${({ $padding }) => $padding && `padding: ${$padding};`}
+  ${({ $width }) => $width && `width: ${$width}px;`}
+  ${({ $height }) => $height && `height: ${$height}px;`} 
+  ${({ $padding }) => $padding && `padding: ${$padding}px;`} 
   
-  ${({ $borderRadius }) => $borderRadius && `border-radius: ${$borderRadius};`}
+  ${({ $borderRadius }) =>
+    $borderRadius && `border-radius: ${$borderRadius}px;`} 
   
   ${({ $size, theme }) => {
     const buttonSize = theme.ButtonSize[$size] || theme.ButtonSize.default;
@@ -46,6 +47,12 @@ const ButtonWrapper = styled.button`
     color: ${({ theme }) => theme.colors.white};
     cursor: not-allowed;
   }
+
+  ${({ width }) =>
+    width &&
+    css`
+      width: ${width}px;
+    `}
 `;
 
 const variantStyles = {
@@ -100,23 +107,23 @@ const Button = ({
   size = "default",
   state = "enabled",
   image = null,
+  width,
+  height,
+  padding,
+  borderRadius,
   children = null,
   onClick,
-  width = "auto",
-  height = "auto",
-  borderRadius = "null",
-  padding = "auto",
 }) => {
   return (
     <ButtonWrapper
       $variant={variant}
       $size={size}
-      onClick={onClick}
-      disabled={state === "disabled"}
       $width={width}
       $height={height}
-      $borderRadius={borderRadius}
       $padding={padding}
+      $borderRadius={borderRadius}
+      onClick={onClick}
+      disabled={state === "disabled"}
     >
       {image && (
         <img

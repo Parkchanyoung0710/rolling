@@ -30,16 +30,23 @@ const PostMove = styled.a`
 
 function Input() {
   const [selected, setSelected] = useState(0);
+  const [name, setName] = useState("");
+  const [cardContent, setCardContent] = useState("");
 
   const handleToggle = (index) => {
     setSelected(index);
     console.log("Selected index:", index);
   };
 
+  const isButtonDisabled = !(name && cardContent);
+
   return (
     <Bone>
-      <InputName />
-      <InputChoiceText />
+      <InputName value={name} onChange={(e) => setName(e.target.value)} />
+      <InputChoiceText
+        value={cardContent}
+        onChange={(e) => setCardContent(e.target.value)}
+      />
       <ToggleButton
         options={["컬러", "이미지"]}
         defaultSelected={0}
@@ -57,10 +64,11 @@ function Input() {
         <Button
           variant="primary"
           size="18"
-          width="100%"
-          height="3.5rem"
-          borderRadius="12px"
-          padding="12px"
+          width={720}
+          height={56}
+          borderRadius={12}
+          padding={20}
+          disabled={isButtonDisabled}
         >
           생성하기
         </Button>

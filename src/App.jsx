@@ -2,7 +2,7 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
 import GlobalStyles from "./styles/GlobalStyles";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/common/Navbar/Navbar.core";
+import Navbar from "./components/common/Navbar/Navbar";
 import HomePage from "./pages/Home/HomePage";
 import RollingPaperListPage from "./pages/RollingPaperList/RollingPaperListPage";
 import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPaperPage";

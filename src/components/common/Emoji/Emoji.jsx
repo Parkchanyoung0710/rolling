@@ -1,7 +1,32 @@
 import React, { useState } from "react";
 import EmojiPicker from "emoji-picker-react";
+import styled from "styled-components";
 
 const MAX_EMOJIS = 3; // 최대 이모티콘 개수 설정
+
+// 버튼 스타일 컴포넌트
+const EmojiButton = styled.div`
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  &:hover {
+    background-color: #f1f1f1;
+  }
+  &:active {
+    background-color: #e0e0e0;
+  }
+`;
+
+// 이모티콘 표시 스타일 컴포넌트
+const EmojiCount = styled.span`
+  font-size: 20px;
+  margin: 5px;
+  transition: all 0.3s ease;
+`;
 
 function Emoji() {
   const [showPicker, setShowPicker] = useState(false);
@@ -26,7 +51,7 @@ function Emoji() {
 
   return (
     <div>
-      <button onClick={() => setShowPicker(!showPicker)}>
+      <EmojiButton onClick={() => setShowPicker(!showPicker)}>
         <img
           src="./src/images/emoji.png"
           alt="이모티콘"
@@ -34,20 +59,13 @@ function Emoji() {
           height="20"
         />
         추가
-      </button>
+      </EmojiButton>
       {showPicker && <EmojiPicker onEmojiClick={handleEmojiSelect} />}
       <div>
         {sortedEmojiMap.map(([emoji, count]) => (
-          <span
-            key={emoji}
-            style={{
-              fontSize: "20px",
-              margin: "5px",
-              transition: "all 0.3s ease",
-            }}
-          >
-            {emoji} {count} {/* 괄호 없이 이모티콘과 개수 출력 */}
-          </span>
+          <EmojiCount key={emoji}>
+            {emoji} {count}
+          </EmojiCount>
         ))}
       </div>
     </div>
