@@ -129,25 +129,3 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
-.d {
-  background-color: colorCode;
-  width: 45rem;
-  height: 3.5rem;
-  margin-top: 4.313rem;
-  border: 1px solid #cccccc;
-  cursor: pointer;
-  border-radius: 50%;
-  display: flex;
-  justify-content: space-between;
-  margin: 3.125rem auto;
-  margin-bottom: 1.333rem;
-  src: loc;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  border-radius: 50%;
-  color: #555555;
-  display: block;
-}

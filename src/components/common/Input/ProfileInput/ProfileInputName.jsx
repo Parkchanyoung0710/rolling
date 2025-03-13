@@ -51,7 +51,7 @@ const ErrorMessage = styled.div`
   position: absolute;
 `;
 
-// From 컴포넌트트
+// From 컴포넌트
 function ProfileInputName() {
   const [inputValue, setInputValue] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -73,8 +73,6 @@ function ProfileInputName() {
     <>
       <ToText>From.</ToText>
       <ToLabel $error={hasError}>
-        {" "}
-        {/* $error로 수정 */}
         <ToInput
           value={inputValue}
           onChange={handleChange}

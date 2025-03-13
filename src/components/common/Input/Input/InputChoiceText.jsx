@@ -23,7 +23,7 @@ const BackgroundChoice = styled.div`
 `;
 
 // ChoiceText 컴포넌트
-function ChoiceText() {
+function InputChoiceText() {
   return (
     <TextBone>
       <BackgroundText>배경화면을 선택해 주세요.</BackgroundText>
@@ -34,4 +34,4 @@ function ChoiceText() {
   );
 }
 
-export default ChoiceText;
+export default InputChoiceText;

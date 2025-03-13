@@ -46,6 +46,7 @@ function ProfileInputText() {
         <Dropdown
           currentValue={selectedOption}
           options={options}
+          menuPlacement="auto"
           onSelect={handleOptionSelect}
         />
       </DropdownBox>

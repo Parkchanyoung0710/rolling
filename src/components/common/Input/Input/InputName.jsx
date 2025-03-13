@@ -2,7 +2,7 @@ import "../../../../styles/GlobalStyles";
 import "../../../../styles/textStyle";
 import "../../../../styles/theme";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // useEffect 추가
 import { textStyle } from "../../../../styles/textStyle";
 
 const ToText = styled.div`
@@ -28,10 +28,9 @@ const ToLabel = styled.label.withConfig({
 
   ${(props) =>
     props.$error &&
-    `  /* $error로 처리 */
+    `  
     border: 1px solid red;
     box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-    
   `}
 `;
 
@@ -52,31 +51,32 @@ const ErrorMessage = styled.div`
   position: absolute;
 `;
 
-function InputName() {
-  const [inputValue, setInputValue] = useState("");
+function InputName({ value, onChange }) {
   const [hasError, setHasError] = useState(false);
 
+  // 값이 변경될 때마다 에러 초기화
+  useEffect(() => {
+    if (value) {
+      setHasError(false);
+    }
+  }, [value]);
+
   const handleBlur = () => {
-    if (!inputValue) {
+    if (!value) {
       setHasError(true); // 값이 없으면 에러 상태로 변경
     }
   };
 
   const handleChange = (e) => {
-    setInputValue(e.target.value);
-    if (e.target.value) {
-      setHasError(false); // 값이 입력되면 에러 상태를 초기화
-    }
+    onChange(e.target.value); // 부모 컴포넌트로 값을 전달
   };
 
   return (
     <>
       <ToText>To.</ToText>
       <ToLabel $error={hasError}>
-        {" "}
-        {/* $error로 수정 */}
         <ToInput
-          value={inputValue}
+          value={value} // 부모에서 받은 value
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder="이름을 입력해 주세요"
