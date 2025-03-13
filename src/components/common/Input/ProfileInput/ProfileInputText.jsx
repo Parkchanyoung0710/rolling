@@ -7,53 +7,31 @@ import "../../../../styles/font.css";
 import ProfileInputTextFont from "./ProfileInputTextFont";
 import styled from "styled-components";
 import { textStyle } from "../../../../styles/textStyle";
-import DropDown from "./DropDown";
-
-// 폰트 변경을 위한 스타일 추가
-const FontSelect = styled.select`
-  margin-bottom: 10px;
-  padding: 5px;
-`;
+import Dropdown from "./DropDown";
 
 const Bone = styled.div`
-  margin-bottom: 50px;
+  margin: 3.125rem auto;
+  width: 44.813rem;
   height: 19.25rem;
 `;
 
-const TextStory = styled.div`
+const RelationText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
   height: 2.25rem;
   display: flex;
   align-items: center;
 `;
-const FontText = styled.div`
-  ${(props) => textStyle(24, 700)(props)}
-  margin: 3.125rem 0 12px;
-  height: 2.25rem;
-  display: flex;
-  align-items: center;
-`;
-const DropdownStyle = styled.div`
-  ${(props) => textStyle(16, 400)(props)}
-  color:#555555;
-`;
-const ProfileInputText = () => {
-  const [sermonData, setSermonData] = useState({
-    contentText: "", // 설교 내용 상태
-  });
-  console.log(sermonData);
 
-  // 에디터 내용이 변경될 때 호출되는 함수
-  const handleEditorChange = (content) => {
-    setSermonData((prev) => ({
-      ...prev,
-      contentText: content, // editorHtml 상태 업데이트
-    }));
-  };
+const DropdownBox = styled.div`
+  margin: 50px 0;
+  width: 20rem;
+  height: 6.125rem;
+`;
 
-  const options = ["Noto Sans", "프리텐다드", "마루부리", "나눔손편지"];
-  const [selectedOption, setSelectedOption] = useState("Noto Sans"); // 기본값
+function ProfileInputText() {
+  const options = ["Noto Sans", "프리텐다드", "나눔명조", "손글씨체"];
+  const [selectedOption, setSelectedOption] = useState("Noto Sans");
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -61,21 +39,18 @@ const ProfileInputText = () => {
 
   return (
     <Bone>
-      <TextStory>내용을 입력해 주세요</TextStory>
-
-      <ProfileInputTextFont
-        selectedOption={selectedOption}
-        onChange={handleEditorChange}
-      />
-      {/* 폰트 선택 드롭다운 추가 */}
-      <FontText>폰트 선택</FontText>
-      <DropDown
-        currentValue={selectedOption}
-        options={options}
-        onSelect={handleOptionSelect}
-      />
+      <RelationText>내용을 입력해 주세요</RelationText>
+      <ProfileInputTextFont />
+      <DropdownBox>
+        <RelationText>폰트 선택</RelationText>
+        <Dropdown
+          currentValue={selectedOption}
+          options={options}
+          onSelect={handleOptionSelect}
+        />
+      </DropdownBox>
     </Bone>
   );
-};
+}
 
 export default ProfileInputText;

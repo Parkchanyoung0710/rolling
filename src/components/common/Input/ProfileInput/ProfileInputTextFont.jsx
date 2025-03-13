@@ -4,6 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import styled from "styled-components";
 import "../../../../styles/font.css";
 
+// 텍트 모듈 설정 창입니다
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
 Font.whitelist = [
@@ -135,7 +136,7 @@ function ProfileInputTextFont({ selectedFont, onChange }) {
             container: [
               ["bold", "italic", "underline"],
               ["blockquote", "code-block"],
-              [{ list: "ordered" }, { list: "bullet" }, { list: "check" }], // "todo" → "check"로 변경
+              [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
               [{ header: 1 }, { header: 2 }],
               [{ color: [] }, { background: [] }],
               [{ align: [] }],

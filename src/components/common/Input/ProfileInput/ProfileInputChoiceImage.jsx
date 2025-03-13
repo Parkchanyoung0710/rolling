@@ -9,12 +9,15 @@ import profileImageService from "../../../../api/services/profileImagesService";
 const Bone = styled.div`
   margin: 3.125rem auto 3.125rem auto;
   width: 44.813rem;
-  height: 8.875rem;
+  height: auto;
 `;
 
 const ProfileText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
   margin-bottom: 1.333rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
 `;
 
 const ProfileBox = styled.div`

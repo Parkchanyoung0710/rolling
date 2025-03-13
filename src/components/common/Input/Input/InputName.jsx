@@ -11,7 +11,9 @@ const ToText = styled.div`
   height: 2.625rem;
 `;
 
-const ToLabel = styled.label`
+const ToLabel = styled.label.withConfig({
+  shouldForwardProp: (prop) => prop !== "error", // "error" prop은 DOM으로 전달되지 않음
+})`
   display: block;
   border: 1px solid #cccccc;
   width: 45rem;
@@ -21,8 +23,16 @@ const ToLabel = styled.label`
   /* input이 포커스를 받으면 label에 스타일 적용 */
   &:focus-within {
     border: 1px solid #00a2fe;
-    box-shadow: 0 0 5px rgba(0, 162, 254, 0.5); /* 포커스 시 테두리 그림자 추가 */
+    box-shadow: 0 0 5px rgba(0, 162, 254, 0.5);
   }
+
+  ${(props) =>
+    props.$error &&
+    `  /* $error로 처리 */
+    border: 1px solid red;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    
+  `}
 `;
 
 const ToInput = styled.input`
@@ -37,43 +47,44 @@ const ToInput = styled.input`
 
 const ErrorMessage = styled.div`
   color: red;
-  font-size: 14px;
-  margin-top: 8px;
+  font-size: 12px;
+  margin-top: 0.25rem;
+  position: absolute;
 `;
 
-// NameInput 컴포넌트
-function NameInput() {
-  const [name, setName] = useState("");
-  const [isTouched, setIsTouched] = useState(false);
-  const [error, setError] = useState("");
+function InputName() {
+  const [inputValue, setInputValue] = useState("");
+  const [hasError, setHasError] = useState(false);
 
   const handleBlur = () => {
-    setIsTouched(true);
-    if (!name) {
-      setError("이름을 입력해 주세요.");
-    } else {
-      setError("");
+    if (!inputValue) {
+      setHasError(true); // 값이 없으면 에러 상태로 변경
     }
   };
 
   const handleChange = (e) => {
-    setName(e.target.value);
+    setInputValue(e.target.value);
+    if (e.target.value) {
+      setHasError(false); // 값이 입력되면 에러 상태를 초기화
+    }
   };
 
   return (
     <>
       <ToText>To.</ToText>
-      <ToLabel>
+      <ToLabel $error={hasError}>
+        {" "}
+        {/* $error로 수정 */}
         <ToInput
-          placeholder="받는 사람 이름을 입력해 주세요"
-          value={name}
-          onBlur={handleBlur}
+          value={inputValue}
           onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="이름을 입력해 주세요"
         />
       </ToLabel>
-      {isTouched && error && <ErrorMessage>{error}</ErrorMessage>}
+      {hasError && <ErrorMessage>이름을 입력해 주세요.</ErrorMessage>}
     </>
   );
 }
 
-export default NameInput;
+export default InputName;

@@ -127,6 +127,9 @@ function DropDown({ currentValue, options, onSelect }) {
     >
       <Label>{selectedValue}</Label>
       <IconStyle onClick={handleArrowDownClick} $isReversed={isReversed}>
+        {" "}
+        {/* 수정된 부분 */}
+        {/* ArrowDown 아이콘 회전 */}
         <ArrowDown />
       </IconStyle>
       {isShowOptions && (

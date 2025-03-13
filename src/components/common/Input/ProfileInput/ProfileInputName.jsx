@@ -48,8 +48,10 @@ const ErrorMessage = styled.div`
   color: red;
   font-size: 12px;
   margin-top: 0.25rem;
+  position: absolute;
 `;
 
+// From 컴포넌트트
 function ProfileInputName() {
   const [inputValue, setInputValue] = useState("");
   const [hasError, setHasError] = useState(false);

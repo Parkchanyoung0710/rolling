@@ -9,14 +9,18 @@ import DropDown from "./DropDown";
 const Bone = styled.div`
   margin: 3.125rem auto 3.125rem auto;
   width: 44.813rem;
-  height: 8.875rem;
+  height: 6.125rem;
 `;
 
 const RelationText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
-  margin-bottom: 1.333rem;
+  margin-bottom: 0.75rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
 `;
 
+// 상대와의 관계 컴포넌트
 function ProfileInputRelationChoice() {
   const options = ["지인", "동료", "가족", "친구"];
   const [selectedOption, setSelectedOption] = useState("지인"); // 기본값
