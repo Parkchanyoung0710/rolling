@@ -78,11 +78,8 @@ function Input() {
       </Picker>
       <StyledButton
         variant="primary"
-        size="18"
+        size={56}
         width={720}
-        height={56}
-        borderRadius={12}
-        padding={20}
         disabled={isButtonDisabled}
         onClick={handleCreateRollingPaper}
       >
