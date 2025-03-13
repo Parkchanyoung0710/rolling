@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const CardContainer = styled.div`
   width: 384px;
@@ -7,9 +8,7 @@ const CardContainer = styled.div`
   background: #ffffff;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  position: absolute; /* 절대 위치 설정 */
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,10 +65,16 @@ const PlusIcon = styled.div`
   }
 `;
 
-const Card = ({ top, left, onClick }) => {
+const Card = ({ top, left, id }) => {
+  const navigate = useNavigate();
+
+  const handleCardButtonClick = () => {
+    navigate(`/post/${id}/message`);
+  };
+
   return (
     <CardContainer top={top} left={left}>
-      <CircleButton onClick={onClick}>
+      <CircleButton onClick={handleCardButtonClick}>
         <PlusIcon />
       </CircleButton>
     </CardContainer>
