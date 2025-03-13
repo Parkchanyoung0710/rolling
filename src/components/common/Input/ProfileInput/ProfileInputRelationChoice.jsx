@@ -1,15 +1,10 @@
-import "../../../../styles/GlobalStyles";
-import "../../../../styles/textStyle";
-import "../../../../styles/theme";
-import styled from "styled-components";
-import { textStyle } from "../../../../styles/textStyle";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropDown from "./DropDown";
+import { textStyle } from "../../../../styles/textStyle";
+import styled from "styled-components";
 
 const Bone = styled.div`
-  margin: 3.125rem auto 3.125rem auto;
-  width: 44.813rem;
-  height: 6.125rem;
+  margin-bottom: 50px;
 `;
 
 const RelationText = styled.div`
@@ -20,14 +15,18 @@ const RelationText = styled.div`
   align-items: center;
 `;
 
-// 상대와의 관계 컴포넌트
-function ProfileInputRelationChoice() {
+function ProfileInputRelationChoice({ onSelectRelation }) {
   const options = ["지인", "동료", "가족", "친구"];
-  const [selectedOption, setSelectedOption] = useState("지인"); // 기본값
+  const [selectedOption, setSelectedOption] = useState("지인");
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
+    onSelectRelation(option);
   };
+
+  useEffect(() => {
+    console.log("선택된 관계:", selectedOption);
+  }, [selectedOption]);
 
   return (
     <Bone>

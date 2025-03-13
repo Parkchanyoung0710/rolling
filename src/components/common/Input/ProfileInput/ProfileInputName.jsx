@@ -1,8 +1,8 @@
+import { useState, useEffect } from "react";
 import "../../../../styles/GlobalStyles";
 import "../../../../styles/textStyle";
 import "../../../../styles/theme";
 import styled from "styled-components";
-import { useState, useEffect } from "react"; // useEffect 추가
 import { textStyle } from "../../../../styles/textStyle";
 
 const ToText = styled.div`
@@ -12,7 +12,7 @@ const ToText = styled.div`
 `;
 
 const ToLabel = styled.label.withConfig({
-  shouldForwardProp: (prop) => prop !== "error", // "error" prop은 DOM으로 전달되지 않음
+  shouldForwardProp: (prop) => prop !== "error",
 })`
   display: block;
   border: 1px solid #cccccc;
@@ -51,29 +51,28 @@ const ErrorMessage = styled.div`
   position: absolute;
 `;
 
-// From 컴포넌트
 function ProfileInputName({ value, onChange, onError }) {
   const [hasError, setHasError] = useState(false);
 
-  // 값이 변경될 때마다 에러 초기화
   useEffect(() => {
     if (value) {
       setHasError(false);
-      onError(false); // 에러 상태를 부모로 전달
+      onError(false);
     }
   }, [value, onError]);
 
   const handleBlur = () => {
     if (!value) {
-      setHasError(true); // 값이 없으면 에러 상태로 변경
-      onError(true); // 에러 상태를 부모로 전달
+      setHasError(true);
+      onError(true);
     }
   };
 
   const handleChange = (e) => {
-    const inputValue = e.target.value; // e.target.value를 안전하게 처리
+    const inputValue = e.target.value;
     if (inputValue) {
-      onChange(inputValue); // 부모 컴포넌트로 값을 전달
+      onChange(inputValue);
+      console.log("입력한 이름:", inputValue);
     }
   };
 
@@ -82,7 +81,7 @@ function ProfileInputName({ value, onChange, onError }) {
       <ToText>From.</ToText>
       <ToLabel $error={hasError}>
         <ToInput
-          value={value} // 부모에서 받은 value
+          value={value}
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder="이름을 입력해 주세요"

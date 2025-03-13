@@ -10,6 +10,7 @@ import InputChoiceText from "./InputChoiceText";
 import ColorPicker from "../Picker/ColorPicker";
 import ImgPicker from "../Picker/ImgPicker";
 import Button from "../../Button/Button";
+import recipientsService from "../../../../api/services/recipientsService"; // post 해줘야 함
 
 export const Bone = styled.div`
   margin: 3.562rem auto;
@@ -39,10 +40,10 @@ function Input() {
   const [selected, setSelected] = useState(0);
   const [name, setName] = useState("");
   const [cardContent, setCardContent] = useState(null);
-  const [hasError, setHasError] = useState(false); // 에러 상태 추가
+  const [hasError, setHasError] = useState(false);
 
   const saveUserName = (value) => {
-    setName(value); // input값을 state에 저장
+    setName(value);
   };
 
   const conditon = name.length >= 2 && Boolean(cardContent) && !hasError; // 에러가 없을 때 버튼 활성화
@@ -51,20 +52,41 @@ function Input() {
     setSelected(index);
   };
 
-  // 이동
+  let currentId = 1; // ID를 1부터 시작한다고 가정
   function goToPostId() {
-    const id = Date.now() + Math.floor(Math.random() * 1000);
-    navigate(`/post/${id}`);
+    const requestBody = {
+      name: name,
+      backgroundColor: selected === 0 && cardContent ? cardContent : "beige",
+      backgroundImageURL: selected === 1 && cardContent ? cardContent : null,
+      createdAt: new Date().toISOString(),
+      messageCount: 0,
+      recentMessages: [],
+      reactionCount: 0,
+      topReactions: [],
+    };
+    console.log("Request Body:", requestBody);
+    recipientsService
+      .postRecipients(requestBody)
+      .then((response) => {
+        const newId = currentId++;
+        console.log(response);
+        navigate(`/post/${newId}`);
+        console.log("ID 생성:", newId);
+      })
+      .catch((error) => {
+        console.error("ID 생성 실패:", error.response?.data || error.message);
+      });
   }
 
-  console.log("cardContent 값:", cardContent); // 디버깅 추가 삭제예정
+  console.log("cardContent 값:", cardContent);
   console.log(name);
+
   return (
     <Bone>
-      <InputName
-        value={name} // name을 전달
-        onChange={saveUserName} // saveUserName 함수 전달
-        onError={setHasError} // 에러 상태를 부모 컴포넌트로 전달
+      <InputName // To 입력 값
+        value={name}
+        onChange={saveUserName}
+        onError={setHasError}
       />
       <InputChoiceText />
       <ToggleButton
@@ -85,7 +107,7 @@ function Input() {
         size={56}
         width={720}
         onClick={goToPostId}
-        state={conditon ? "enabled" : "disabled"}
+        disabled={!conditon} // 조건을 만족하지 않으면 비활성화
       >
         생성하기
       </StyledButton>

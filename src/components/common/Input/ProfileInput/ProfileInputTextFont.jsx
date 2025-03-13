@@ -105,7 +105,7 @@ const EditorWrapper = styled.div`
 
 function ProfileInputTextFont({ selectedFont, value, onChange, onError }) {
   const [hasError, setHasError] = useState(false);
-  console.log(hasError); // 지울 예저ㅏㅇ
+
   useEffect(() => {
     if (!value) {
       setHasError(true);
@@ -126,7 +126,7 @@ function ProfileInputTextFont({ selectedFont, value, onChange, onError }) {
 
   const handleChange = (content) => {
     if (typeof content === "string") {
-      onChange?.(content);
+      onChange?.(content); // 부모 컴포넌트에 입력된 내용 전달
     } else {
       console.warn("handleChange received unexpected value:", content);
     }
@@ -140,16 +140,14 @@ function ProfileInputTextFont({ selectedFont, value, onChange, onError }) {
         onChange={handleChange}
         placeholder="내용을 입력하세요..."
         modules={{
-          toolbar: {
-            container: [
-              ["bold", "italic", "underline"],
-              ["blockquote", "code-block"],
-              [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-              [{ header: 1 }, { header: 2 }],
-              [{ color: [] }, { background: [] }],
-              [{ align: [] }],
-            ],
-          },
+          toolbar: [
+            ["bold", "italic", "underline"],
+            ["blockquote", "code-block"],
+            [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+            [{ header: 1 }, { header: 2 }],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+          ],
         }}
         formats={[
           "bold",
@@ -168,5 +166,4 @@ function ProfileInputTextFont({ selectedFont, value, onChange, onError }) {
     </EditorWrapper>
   );
 }
-
 export default ProfileInputTextFont;

@@ -42,13 +42,20 @@ const ColorPicker = ({ onSelect }) => {
     onSelect(color);
   };
 
+  const colorMap = {
+    beige: "#FFE2AD",
+    purple: "#ECD9FF",
+    blue: "#B1E4FF",
+    green: "#D0F5C3",
+  };
+
   return (
     <div>
       <Bone>
-        {["#FFE2AD", "#ECD9FF", "#B1E4FF", "#D0F5C3"].map((colorCode) => (
+        {Object.keys(colorMap).map((colorCode) => (
           <Color
             key={colorCode}
-            color={colorCode}
+            color={colorMap[colorCode]}
             onClick={() => handleColorChange(colorCode)}
           >
             {selectedColor === colorCode && (
