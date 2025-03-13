@@ -1,0 +1,51 @@
+/*Noto Sans*/
+@font-face {
+  font-family: "Poppins";
+  font-style: italic;
+  font-weight: 200;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLmv1pVGdeOcEg.woff2")
+    format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/*Pretendard*/
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*MaruBuri*/
+@font-face {
+  font-family: "Maru Buri";
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/fonts-archive/MaruBuri/MaruBuri-ExtraLight.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/fonts-archive/MaruBuri/MaruBuri-ExtraLight.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/fonts-archive/MaruBuri/MaruBuri-ExtraLight.otf")
+      format("opentype"),
+    url("https://cdn.jsdelivr.net/gh/fonts-archive/MaruBuri/MaruBuri-ExtraLight.ttf")
+      format("truetype");
+}
+
+/*NanumSonPyeonJiCe*/
+@font-face {
+  font-family: "NanumSonPyeonJiCe";
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.ttf")
+      format("truetype");
+}

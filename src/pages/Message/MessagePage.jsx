@@ -1,8 +1,17 @@
+import ProfileInput from "../../components/common/Input/ProfileInput/ProfileInput";
+import styled from "styled-components";
+
+const Bone = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 function MessagePage() {
   return (
-    <div>
-      <h1>롤링페이퍼에 메시지 추가</h1>
-    </div>
+    <Bone>
+      <ProfileInput />
+    </Bone>
   );
 }
 

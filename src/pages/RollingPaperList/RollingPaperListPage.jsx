@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Emoji from "../../components/common/Emoji/Emoji";
 
 function RollingPaperListPage() {
   const navigate = useNavigate();
@@ -7,9 +6,7 @@ function RollingPaperListPage() {
   return (
     <div>
       <h1>롤링페이퍼 목록</h1>
-      <button>
-        <Emoji />
-      </button>
+
       <div>
         <h3>생성된 카드</h3>
         <button onClick={() => navigate("/post1")}>첫 번째 카드</button>
