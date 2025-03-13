@@ -6,13 +6,16 @@ import cardExample from "../../assets/images/main-page/card-example.png";
 import emojiExample from "../../assets/images/main-page/emoji-example.png";
 import { textStyle } from "../../styles/textStyle";
 
+const NAVBAR_HEIGHT = 65;
+
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 40px 24px;
+  min-height: calc(100vh - ${NAVBAR_HEIGHT}px);
 `;
 
 const ContentWrapper = styled.div`
