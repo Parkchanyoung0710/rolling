@@ -4,7 +4,7 @@ import "../../../../styles/theme";
 import styled from "styled-components";
 import ToggleButton from "../../Button/ToggleButton";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 페이지 이동
+import { useNavigate } from "react-router-dom";
 import InputName from "./InputName";
 import InputChoiceText from "./InputChoiceText";
 import ColorPicker from "../Picker/ColorPicker";
@@ -23,13 +23,6 @@ const Picker = styled.div`
   margin-bottom: 4.3125rem;
 `;
 
-const PostMove = styled.a`
-  margin-top: 4.313rem;
-  display: block;
-  width: 45rem;
-  height: 28px;
-`;
-
 const StyledButton = styled(Button)`
   background-color: ${({ disabled }) => (disabled ? "#ccc" : "#007BFF")};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
@@ -42,26 +35,35 @@ function Input() {
   const [name, setName] = useState("");
   const [cardContent, setCardContent] = useState("");
 
+  const conditon = name.length >= 2 && Boolean(cardContent);
+  const saveUserName = (e) => {
+    // 이름
+    setName(e.target.value);
+  };
+
+  console.log(cardContent); // 나중에 지워얗 함
+
   const handleToggle = (index) => {
     console.log("Selected index:", index); // 로그 추가
     setSelected(index);
   };
-
-  // 이름과 카드 내용이 모두 있어야 버튼 활성화
-  const isButtonDisabled = !(name && cardContent);
-
-  // 이름과 카드 내용이 모두 있을 때만 navigate 호출
-  const handleCreateRollingPaper = () => {
-    if (isButtonDisabled) return; // 버튼이 비활성화되면 아무 동작도 하지 않음
-
-    const newId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-    console.log("새로운 ID:", newId); // ID 생성 확인
-    navigate(`/post/${newId}/message`);
+  const changeBtnColor = () => {
+    setBtnColor(!btnColor);
   };
+  // 이동
+  function goToPostId() {
+    const id = Date.now() + Math.floor(Math.random() * 1000);
+    navigate(`/post/${id}`);
+  }
 
   return (
     <Bone>
-      <InputName value={name} onChange={setName} />
+      <InputName
+        defaultValue={name}
+        onChange={(e) => {
+          saveUserName(e);
+        }}
+      />
       <InputChoiceText />
       <ToggleButton
         options={["컬러", "이미지"]}
@@ -80,8 +82,8 @@ function Input() {
         variant="primary"
         size={56}
         width={720}
-        disabled={isButtonDisabled}
-        onClick={handleCreateRollingPaper}
+        onClick={goToPostId}
+        state={conditon ? "enabled" : "disabled"}
       >
         생성하기
       </StyledButton>
