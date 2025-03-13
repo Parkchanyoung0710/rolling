@@ -108,20 +108,14 @@ const Button = ({
   state = "enabled",
   image = null,
   width,
-  height,
-  padding,
-  borderRadius,
   children = null,
   onClick,
 }) => {
   return (
     <ButtonWrapper
-      $variant={variant}
-      $size={size}
-      $width={width}
-      $height={height}
-      $padding={padding}
-      $borderRadius={borderRadius}
+      variant={variant}
+      size={size}
+      width={width}
       onClick={onClick}
       disabled={state === "disabled"}
     >

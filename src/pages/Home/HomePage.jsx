@@ -127,8 +127,6 @@ function HomePage() {
             variant="primary"
             size="56"
             width={280}
-            height={56}
-            borderRadius={12}
             onClick={() => navigate("/list")}
           >
             구경해보기
