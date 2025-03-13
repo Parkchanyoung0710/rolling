@@ -16,6 +16,7 @@
     "react-dom": "^18.0.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^7.3.0",
+    "react-select": "^5.10.1",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {

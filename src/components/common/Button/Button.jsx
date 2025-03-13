@@ -12,25 +12,34 @@ const ButtonWrapper = styled.button`
   cursor: pointer;
   border: none;
 
-  ${({ size, theme }) => {
-    const buttonSize = theme.ButtonSize[size];
+  ${({ $width }) => $width && `width: ${$width}px;`}
+  ${({ $height }) => $height && `height: ${$height}px;`} 
+  ${({ $padding }) => $padding && `padding: ${$padding}px;`} 
+  
+  ${({ $borderRadius }) =>
+    $borderRadius && `border-radius: ${$borderRadius}px;`} 
+  
+  ${({ $size, theme }) => {
+    const buttonSize = theme.ButtonSize[$size] || theme.ButtonSize.default;
     return css`
-      height: ${buttonSize.height};
-      font-size: ${buttonSize.fontSize};
-      font-weight: ${buttonSize.fontWeight};
-      padding: ${buttonSize.padding};
-      border-radius: ${buttonSize.borderRadius};
+      height: ${buttonSize?.height || "40px"};
+      font-size: ${buttonSize?.fontSize || "16px"};
+      font-weight: ${buttonSize?.fontWeight || "500"};
+      padding: ${buttonSize?.padding || "8px 16px"};
     `;
   }}
 
-  ${({ variant, theme }) => variantStyles[variant](theme)}
+  ${({ $variant, theme }) =>
+    variantStyles[$variant] && variantStyles[$variant](theme)}
 
   &:hover {
-    ${({ variant, theme }) => hoverStyles[variant](theme)}
+    ${({ $variant, theme }) =>
+      hoverStyles[$variant] && hoverStyles[$variant](theme)}
   }
 
   &:focus {
-    ${({ variant, theme }) => focusStyles[variant](theme)}
+    ${({ $variant, theme }) =>
+      focusStyles[$variant] && focusStyles[$variant](theme)}
   }
 
   &:disabled {
@@ -64,33 +73,27 @@ const variantStyles = {
 };
 
 const hoverStyles = {
-  primary: (theme) =>
-    css`
-      background-color: ${theme.colors.purple[700]};
-    `,
-  secondary: (theme) =>
-    css`
-      background-color: ${theme.colors.purple[100]};
-    `,
-  outlined: (theme) =>
-    css`
-      background-color: ${theme.colors.grayScale[100]};
-    `,
+  primary: (theme) => css`
+    background-color: ${theme.colors.purple[700]};
+  `,
+  secondary: (theme) => css`
+    background-color: ${theme.colors.purple[100]};
+  `,
+  outlined: (theme) => css`
+    background-color: ${theme.colors.grayScale[100]};
+  `,
 };
 
 const focusStyles = {
-  primary: (theme) =>
-    css`
-      border: 2px solid ${theme.colors.purple[900]};
-    `,
-  secondary: (theme) =>
-    css`
-      border: 1px solid ${theme.colors.purple[800]};
-    `,
-  outlined: (theme) =>
-    css`
-      border: 1px solid ${theme.colors.grayScale[500]};
-    `,
+  primary: (theme) => css`
+    border: 2px solid ${theme.colors.purple[900]};
+  `,
+  secondary: (theme) => css`
+    border: 1px solid ${theme.colors.purple[800]};
+  `,
+  outlined: (theme) => css`
+    border: 1px solid ${theme.colors.grayScale[500]};
+  `,
 };
 
 const imageMap = {
@@ -101,7 +104,7 @@ const imageMap = {
 
 const Button = ({
   variant = "primary",
-  size = 40,
+  size = "default",
   state = "enabled",
   image = null,
   width,
