@@ -14,6 +14,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Navbar />
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/list" element={<RollingPaperListPage />} />
