@@ -1,5 +1,6 @@
-import React from "react";
+// 스타일 컴포넌트 정의
 import styled from "styled-components";
+import React from "react";
 
 const CardContainer = styled.div`
   width: 384px;
@@ -7,9 +8,7 @@ const CardContainer = styled.div`
   background: #ffffff;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  position: absolute; /* 절대 위치 설정 */
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,9 +65,9 @@ const PlusIcon = styled.div`
   }
 `;
 
-const Card = ({ top, left, onClick }) => {
+const Card = ({ onClick }) => {
   return (
-    <CardContainer top={top} left={left}>
+    <CardContainer>
       <CircleButton onClick={onClick}>
         <PlusIcon />
       </CircleButton>
