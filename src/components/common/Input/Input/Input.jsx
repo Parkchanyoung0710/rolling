@@ -26,6 +26,11 @@ const Picker = styled.div`
 const StyledButton = styled(Button)`
   background-color: ${({ disabled }) => (disabled ? "#ccc" : "#007BFF")};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.grayScale[300]};
+    color: ${({ theme }) => theme.colors.white};
+    cursor: not-allowed;
+  }
 `;
 
 // To 전체적인 컴포넌트
@@ -33,42 +38,39 @@ function Input() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   const [name, setName] = useState("");
-  const [cardContent, setCardContent] = useState("");
+  const [cardContent, setCardContent] = useState(null);
+  const [hasError, setHasError] = useState(false); // 에러 상태 추가
 
-  const conditon = name.length >= 2 && Boolean(cardContent);
-  const saveUserName = (e) => {
-    // 이름
-    setName(e.target.value);
+  const saveUserName = (value) => {
+    setName(value); // input값을 state에 저장
   };
 
-  console.log(cardContent); // 나중에 지워얗 함
+  const conditon = name.length >= 2 && Boolean(cardContent) && !hasError; // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
-    console.log("Selected index:", index); // 로그 추가
     setSelected(index);
   };
-  const changeBtnColor = () => {
-    setBtnColor(!btnColor);
-  };
+
   // 이동
   function goToPostId() {
     const id = Date.now() + Math.floor(Math.random() * 1000);
     navigate(`/post/${id}`);
   }
 
+  console.log("cardContent 값:", cardContent); // 디버깅 추가 삭제예정
+  console.log(name);
   return (
     <Bone>
       <InputName
-        defaultValue={name}
-        onChange={(e) => {
-          saveUserName(e);
-        }}
+        value={name} // name을 전달
+        onChange={saveUserName} // saveUserName 함수 전달
+        onError={setHasError} // 에러 상태를 부모 컴포넌트로 전달
       />
       <InputChoiceText />
       <ToggleButton
         options={["컬러", "이미지"]}
         defaultSelected={0}
-        onToggle={handleToggle} // 색상 또는 이미지 선택 토글
+        onToggle={handleToggle}
       />
       <Picker>
         {selected === 0 && (

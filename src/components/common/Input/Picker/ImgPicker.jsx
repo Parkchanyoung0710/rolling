@@ -53,7 +53,7 @@ const CheckWrapper = styled.div`
   justify-content: center;
 `;
 // 토글 버튼에서 이미지 클릭시 적용되는 컴포넌트트
-const ImgPicker = () => {
+const ImgPicker = ({ onSelect }) => {
   const [images, setImages] = useState([]);
   const [selectedImg, setSelectedImg] = useState(null);
 
@@ -73,6 +73,7 @@ const ImgPicker = () => {
 
   const handleImageChange = (image) => {
     setSelectedImg(image);
+    onSelect(image);
   };
 
   return (

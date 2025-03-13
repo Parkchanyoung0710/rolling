@@ -103,24 +103,32 @@ const EditorWrapper = styled.div`
   }
 `;
 
-function ProfileInputTextFont({ selectedFont, onChange }) {
-  const [editorHtml, setEditorHtml] = useState(
-    "<p style='font-size: 16px;'></p>"
-  );
+function ProfileInputTextFont({ selectedFont, value, onChange, onError }) {
+  const [hasError, setHasError] = useState(false);
+  console.log(hasError); // 지울 예저ㅏㅇ
+  useEffect(() => {
+    if (!value) {
+      setHasError(true);
+      onError?.(true);
+    } else {
+      setHasError(false);
+      onError?.(false);
+    }
+  }, [value, onError]);
 
   useEffect(() => {
-    setEditorHtml((prev) => {
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = prev; // 기존 내용 유지
-      tempDiv.style.fontFamily = selectedFont; // 폰트 적용
-      return tempDiv.innerHTML;
-    });
+    if (selectedFont) {
+      document
+        .querySelector(".ql-editor")
+        ?.style.setProperty("font-family", selectedFont);
+    }
   }, [selectedFont]);
 
   const handleChange = (content) => {
-    setEditorHtml(content); // 불필요한 <p> 중첩 방지
-    if (onChange) {
-      onChange(content);
+    if (typeof content === "string") {
+      onChange?.(content);
+    } else {
+      console.warn("handleChange received unexpected value:", content);
     }
   };
 
@@ -128,8 +136,8 @@ function ProfileInputTextFont({ selectedFont, onChange }) {
     <EditorWrapper>
       <ReactQuill
         theme="snow"
+        value={value || ""}
         onChange={handleChange}
-        value={editorHtml}
         placeholder="내용을 입력하세요..."
         modules={{
           toolbar: {

@@ -1,7 +1,7 @@
 import "../../../../styles/GlobalStyles";
 import "../../../../styles/textStyle";
 import "../../../../styles/theme";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // useEffect 추가
 import "react-quill/dist/quill.snow.css";
 import "../../../../styles/font.css";
 import ProfileInputTextFont from "./ProfileInputTextFont";
@@ -10,9 +10,9 @@ import { textStyle } from "../../../../styles/textStyle";
 import Dropdown from "./DropDown";
 
 const Bone = styled.div`
-  margin: 3.125rem auto;
+  margin: 3.125rem auto 3.875rem;
   width: 44.813rem;
-  height: 19.25rem;
+  height: auto;
 `;
 
 const RelationText = styled.div`
@@ -29,7 +29,8 @@ const DropdownBox = styled.div`
   height: 6.125rem;
 `;
 
-function ProfileInputText() {
+function ProfileInputText({ value, onChange, onError }) {
+  const [hasError, setHasError] = useState(false);
   const options = ["Noto Sans", "프리텐다드", "나눔명조", "손글씨체"];
   const [selectedOption, setSelectedOption] = useState("Noto Sans");
 
@@ -37,10 +38,33 @@ function ProfileInputText() {
     setSelectedOption(option);
   };
 
+  useEffect(() => {
+    if (value) {
+      setHasError(false);
+      onError(false); // 에러 상태를 부모로 전달
+    }
+  }, [value, onError]);
+
+  const handleBlur = () => {
+    if (!value) {
+      setHasError(true); // 값이 없으면 에러 상태로 변경
+      onError(true); // 에러 상태를 부모로 전달
+    }
+  };
+
+  const handleChange = (content) => {
+    console.log("입력된 값:", content);
+    onChange(content); // 부모 컴포넌트로 값 전달
+  };
+
   return (
     <Bone>
-      <RelationText>내용을 입력해 주세요</RelationText>
-      <ProfileInputTextFont />
+      <RelationText />
+      <ProfileInputTextFont
+        value={value}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
       <DropdownBox>
         <RelationText>폰트 선택</RelationText>
         <Dropdown
@@ -49,9 +73,9 @@ function ProfileInputText() {
           menuPlacement="auto"
           onSelect={handleOptionSelect}
         />
+        {hasError && <ErrorMessage>내용을 입력해 주세요.</ErrorMessage>}
       </DropdownBox>
     </Bone>
   );
 }
-
 export default ProfileInputText;

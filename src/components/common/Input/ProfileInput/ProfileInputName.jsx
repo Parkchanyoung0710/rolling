@@ -2,7 +2,7 @@ import "../../../../styles/GlobalStyles";
 import "../../../../styles/textStyle";
 import "../../../../styles/theme";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // useEffect 추가
 import { textStyle } from "../../../../styles/textStyle";
 
 const ToText = styled.div`
@@ -52,20 +52,28 @@ const ErrorMessage = styled.div`
 `;
 
 // From 컴포넌트
-function ProfileInputName() {
-  const [inputValue, setInputValue] = useState("");
+function ProfileInputName({ value, onChange, onError }) {
   const [hasError, setHasError] = useState(false);
 
+  // 값이 변경될 때마다 에러 초기화
+  useEffect(() => {
+    if (value) {
+      setHasError(false);
+      onError(false); // 에러 상태를 부모로 전달
+    }
+  }, [value, onError]);
+
   const handleBlur = () => {
-    if (!inputValue) {
+    if (!value) {
       setHasError(true); // 값이 없으면 에러 상태로 변경
+      onError(true); // 에러 상태를 부모로 전달
     }
   };
 
   const handleChange = (e) => {
-    setInputValue(e.target.value);
-    if (e.target.value) {
-      setHasError(false); // 값이 입력되면 에러 상태를 초기화
+    const inputValue = e.target.value; // e.target.value를 안전하게 처리
+    if (inputValue) {
+      onChange(inputValue); // 부모 컴포넌트로 값을 전달
     }
   };
 
@@ -74,13 +82,15 @@ function ProfileInputName() {
       <ToText>From.</ToText>
       <ToLabel $error={hasError}>
         <ToInput
-          value={inputValue}
+          value={value} // 부모에서 받은 value
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder="이름을 입력해 주세요"
         />
       </ToLabel>
-      {hasError && <ErrorMessage>이름을 입력해 주세요.</ErrorMessage>}
+      {hasError && (
+        <ErrorMessage>두 글자 이상 이름을 입력해 주세요.</ErrorMessage>
+      )}
     </>
   );
 }
