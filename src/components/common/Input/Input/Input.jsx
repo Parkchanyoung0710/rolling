@@ -4,12 +4,13 @@ import "../../../../styles/theme";
 import styled from "styled-components";
 import ToggleButton from "../../Button/ToggleButton";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 페이지 이동
+import { useNavigate } from "react-router-dom";
 import InputName from "./InputName";
 import InputChoiceText from "./InputChoiceText";
 import ColorPicker from "../Picker/ColorPicker";
 import ImgPicker from "../Picker/ImgPicker";
 import Button from "../../Button/Button";
+import recipientsService from "../../../../api/services/recipientsService"; // post 해줘야 함
 
 export const Bone = styled.div`
   margin: 3.562rem auto;
@@ -23,16 +24,14 @@ const Picker = styled.div`
   margin-bottom: 4.3125rem;
 `;
 
-const PostMove = styled.a`
-  margin-top: 4.313rem;
-  display: block;
-  width: 45rem;
-  height: 28px;
-`;
-
 const StyledButton = styled(Button)`
   background-color: ${({ disabled }) => (disabled ? "#ccc" : "#007BFF")};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.grayScale[300]};
+    color: ${({ theme }) => theme.colors.white};
+    cursor: not-allowed;
+  }
 `;
 
 // To 전체적인 컴포넌트
@@ -40,33 +39,60 @@ function Input() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   const [name, setName] = useState("");
-  const [cardContent, setCardContent] = useState("");
+  const [cardContent, setCardContent] = useState(null);
+  const [hasError, setHasError] = useState(false);
+
+  const saveUserName = (value) => {
+    setName(value);
+  };
+
+  const conditon = name.length >= 2 && Boolean(cardContent) && !hasError; // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
-    console.log("Selected index:", index); // 로그 추가
     setSelected(index);
   };
 
-  // 이름과 카드 내용이 모두 있어야 버튼 활성화
-  const isButtonDisabled = !(name && cardContent);
+  let currentId = 1; // ID를 1부터 시작한다고 가정
+  function goToPostId() {
+    const requestBody = {
+      name: name,
+      backgroundColor: selected === 0 && cardContent ? cardContent : "beige",
+      backgroundImageURL: selected === 1 && cardContent ? cardContent : null,
+      createdAt: new Date().toISOString(),
+      messageCount: 0,
+      recentMessages: [],
+      reactionCount: 0,
+      topReactions: [],
+    };
+    console.log("Request Body:", requestBody);
+    recipientsService
+      .postRecipients(requestBody)
+      .then((response) => {
+        const newId = currentId++;
+        console.log(response);
+        navigate(`/post/${newId}`);
+        console.log("ID 생성:", newId);
+      })
+      .catch((error) => {
+        console.error("ID 생성 실패:", error.response?.data || error.message);
+      });
+  }
 
-  // 이름과 카드 내용이 모두 있을 때만 navigate 호출
-  const handleCreateRollingPaper = () => {
-    if (isButtonDisabled) return; // 버튼이 비활성화되면 아무 동작도 하지 않음
-
-    const newId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-    console.log("새로운 ID:", newId); // ID 생성 확인
-    navigate(`/post/${newId}/message`);
-  };
+  console.log("cardContent 값:", cardContent);
+  console.log(name);
 
   return (
     <Bone>
-      <InputName value={name} onChange={setName} />
+      <InputName // To 입력 값
+        value={name}
+        onChange={saveUserName}
+        onError={setHasError}
+      />
       <InputChoiceText />
       <ToggleButton
         options={["컬러", "이미지"]}
         defaultSelected={0}
-        onToggle={handleToggle} // 색상 또는 이미지 선택 토글
+        onToggle={handleToggle}
       />
       <Picker>
         {selected === 0 && (
@@ -80,8 +106,8 @@ function Input() {
         variant="primary"
         size={56}
         width={720}
-        disabled={isButtonDisabled}
-        onClick={handleCreateRollingPaper}
+        onClick={goToPostId}
+        disabled={!conditon} // 조건을 만족하지 않으면 비활성화
       >
         생성하기
       </StyledButton>

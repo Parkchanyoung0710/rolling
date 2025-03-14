@@ -53,17 +53,19 @@ const CheckWrapper = styled.div`
   justify-content: center;
 `;
 // 토글 버튼에서 이미지 클릭시 적용되는 컴포넌트트
-const ImgPicker = () => {
+const ImgPicker = ({ onSelect }) => {
   const [images, setImages] = useState([]);
   const [selectedImg, setSelectedImg] = useState(null);
 
-  // API에서 이미지 가져오기
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const response = await backgroundImageService.getBackgroundImage();
-        setImages(response.data.imageUrls);
-        console.log(response);
+        if (response.data && response.data.imageUrls) {
+          setImages(response.data.imageUrls);
+        } else {
+          console.log("이미지가 없습니다.");
+        }
       } catch (error) {
         console.error("이미지를 불러오는 중 오류 발생:", error);
       }
@@ -73,11 +75,15 @@ const ImgPicker = () => {
 
   const handleImageChange = (image) => {
     setSelectedImg(image);
+    onSelect(image); // 부모 컴포넌트에 선택된 이미지 전달
   };
+
+  if (images.length === 0) {
+    return <p>이미지를 불러오는 중입니다...</p>; // 이미지가 없을 때 메시지
+  }
 
   return (
     <div>
-      {/* 이미지 선택 버튼 */}
       <Bone>
         {images.map((image, index) => (
           <Image
@@ -97,5 +103,4 @@ const ImgPicker = () => {
     </div>
   );
 };
-
 export default ImgPicker;

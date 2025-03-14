@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 function RollingPaperDetailPage() {
   return (
+
     <BackgroundWrap>
       <InformationBar />
       <CardContainer>
@@ -18,6 +19,7 @@ function RollingPaperDetailPage() {
         </Divrap>
       </CardContainer>
     </BackgroundWrap>
+
   );
 }
 

@@ -128,14 +128,16 @@ function DropDown({ currentValue, options, onSelect }) {
       <Label>{selectedValue}</Label>
       <IconStyle onClick={handleArrowDownClick} $isReversed={isReversed}>
         {" "}
-        {/* 수정된 부분 */}
-        {/* ArrowDown 아이콘 회전 */}
         <ArrowDown />
       </IconStyle>
       {isShowOptions && (
         <SelectOptions>
           {options.map((option, index) => (
-            <Option key={index} onClick={(e) => handleSelectOption(option, e)}>
+            <Option
+              key={index}
+              onClick={(e) => handleSelectOption(option, e)}
+              style={{ fontFamily: option }}
+            >
               {option}
             </Option>
           ))}

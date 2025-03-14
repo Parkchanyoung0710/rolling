@@ -66,7 +66,7 @@ const Image = styled.div.withConfig({
       : "none"}; /* 선택 시 box-shadow 추가 */
 `;
 
-function ProfileInputChoiceImage() {
+function ProfileInputChoiceImage({ onImageSelect }) {
   const [images, setImages] = useState([]);
   const [selectedImg, setSelectedImg] = useState(null);
 
@@ -86,6 +86,8 @@ function ProfileInputChoiceImage() {
 
   const handleImageChange = (image) => {
     setSelectedImg(image);
+    onImageSelect(image);
+    console.log("선택된 프로필 이미지:", image);
   };
 
   return (
@@ -110,5 +112,4 @@ function ProfileInputChoiceImage() {
     </Bone>
   );
 }
-
 export default ProfileInputChoiceImage;

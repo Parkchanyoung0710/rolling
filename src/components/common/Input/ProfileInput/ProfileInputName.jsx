@@ -1,8 +1,8 @@
+import { useState, useEffect } from "react";
 import "../../../../styles/GlobalStyles";
 import "../../../../styles/textStyle";
 import "../../../../styles/theme";
 import styled from "styled-components";
-import { useState } from "react";
 import { textStyle } from "../../../../styles/textStyle";
 
 const ToText = styled.div`
@@ -12,7 +12,7 @@ const ToText = styled.div`
 `;
 
 const ToLabel = styled.label.withConfig({
-  shouldForwardProp: (prop) => prop !== "error", // "error" prop은 DOM으로 전달되지 않음
+  shouldForwardProp: (prop) => prop !== "error",
 })`
   display: block;
   border: 1px solid #cccccc;
@@ -51,21 +51,28 @@ const ErrorMessage = styled.div`
   position: absolute;
 `;
 
-// From 컴포넌트
-function ProfileInputName() {
-  const [inputValue, setInputValue] = useState("");
+function ProfileInputName({ value, onChange, onError }) {
   const [hasError, setHasError] = useState(false);
 
+  useEffect(() => {
+    if (value) {
+      setHasError(false);
+      onError(false);
+    }
+  }, [value, onError]);
+
   const handleBlur = () => {
-    if (!inputValue) {
-      setHasError(true); // 값이 없으면 에러 상태로 변경
+    if (!value) {
+      setHasError(true);
+      onError(true);
     }
   };
 
   const handleChange = (e) => {
-    setInputValue(e.target.value);
-    if (e.target.value) {
-      setHasError(false); // 값이 입력되면 에러 상태를 초기화
+    const inputValue = e.target.value;
+    if (inputValue) {
+      onChange(inputValue);
+      console.log("입력한 이름:", inputValue);
     }
   };
 
@@ -74,13 +81,15 @@ function ProfileInputName() {
       <ToText>From.</ToText>
       <ToLabel $error={hasError}>
         <ToInput
-          value={inputValue}
+          value={value}
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder="이름을 입력해 주세요"
         />
       </ToLabel>
-      {hasError && <ErrorMessage>이름을 입력해 주세요.</ErrorMessage>}
+      {hasError && (
+        <ErrorMessage>두 글자 이상 이름을 입력해 주세요.</ErrorMessage>
+      )}
     </>
   );
 }

@@ -34,20 +34,28 @@ const IconWrapper = styled.div`
 `;
 
 // 토글 버튼 클릭시 컬러에 대한 컴포넌트트
-const ColorPicker = () => {
+const ColorPicker = ({ onSelect }) => {
   const [selectedColor, setSelectedColor] = useState("");
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
+    onSelect(color);
+  };
+
+  const colorMap = {
+    beige: "#FFE2AD",
+    purple: "#ECD9FF",
+    blue: "#B1E4FF",
+    green: "#D0F5C3",
   };
 
   return (
     <div>
       <Bone>
-        {["#FFE2AD", "#ECD9FF", "#B1E4FF", "#D0F5C3"].map((colorCode) => (
+        {Object.keys(colorMap).map((colorCode) => (
           <Color
             key={colorCode}
-            color={colorCode}
+            color={colorMap[colorCode]}
             onClick={() => handleColorChange(colorCode)}
           >
             {selectedColor === colorCode && (

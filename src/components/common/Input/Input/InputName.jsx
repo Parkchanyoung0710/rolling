@@ -51,24 +51,29 @@ const ErrorMessage = styled.div`
   position: absolute;
 `;
 
-function InputName({ value, onChange }) {
+function InputName({ value, onChange, onError }) {
   const [hasError, setHasError] = useState(false);
 
   // 값이 변경될 때마다 에러 초기화
   useEffect(() => {
     if (value) {
       setHasError(false);
+      onError(false); // 에러 상태를 부모로 전달
     }
-  }, [value]);
+  }, [value, onError]);
 
   const handleBlur = () => {
     if (!value) {
       setHasError(true); // 값이 없으면 에러 상태로 변경
+      onError(true); // 에러 상태를 부모로 전달
     }
   };
 
   const handleChange = (e) => {
-    onChange(e.target.value); // 부모 컴포넌트로 값을 전달
+    const inputValue = e.target.value; // e.target.value를 안전하게 처리
+    if (inputValue) {
+      onChange(inputValue); // 부모 컴포넌트로 값을 전달
+    }
   };
 
   return (
@@ -82,7 +87,9 @@ function InputName({ value, onChange }) {
           placeholder="이름을 입력해 주세요"
         />
       </ToLabel>
-      {hasError && <ErrorMessage>이름을 입력해 주세요.</ErrorMessage>}
+      {hasError && (
+        <ErrorMessage>두 글자 이상 이름을 입력해 주세요.</ErrorMessage>
+      )}
     </>
   );
 }

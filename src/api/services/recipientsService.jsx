@@ -6,9 +6,11 @@ class RecipientsService {
   }
 
   postRecipients(body) {
-    return requestor.put(`/14-8/recipients/`, {
-      data: body,
-    });
+    const requestBody = {
+      ...body,
+      team: "14-8",
+    };
+    return requestor.post("/14-8/recipients/", requestBody);
   }
 
   getRecipientsId(id) {
@@ -26,9 +28,11 @@ class RecipientsService {
   }
 
   postRecipientsMessages(id, body) {
-    return requestor.put(`/14-8/recipients/${id}/messages`, {
-      data: body,
-    });
+    const requestBody = {
+      ...body,
+      team: "14-8",
+    };
+    return requestor.post(`/14-8/recipients/${id}/messages/`, requestBody);
   }
 
   getRecipientsReactions(id, limit, offset) {
@@ -38,9 +42,11 @@ class RecipientsService {
   }
 
   postRecipientsReactions(id, body) {
-    return requestor.delete(`/recipients/${id}/reactions/`, {
-      data: body,
-    });
+    const requestBody = {
+      ...body,
+      team: "14-8",
+    };
+    return requestor.post(`/14-8/recipients/${id}/reactions/`, requestBody);
   }
 }
 
