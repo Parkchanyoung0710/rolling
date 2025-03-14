@@ -45,7 +45,7 @@ function Input() {
     setName(value);
   };
 
-  const conditon = name.length >= 2 && Boolean(cardContent) && !hasError; // 에러가 없을 때 버튼 활성화
+  const conditon = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
     setSelected(index);
@@ -77,6 +77,22 @@ function Input() {
   }
   console.log("cardContent 값.:", cardContent);
   console.log(name);
+  console.log(
+    "name:",
+    name,
+    "name.length >= 2:",
+    name.length >= 2,
+    "cardContent:",
+    cardContent,
+    "!!cardContent:",
+    !!cardContent,
+    "hasError:",
+    hasError,
+    "!hasError:",
+    !hasError,
+    "conditon:",
+    conditon
+  );
 
   return (
     <Bone>
@@ -104,7 +120,7 @@ function Input() {
         size={56}
         width={720}
         onClick={goToPostId}
-        disabled={!conditon} // 조건을 만족하지 않으면 비활성화
+        state={conditon ? "enabled" : "disabled"}
       >
         생성하기
       </StyledButton>

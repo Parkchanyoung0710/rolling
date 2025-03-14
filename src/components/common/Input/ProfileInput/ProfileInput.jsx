@@ -30,7 +30,7 @@ function ProfileInput() {
   const [profileImageURL, setProfileImageURL] = useState(null);
   const [selectedRecipient, setSelectedRecipient] = useState(null);
 
-  const condition = name.length >= 2 && cardContent.length >= 2 && !hasError;
+  const conditon = name.length >= 2 && cardContent.length >= 2 && !hasError;
 
   // get 요청: URL에서 id에 해당하는 데이터를 가져옴
   useEffect(() => {
@@ -81,6 +81,7 @@ function ProfileInput() {
     }
   };
   console.log(selectedRecipient);
+  console.log(name);
   return (
     <Bone>
       <ProfileInputName value={name} onChange={setName} onError={setHasError} />
@@ -97,7 +98,7 @@ function ProfileInput() {
         size={56}
         width={720}
         onClick={handleSubmit}
-        disabled={!condition}
+        state={conditon ? "enabled" : "disabled"}
       >
         생성하기
       </StyledButton>
