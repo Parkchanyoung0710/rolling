@@ -1,25 +1,70 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import InformationBar from "../../components/common/InformationBar/InformationBar";
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
 import Card from "../../components/domain/rollingpaper/Card/Card";
 import styled from "styled-components";
+import recipientsService from "../../api/services/recipientsService"; // get 요청
 
 function RollingPaperDetailPage() {
-  return (
+  const { id } = useParams();
+  const [postData, setPostData] = useState(null);
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
 
-    <BackgroundWrap>
+  const colorMap = {
+    beige: "#FFE2AD",
+    purple: "#ECD9FF",
+    blue: "#B1E4FF",
+    green: "#D0F5C3",
+  };
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      try {
+        const response = await recipientsService.getRecipients(
+          `/14-8/recipients/`
+        );
+        setPostData(response.data);
+
+        const foundRecipient = response.data.results.find(
+          (recipient) => recipient.id === Number(id)
+        );
+        setSelectedRecipient(foundRecipient);
+      } catch (error) {
+        console.error("데이터를 가져오지 못했습니다:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  // console.log(postData);
+  console.log(selectedRecipient);
+  const backgroundColor = selectedRecipient
+    ? colorMap[selectedRecipient.backgroundColor] || "#FFFFFF"
+    : "#FFFFFF";
+  const backgroundImageURL = selectedRecipient
+    ? selectedRecipient.backgroundImageURL || null
+    : null;
+
+  return (
+    <BackgroundWrap
+      bgColor={backgroundColor}
+      backgroundImageURL={backgroundImageURL}
+    >
       <InformationBar />
       <CardContainer>
         <Divrap>
-          <Card />
-          <CardWrite />
-          <CardWrite />
-          <CardWrite />
-          <CardWrite />
-          <CardWrite />
+          <Card postData={postData} />
+          <CardWrite postData={postData} />
+          <CardWrite postData={postData} />
+          <CardWrite postData={postData} />
+          <CardWrite postData={postData} />
         </Divrap>
       </CardContainer>
     </BackgroundWrap>
-
   );
 }
 
@@ -40,6 +85,9 @@ const Divrap = styled.div`
 `;
 
 const BackgroundWrap = styled.div`
-  background-color: #ffe2ad;
+  background-image: url(${(props) => props.backgroundImageURL || null});
+  background-color: ${(props) => props.bgColor || "#FFE2AD"};
   min-height: calc(100vh - 65px);
+  background-size: cover;
+  background-position: center;
 `;

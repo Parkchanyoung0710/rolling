@@ -34,14 +34,13 @@ const StyledButton = styled(Button)`
   }
 `;
 
-// To 전체적인 컴포넌트
+// To 전체적인 컴포넌
 function Input() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   const [name, setName] = useState("");
   const [cardContent, setCardContent] = useState(null);
   const [hasError, setHasError] = useState(false);
-
   const saveUserName = (value) => {
     setName(value);
   };
@@ -52,7 +51,6 @@ function Input() {
     setSelected(index);
   };
 
-  let currentId = 1; // ID를 1부터 시작한다고 가정
   function goToPostId() {
     const requestBody = {
       name: name,
@@ -68,7 +66,7 @@ function Input() {
     recipientsService
       .postRecipients(requestBody)
       .then((response) => {
-        const newId = currentId++;
+        const newId = response.data.id;
         console.log(response);
         navigate(`/post/${newId}`);
         console.log("ID 생성:", newId);
@@ -77,8 +75,7 @@ function Input() {
         console.error("ID 생성 실패:", error.response?.data || error.message);
       });
   }
-
-  console.log("cardContent 값:", cardContent);
+  console.log("cardContent 값.:", cardContent);
   console.log(name);
 
   return (
