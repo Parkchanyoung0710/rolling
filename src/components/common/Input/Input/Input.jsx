@@ -64,14 +64,13 @@ function Input() {
       reactionCount: 0,
       topReactions: [],
     };
-    console.log("Request Body:", requestBody);
+
     recipientsService
       .postRecipients(requestBody)
       .then((response) => {
         const newId = currentId++;
         console.log(response);
         navigate(`/post/${newId}`);
-        console.log("ID 생성:", newId);
       })
       .catch((error) => {
         console.error("ID 생성 실패:", error.response?.data || error.message);

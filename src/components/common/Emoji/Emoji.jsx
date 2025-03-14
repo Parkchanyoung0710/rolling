@@ -112,7 +112,7 @@ const TopEmojiItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 63px;
+  width: 56px;
   height: 36px;
   border-radius: 32px;
   background-color: rgba(0, 0, 0, 0.54);
@@ -193,7 +193,7 @@ const AllEmojiItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 63px;
+  width: 56px;
   height: 36px;
   border-radius: 32px;
   background-color: rgba(0, 0, 0, 0.54);

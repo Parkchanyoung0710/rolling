@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Emoji from "../Emoji/Emoji";
 import styled from "styled-components";
 import {
@@ -11,6 +11,28 @@ function InformationBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const buttonRef = useRef(null);
+  const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [messageCount] = useState(0);
+
+  useEffect(() => {
+    fetch("https://rolling-api.vercel.app/14-8/recipients/")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.results && data.results.length > 0) {
+          const latestUser = data.results.reduce((latest, current) => {
+            const latestDate = new Date(latest.createdAt);
+            const currentDate = new Date(current.createdAt);
+
+            return latestDate > currentDate ? latest : current;
+          });
+
+          setName(latestUser.name);
+        }
+      })
+      .catch((error) => console.error("Error fetching data:", error))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const shareToKakao = () => {
     if (window.Kakao) {
@@ -57,12 +79,13 @@ function InformationBar() {
     <InformationBarWrapper>
       <InformationBarContainer>
         <LeftSection>
-          <ToName>To. Ashley Kim</ToName>
+          <ToName>{`To. ${name}`}</ToName>
         </LeftSection>
 
         <RightSection>
           <WritedContainer>
-            <WriteCount>23</WriteCount>
+            <Avatar>+{messageCount}</Avatar>
+            <WriteCount>{messageCount}</WriteCount>
             <WritedText>명이 작성했어요!</WritedText>
           </WritedContainer>
 
@@ -179,12 +202,27 @@ const WriteCount = styled.span`
 const WritedText = styled.span`
   color: #181818;
   font-family: "Pretendard", sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 18px;
   line-height: 27px;
   letter-spacing: 0%;
 `;
-
+const Avatar = styled.div`
+  position: relative;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale[200]};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Pretendard", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.grayScale[800]};
+`;
 const Button = styled.button`
   display: flex;
   align-items: center;

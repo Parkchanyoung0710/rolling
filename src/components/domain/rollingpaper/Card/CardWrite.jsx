@@ -55,7 +55,7 @@ const CardWrite = ({ top, left }) => {
   return (
     <CardContainer top={top} left={left}>
       <Header>
-        <ProfileImage src="https://via.placeholder.com/40" alt="Profile" />
+        <ProfileImage src="" alt="Profile" />
         <Name>From. 김동훈</Name>
         <Tag>가족</Tag>
       </Header>
