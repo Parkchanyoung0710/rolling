@@ -34,25 +34,23 @@ const StyledButton = styled(Button)`
   }
 `;
 
-// To 전체적인 컴포넌트
+// To 전체적인 컴포넌
 function Input() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   const [name, setName] = useState("");
   const [cardContent, setCardContent] = useState(null);
   const [hasError, setHasError] = useState(false);
-
   const saveUserName = (value) => {
     setName(value);
   };
 
-  const conditon = name.length >= 2 && Boolean(cardContent) && !hasError; // 에러가 없을 때 버튼 활성화
+  const conditon = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
     setSelected(index);
   };
 
-  let currentId = 1; // ID를 1부터 시작한다고 가정
   function goToPostId() {
     const requestBody = {
       name: name,
@@ -68,7 +66,7 @@ function Input() {
     recipientsService
       .postRecipients(requestBody)
       .then((response) => {
-        const newId = currentId++;
+        const newId = response.data.id;
         console.log(response);
         navigate(`/post/${newId}`);
         console.log("ID 생성:", newId);
@@ -77,9 +75,24 @@ function Input() {
         console.error("ID 생성 실패:", error.response?.data || error.message);
       });
   }
-
-  console.log("cardContent 값:", cardContent);
+  console.log("cardContent 값.:", cardContent);
   console.log(name);
+  console.log(
+    "name:",
+    name,
+    "name.length >= 2:",
+    name.length >= 2,
+    "cardContent:",
+    cardContent,
+    "!!cardContent:",
+    !!cardContent,
+    "hasError:",
+    hasError,
+    "!hasError:",
+    !hasError,
+    "conditon:",
+    conditon
+  );
 
   return (
     <Bone>
@@ -107,7 +120,7 @@ function Input() {
         size={56}
         width={720}
         onClick={goToPostId}
-        disabled={!conditon} // 조건을 만족하지 않으면 비활성화
+        state={conditon ? "enabled" : "disabled"}
       >
         생성하기
       </StyledButton>

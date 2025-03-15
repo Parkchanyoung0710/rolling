@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import recipientsService from "../../../../api/services/recipientsService"; // get 요청
 
 const CardContainer = styled.div`
   width: 384px;
@@ -12,6 +13,8 @@ const CardContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  top: ${(props) => props.top || "0"}; /* top 값을 받아서 사용 */
+  left: ${(props) => props.left || "0"}; /* left 값을 받아서 사용 */
 `;
 
 const CircleButton = styled.button`
@@ -65,15 +68,42 @@ const PlusIcon = styled.div`
   }
 `;
 
-const Card = ({ top, left, id }) => {
+const Card = () => {
+  const { id } = useParams(); // URL에서 id를 가져오기
+  const [postData, setPostData] = useState(null);
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      try {
+        const response = await recipientsService.getRecipients(
+          `/14-8/recipients/`
+        );
+        setPostData(response.data);
+
+        const foundRecipient = response.data.results.find(
+          (recipient) => recipient.id === Number(id)
+        );
+        setSelectedRecipient(foundRecipient);
+      } catch (error) {
+        console.error("데이터를 가져오지 못했습니다:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleCardButtonClick = () => {
     navigate(`/post/${id}/message`);
   };
-
+  console.log(postData);
+  console.log(selectedRecipient);
   return (
-    <CardContainer top={top} left={left}>
+    <CardContainer>
       <CircleButton onClick={handleCardButtonClick}>
         <PlusIcon />
       </CircleButton>
