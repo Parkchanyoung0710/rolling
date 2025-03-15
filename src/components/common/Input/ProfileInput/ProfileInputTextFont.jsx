@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import styled from "styled-components";
@@ -23,8 +23,8 @@ const EditorWrapper = styled.div`
     padding: 16px;
     background: #fff;
     border-radius: 8px;
-    font-family: ${(props) => props.fontFamily || "Noto Sans KR"};
-    text-align: ${(props) => props.textAlign || "left"};
+    font-family: ${(props) => props.$fontFamily || "Noto Sans KR"};
+    text-align: ${(props) => props.$textAlign || "left"};
   }
 
   .ql-toolbar {
@@ -65,19 +65,6 @@ function ProfileInputTextFont({
   value,
   onChange,
 }) {
-  useEffect(() => {
-    if (selectedFont) {
-      document
-        .querySelector(".ql-editor")
-        ?.style.setProperty("font-family", selectedFont);
-    }
-    if (selectedAlign) {
-      document
-        .querySelector(".ql-editor")
-        ?.style.setProperty("text-align", selectedAlign);
-    }
-  }, [selectedFont, selectedAlign]);
-
   const handleChange = (content) => {
     if (typeof content === "string") {
       onChange?.(content);
@@ -87,7 +74,7 @@ function ProfileInputTextFont({
   };
 
   return (
-    <EditorWrapper fontFamily={selectedFont} textAlign={selectedAlign}>
+    <EditorWrapper $fontFamily={selectedFont} $textAlign={selectedAlign}>
       <ReactQuill
         theme="snow"
         value={value || ""}

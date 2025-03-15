@@ -23,13 +23,15 @@ const EditorWrapper = styled.div`
     line-height: 28px;
     padding: 16px 0;
     background: #fff;
-    font-family: ${(props) => props.fontFamily || "Noto Sans KR"};
+    font-family: 'Noto Sans KR', sans-serif !important;
     text-align: ${(props) => props.textAlign || "left"};
   }
+
 
   .ql-picker.ql-font {
     width: 150px;
     min-width: 150px;
+     text-align: ${(props) => props.textAlign || "left"};
   }
 
   .ql-picker.ql-font .ql-picker-item,
@@ -37,9 +39,11 @@ const EditorWrapper = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+     text-align: ${(props) => props.textAlign || "left"};
   }
  .ql-container.ql-snow {
     border: none;
+     text-align: ${(props) => props.textAlign || "left"};
 `;
 
 const CardContainer = styled.div`
