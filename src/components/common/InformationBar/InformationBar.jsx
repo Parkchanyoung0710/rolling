@@ -41,7 +41,7 @@ function InformationBar() {
         content: {
           title: "웹사이트 공유 제목",
           description: "웹사이트 설명",
-          imageUrl: "https://your-image-url.com",
+          imageUrl: "",
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,

@@ -175,6 +175,7 @@ const AllEmojisContainer = styled.div`
 `;
 
 const MoreEmojisWrapper = styled.div`
+  z-index: 10;
   position: absolute;
   top: -16px;
   right: -82px;
