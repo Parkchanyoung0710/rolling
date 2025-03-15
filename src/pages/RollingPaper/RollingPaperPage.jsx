@@ -34,7 +34,7 @@ function RollingPaperDetailPage() {
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [nextPageUrl, setNextPageUrl] = useState(null); // 페이지네이션
-
+  console.log(nextPageUrl);
   const colorMap = {
     beige: "#FFE2AD",
     purple: "#ECD9FF",
