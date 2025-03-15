@@ -20,7 +20,6 @@ const ToLabel = styled.label.withConfig({
   height: 3.125rem;
   border-radius: 0.5rem;
   position: relative;
-  /* input이 포커스를 받으면 label에 스타일 적용 */
   &:focus-within {
     border: 1px solid #00a2fe;
     box-shadow: 0 0 5px rgba(0, 162, 254, 0.5);
@@ -70,10 +69,8 @@ function InputName({ value, onChange, onError }) {
   };
 
   const handleChange = (e) => {
-    const inputValue = e.target.value; // e.target.value를 안전하게 처리
-    if (inputValue) {
-      onChange(inputValue); // 부모 컴포넌트로 값을 전달
-    }
+    const inputValue = e.target.value;
+    onChange(inputValue);
   };
 
   return (

@@ -70,10 +70,7 @@ function ProfileInputName({ value, onChange, onError }) {
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
-    if (inputValue) {
-      onChange(inputValue);
-      console.log("입력한 이름:", inputValue);
-    }
+    onChange(inputValue);
   };
 
   return (
