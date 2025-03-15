@@ -112,9 +112,7 @@ function InformationBar() {
               </Avatar>
             ))}
 
-            {messageCount > 3 && (
-              <Avatar>+{messageCount > 6 ? 6 : messageCount - 3} </Avatar>
-            )}
+            {messageCount > 3 && <Avatar>+{messageCount - 3}</Avatar>}
 
             <WriteCount>{messageCount}</WriteCount>
             <WritedText>명이 작성했어요!</WritedText>
