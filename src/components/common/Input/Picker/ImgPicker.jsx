@@ -32,7 +32,7 @@ const Image = styled.div.withConfig({
     right: 0;
     bottom: 0;
     background-image: ${(props) => `url(${props.image})`};
-    background-size: cover;
+    background-size: 1920px 1080px; /*이미지 사이즈 조절함함*/
     background-position: center;
     opacity: ${(props) =>
       props.selected ? 0.3 : 1}; /* 선택된 이미지에만 opacity 30% 적용 */

@@ -41,6 +41,7 @@ function Input() {
   const [name, setName] = useState("");
   const [cardContent, setCardContent] = useState(null);
   const [hasError, setHasError] = useState(false);
+
   const saveUserName = (value) => {
     setName(value);
   };

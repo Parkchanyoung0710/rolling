@@ -1,20 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import styled from "styled-components";
-import "../../../../styles/font.css";
 
-// 텍트 모듈 설정 창입니다
+// 툴바에서 선택할 폰트 목록
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
 Font.whitelist = [
-  "Poppins",
-  "Pretendard-Regular",
-  "Maru Buri",
-  "NanumSonPyeonJiCe",
+  "Noto Sans KR",
+  "Pretendard",
+  "NanumMyeongjo",
+  "Nanum Pen Script",
 ];
+
 Quill.register(Font, true);
+
 const EditorWrapper = styled.div`
+  .ql-editor {
+    min-height: 13.125rem;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 16px;
+    background: #fff;
+    border-radius: 8px;
+    font-family: ${(props) => props.fontFamily || "Noto Sans KR"};
+    text-align: ${(props) => props.textAlign || "left"};
+  }
+
   .ql-toolbar {
     background: #eeeeee;
     border-top-right-radius: 8px;
@@ -34,106 +46,48 @@ const EditorWrapper = styled.div`
     background: #ddd;
   }
 
-  .ql-editor {
-    min-height: 13.125rem;
-    font-size: 16px !important;
-    line-height: 1.6;
-    padding: 16px;
-    background: #fff;
-    border-radius: 8px;
-  }
   .ql-snow .ql-picker.ql-font {
-    width: 150px; /* 원하는 너비 값으로 변경 */
-    min-width: 150px; /* 최소 너비 설정 */
+    width: 150px;
+    min-width: 150px;
   }
 
-  >>>>>>>71c55ec (버튼 적용전) .ql-snow .ql-picker.ql-font .ql-picker-item,
+  .ql-snow .ql-picker.ql-font .ql-picker-item,
   .ql-snow .ql-picker.ql-font .ql-picker-label {
-    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* 넘치는 텍스트는 '...'으로 표시 */
-  }
-
-  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Poppins"]::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Poppins"]::before {
-    font-family: "Poppins", cursive;
-    content: "Poppins";
-  }
-
-  .ql-snow
-    .ql-picker.ql-font
-    .ql-picker-label[data-value="Pretendard-Regular"]::before,
-  .ql-snow
-    .ql-picker.ql-font
-    .ql-picker-item[data-value="Pretendard-Regular"]::before {
-    font-family: "Pretendard-Regular", cursive;
-    content: "Pretendard-Regular";
-  }
-
-  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Maru Buri"]::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Maru Buri"]::before {
-    font-family: "Maru Buri", cursive;
-    content: "Maru Buri";
-  }
-
-  .ql-snow
-    .ql-picker.ql-font
-    .ql-picker-label[data-value="NanumSonPyeonJiCe"]::before,
-  .ql-snow
-    .ql-picker.ql-font
-    .ql-picker-item[data-value="NanumSonPyeonJiCe"]::before {
-    font-family: "NanumSonPyeonJiCe", cursive;
-    content: "NanumSonPyeonJiCe";
-  }
-
-  .ql-font-poppins {
-    font-family: "Poppins", sans-serif;
-  }
-
-  .ql-font-pretendard {
-    font-family: "Pretendard-Regular", sans-serif;
-  }
-
-  .ql-font-nanum-myeongjo {
-    font-family: "Nanum Myeongjo", serif;
-  }
-
-  .ql-font-handletter {
-    font-family: "Handletter", cursive;
+    text-overflow: ellipsis;
   }
 `;
 
-function ProfileInputTextFont({ selectedFont, value, onChange, onError }) {
-  const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    if (!value) {
-      setHasError(true);
-      onError?.(true);
-    } else {
-      setHasError(false);
-      onError?.(false);
-    }
-  }, [value, onError]);
-
+function ProfileInputTextFont({
+  selectedFont,
+  selectedAlign,
+  value,
+  onChange,
+}) {
   useEffect(() => {
     if (selectedFont) {
       document
         .querySelector(".ql-editor")
         ?.style.setProperty("font-family", selectedFont);
     }
-  }, [selectedFont]);
+    if (selectedAlign) {
+      document
+        .querySelector(".ql-editor")
+        ?.style.setProperty("text-align", selectedAlign);
+    }
+  }, [selectedFont, selectedAlign]);
 
   const handleChange = (content) => {
     if (typeof content === "string") {
-      onChange?.(content); // 부모 컴포넌트에 입력된 내용 전달
+      onChange?.(content);
     } else {
       console.warn("handleChange received unexpected value:", content);
     }
   };
 
   return (
-    <EditorWrapper>
+    <EditorWrapper fontFamily={selectedFont} textAlign={selectedAlign}>
       <ReactQuill
         theme="snow"
         value={value || ""}
@@ -166,4 +120,5 @@ function ProfileInputTextFont({ selectedFont, value, onChange, onError }) {
     </EditorWrapper>
   );
 }
+
 export default ProfileInputTextFont;
