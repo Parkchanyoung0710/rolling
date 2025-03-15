@@ -56,13 +56,13 @@ function RollingPaperDetailPage() {
     >
       <InformationBar />
       <CardContainer>
-        <Divrap>
+        <DivWrap>
           <Card postData={postData} />
           <CardWrite postData={postData} />
           <CardWrite postData={postData} />
           <CardWrite postData={postData} />
           <CardWrite postData={postData} />
-        </Divrap>
+        </DivWrap>
       </CardContainer>
     </BackgroundWrap>
   );
@@ -76,7 +76,7 @@ const CardContainer = styled.div`
   justify-content: center;
 `;
 
-const Divrap = styled.div`
+const DivWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
