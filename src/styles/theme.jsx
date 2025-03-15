@@ -52,17 +52,17 @@ export const theme = {
   Typography: {
     12: {
       fontSize: "12px",
-      lineHeight: 1.125,
+      lineHeight: 1.5,
       letterSpacing: -0.5,
     },
     14: {
       fontSize: "14px",
-      lineHeight: 1.25,
+      lineHeight: 1.43,
       letterSpacing: -0.5,
     },
     15: {
       fontSize: "15px",
-      lineHeight: 1.375,
+      lineHeight: 1.47,
       letterSpacing: -1,
     },
     16: {
@@ -72,22 +72,22 @@ export const theme = {
     },
     18: {
       fontSize: "18px",
-      lineHeight: 1.75,
+      lineHeight: 1.56,
       letterSpacing: -1,
     },
     20: {
       fontSize: "20px",
-      lineHeight: 1.875,
+      lineHeight: 1.5,
       letterSpacing: -1,
     },
     24: {
       fontSize: "24px",
-      lineHeight: 2.25,
+      lineHeight: 1.5,
       letterSpacing: -1,
     },
     28: {
       fontSize: "28px",
-      lineHeight: 2.625,
+      lineHeight: 1.5,
       letterSpacing: -1,
     },
   },
