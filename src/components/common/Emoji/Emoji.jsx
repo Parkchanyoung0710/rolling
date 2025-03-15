@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import EmojiPicker from "emoji-picker-react";
 import styled from "styled-components";
 import EmojiIcon from "../../../assets/images/emoji.png";
@@ -11,6 +11,27 @@ function Emoji() {
   const [showPicker, setShowPicker] = useState(false);
   const [emojiMap, setEmojiMap] = useState({});
   const [showAllEmojis, setShowAllEmojis] = useState(false);
+  const moreEmojisRef = useRef(null);
+  const pickerRef = useRef(null);
+
+  const handleClickOutside = (event, ref, setter) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setter(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutsideWrapper = (event) => {
+      handleClickOutside(event, moreEmojisRef, setShowAllEmojis);
+      handleClickOutside(event, pickerRef, setShowPicker);
+    };
+
+    document.addEventListener("mousedown", handleClickOutsideWrapper);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideWrapper);
+    };
+  }, []);
 
   function handleEmojiSelect(emojiObject) {
     setEmojiMap((prevMap) => {
@@ -41,7 +62,7 @@ function Emoji() {
         <ActionsContainer>
           {sortedEmojiMap.length > TOP_EMOJIS && (
             <ShowMoreButton onClick={() => setShowAllEmojis(!showAllEmojis)}>
-              <Icon src={showAllEmojis ? toggle : toggle} alt="더 보기" />
+              <Icon src={toggle} alt="더 보기" />
             </ShowMoreButton>
           )}
 
@@ -53,7 +74,7 @@ function Emoji() {
       </Header>
 
       {showPicker && (
-        <PickerWrapper>
+        <PickerWrapper ref={pickerRef}>
           <EmojiPicker
             onEmojiClick={handleEmojiSelect}
             width={306}
@@ -63,7 +84,7 @@ function Emoji() {
       )}
 
       {showAllEmojis && (
-        <AllEmojisContainer>
+        <AllEmojisContainer ref={moreEmojisRef}>
           <MoreEmojisWrapper>
             {sortedEmojiMap.map(([emoji, count]) => (
               <AllEmojiItem key={emoji}>
@@ -161,9 +182,21 @@ const AddButton = styled.button`
 
 const PickerWrapper = styled.div`
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: 44px;
+  right: 14px;
   z-index: 10;
+  animation: fadeIn 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 `;
 
 const AllEmojisContainer = styled.div`
@@ -172,6 +205,18 @@ const AllEmojisContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeInAll 0.3s ease-in-out;
+
+  @keyframes fadeInAll {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 `;
 
 const MoreEmojisWrapper = styled.div`

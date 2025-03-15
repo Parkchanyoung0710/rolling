@@ -14,7 +14,7 @@ class RecipientsService {
   }
 
   getRecipientsId(id) {
-    return requestor.patch(`/14-8/recipients/${id}/`);
+    return requestor.get(`/14-8/recipients/${id}/`);
   }
 
   deleteRecipientsId(id) {
@@ -36,7 +36,7 @@ class RecipientsService {
   }
 
   getRecipientsReactions(id, limit, offset) {
-    return requestor.patch(
+    return requestor.get(
       `/recipients/${id}/reactions/?limit=${limit}&offset=${offset}`
     );
   }
