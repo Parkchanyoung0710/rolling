@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import plusIcon from "../../../assets/images/plus.png";
 import trashIcon from "../../../assets/images/trash.png";
@@ -34,7 +34,7 @@ const imageMap = {
   trash: trashIcon,
 };
 
-const IconButton = ({ image, onClick, state = "enabled" }) => {
+const IconButton = ({ image, onClick, state = "enabled", width }) => {
   return (
     <IconButtonWrapper
       onClick={onClick}
