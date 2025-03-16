@@ -4,7 +4,7 @@ import { textStyle } from "../../../../styles/textStyle";
 import { formatDate } from "../../../../utils/datetime";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
+import "../../../../styles/font.css";
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
 Font.whitelist = [
@@ -13,9 +13,9 @@ Font.whitelist = [
   "NanumMyeongjo",
   "Nanum Pen Script",
 ];
-Quill.register(Font, true);
-
-const EditorWrapper = styled.div`
+const EditorWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["$textAlign", "$fontFamily"].includes(prop),
+})`
   .ql-editor {
     width: 336px;
     min-height: 106px;
@@ -23,15 +23,15 @@ const EditorWrapper = styled.div`
     line-height: 28px;
     padding: 16px 0;
     background: #fff;
-    font-family: 'Noto Sans KR', sans-serif !important;
-    text-align: ${(props) => props.textAlign || "left"};
+    font-family: ${(props) =>
+      props.$fontFamily || "Noto Sans KR"}; /* font-family 적용 */
+    text-align: ${(props) => props.$textAlign || "left"}; /* text-align 적용 */
   }
-
 
   .ql-picker.ql-font {
     width: 150px;
     min-width: 150px;
-     text-align: ${(props) => props.textAlign || "left"};
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
   }
 
   .ql-picker.ql-font .ql-picker-item,
@@ -39,11 +39,17 @@ const EditorWrapper = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-     text-align: ${(props) => props.textAlign || "left"};
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
   }
- .ql-container.ql-snow {
+
+  .ql-container.ql-snow {
     border: none;
-     text-align: ${(props) => props.textAlign || "left"};
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
+  }
+
+  .ql-editor p {
+    font-family: ${({ $fontFamily }) => $fontFamily} !important;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -77,6 +83,8 @@ const NameWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: auto;
+  height: 24px;
 `;
 
 const From = styled.div`
@@ -111,8 +119,8 @@ const Date = styled.div`
 const CardWrite = ({ message }) => {
   if (!message) return null;
 
-  const textAlign = "left"; // 예시값
-
+  const textAlign = "left";
+  const fontFamily = message.font || "Noto Sans KR";
   return (
     <CardContainer>
       <Header>
@@ -125,7 +133,10 @@ const CardWrite = ({ message }) => {
           <Tag>{message.relationship}</Tag>
         </div>
       </Header>
-      <EditorWrapper fontFamily="Noto Sans KR" textAlign={textAlign}>
+      <EditorWrapper
+        $fontFamily={fontFamily || "Noto Sans KR"}
+        $textAlign={textAlign}
+      >
         <ReactQuill
           theme="snow"
           value={message.content || ""}

@@ -20,9 +20,13 @@ const DivWrap = styled.div`
   padding-top: 112px;
 `;
 
-const BackgroundWrap = styled.div`
-  background-image: url(${(props) => props.backgroundImageURL || null});
-  background-color: ${(props) => props.bgColor || "#FFE2AD"};
+const BackgroundWrap = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    !["bgColor", "backgroundImageURL"].includes(prop),
+})`
+  background-image: ${({ backgroundImageURL }) =>
+    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
   min-height: calc(100vh - 65px);
   background-size: cover;
   background-position: center;
@@ -30,11 +34,11 @@ const BackgroundWrap = styled.div`
 
 function RollingPaperDetailPage() {
   const { id } = useParams();
-  const [postData, setPostData] = useState(null);
+  const postData = null;
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1); // 페이지 상태 추가
-  const [messages, setMessages] = useState([]); // 메시지를 저장할 상태
+  const [page, setPage] = useState(1);
+  const [messages, setMessages] = useState([]);
   const colorMap = {
     beige: "#FFE2AD",
     purple: "#ECD9FF",
@@ -42,24 +46,22 @@ function RollingPaperDetailPage() {
     green: "#D0F5C3",
   };
 
-  const observer = useRef(null); // IntersectionObserver를 위한 ref
+  const observer = useRef(null);
 
-  // API 호출 함수 (무한 스크롤 시 데이터를 가져오는 함수)
+  // API 호출 함수
   const fetchMessages = async (page) => {
     try {
-      const limit = 10; // 한 번에 가져올 메시지 개수
-      const offset = (page - 1) * limit; // 페이지에 따라 가져올 데이터의 시작 위치
+      const limit = 10;
+      const offset = (page - 1) * limit;
       const response = await recipientsService.getRecipientsMessages(
         id,
         limit,
         offset
       );
 
-      // 기존 메시지 배열과 새로 받아온 메시지를 합치되, 중복 메시지가 없도록 처리
       setMessages((prevMessages) => {
         const newMessages = response.data.results;
 
-        // 새로운 메시지 배열에서 ID를 기준으로 기존 메시지와 중복되는 항목을 제거
         const uniqueMessages = [
           ...prevMessages,
           ...newMessages.filter(
@@ -71,14 +73,14 @@ function RollingPaperDetailPage() {
         return uniqueMessages;
       });
 
-      setLoading(false); // 로딩 상태 해제
+      setLoading(false);
     } catch (error) {
       console.error("메시지 데이터를 가져오지 못했습니다:", error);
-      setLoading(false); // 로딩 상태 해제
+      setLoading(false);
     }
   };
 
-  // recipients 데이터와 메시지를 가져오는 함수
+  // recipients
   const fetchRecipientData = async () => {
     try {
       const response = await recipientsService.getRecipients(
@@ -88,48 +90,45 @@ function RollingPaperDetailPage() {
         (recipient) => recipient.id === Number(id)
       );
       setSelectedRecipient(foundRecipient);
-
-      // 찾은 recipient에 해당하는 메시지 로드
-      fetchMessages(page);
     } catch (error) {
       console.error("받는 사람 데이터를 가져오지 못했습니다:", error);
     }
   };
-
-  // 메시지 로드 함수 (스크롤 시 호출)
+  // 메시지 로드 함수
   const loadMoreMessages = () => {
-    if (loading) return; // 이미 로딩 중이면 추가 로드하지 않음
+    if (loading) return;
     setLoading(true);
-    setPage((prev) => prev + 1); // 페이지 번호를 증가시켜서 데이터 추가 로드
+    setPage((prev) => prev + 1);
   };
-
-  // 페이지가 변경될 때마다 메시지 데이터를 가져옴
+  // id 로드
   useEffect(() => {
     if (id) {
-      fetchRecipientData(); // id가 변경될 때마다 데이터를 가져옴
+      fetchRecipientData();
     }
-  }, [id, page]); // id 또는 page가 변경될 때마다 실행
-
-  // IntersectionObserver를 설정하여 화면 끝에 가까워지면 데이터를 추가로 불러옴
+  }, [id]);
+  // 메세지 로드
   useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        fetchMessages(page);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [page, loading]);
+
+  useEffect(() => {
+    if (!observer.current) {
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMoreMessages();
+          }
+        },
+        { rootMargin: "100px" }
+      );
+    }
+
     const lastCardElement = document.getElementById("last-card");
-
-    const intersectionObserverCallback = (entries) => {
-      const entry = entries[0];
-      if (entry.isIntersecting) {
-        loadMoreMessages(); // 스크롤이 끝에 도달하면 추가 로드
-      }
-    };
-
-    const options = {
-      rootMargin: "100px", // 100px 만큼 미리 로드
-    };
-
-    observer.current = new IntersectionObserver(
-      intersectionObserverCallback,
-      options
-    );
-
     if (lastCardElement) {
       observer.current.observe(lastCardElement);
     }
@@ -139,7 +138,7 @@ function RollingPaperDetailPage() {
         observer.current.unobserve(lastCardElement);
       }
     };
-  }, [messages]); // messages가 변경될 때마다 실행
+  }, []);
 
   const backgroundColor = selectedRecipient
     ? colorMap[selectedRecipient.backgroundColor] || "#FFFFFF"
@@ -157,8 +156,12 @@ function RollingPaperDetailPage() {
       <CardContainer>
         <DivWrap>
           <Card postData={postData} />
-          {messages?.map((message, index) => (
-            <CardWrite key={message.id} message={message} />
+          {messages?.map((message) => (
+            <CardWrite
+              key={message.id}
+              message={message}
+              fontFamily={message.font}
+            />
           ))}
           {messages?.length > 0 && <div id="last-card"></div>}
         </DivWrap>

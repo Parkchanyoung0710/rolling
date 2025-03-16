@@ -48,13 +48,13 @@ function ProfileInputText({ value, onChange, onError, onFontSelect }) {
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    onFontSelect(option); // 선택된 폰트를 부모에게 전달
+    onFontSelect(option); 
   };
 
   useEffect(() => {
     const isError = !value || value.trim().length === 0;
     setHasError(isError);
-    onError(isError); // 부모 컴포넌트로 에러 상태 전달
+    onError(isError); 
   }, [value, onError]);
 
   return (
@@ -65,7 +65,7 @@ function ProfileInputText({ value, onChange, onError, onFontSelect }) {
         onChange={(content) => {
           onChange(content);
         }}
-        selectedFont={selectedOption} // 선택된 폰트 전달
+        selectedFont={selectedOption} 
       />
       <WarningMessage>한 글자 이상 입력해 주세요.</WarningMessage>
       <DropdownBox>
