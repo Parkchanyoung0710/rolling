@@ -8,6 +8,7 @@ import RollingPaperListPage from "./pages/RollingPaperList/RollingPaperListPage"
 import CreateRollingPaperPage from "./pages/CreateRollingPaper/CreateRollingPaperPage";
 import RollingPaperPage from "./pages/RollingPaper/RollingPaperPage";
 import MessagePage from "./pages/Message/MessagePage";
+import EditRollingPaperPage from "./pages/EditRollingPaperPage/EditRollingPaperPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/post" element={<CreateRollingPaperPage />} />
         <Route path="/post/:id" element={<RollingPaperPage />} />
         <Route path="/post/:id/message" element={<MessagePage />} />
+        <Route path="/post/:id/edit" element={<EditRollingPaperPage />} />
       </Routes>
     </ThemeProvider>
   );

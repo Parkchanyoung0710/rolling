@@ -34,7 +34,7 @@ const imageMap = {
   trash: trashIcon,
 };
 
-const IconButton = ({ image, onClick, state = "enabled", width }) => {
+const IconButton = ({ image, width, onClick, state = "enabled" }) => {
   return (
     <IconButtonWrapper
       onClick={onClick}
