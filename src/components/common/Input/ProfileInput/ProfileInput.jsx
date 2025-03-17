@@ -7,6 +7,7 @@ import ProfileInputChoiceImage from "./ProfileInputChoiceImage";
 import { Bone } from "../Input/Input";
 import Button from "../../Button/Button";
 import styled from "styled-components";
+import "../../../../styles/font.css";
 import recipientsService from "../../../../api/services/recipientsService"; // 서버 호출
 
 const StyledButton = styled(Button)`
@@ -32,9 +33,11 @@ function ProfileInput() {
 
   const condition = name.length >= 2 && cardContent.length >= 2 && !hasError;
 
-  // get 요청: URL에서 id에 해당하는 데이터를 가져옴
+  // get 요청
   useEffect(() => {
-    if (!id) return;
+    const numericId = Number(id); // id를 숫자로 변환
+
+    if (isNaN(numericId) || !numericId) return;
 
     const fetchData = async () => {
       try {
@@ -42,7 +45,7 @@ function ProfileInput() {
           `/14-8/recipients/`
         );
         const foundRecipient = response.data.results.find(
-          (recipient) => recipient.id === Number(id)
+          (recipient) => recipient.id === numericId
         );
         setSelectedRecipient(foundRecipient);
       } catch (error) {
@@ -53,11 +56,14 @@ function ProfileInput() {
     fetchData();
   }, [id]);
 
-  // post 요청: 서버에 데이터를 전송
   const handleSubmit = async () => {
+    const numericId = Number(id);
+
+    if (isNaN(numericId) || !numericId) return;
+
     const requestBody = {
       team: "14-8",
-      recipientId: id,
+      recipientId: numericId,
       sender: name,
       profileImageURL:
         profileImageURL ||
@@ -69,20 +75,22 @@ function ProfileInput() {
 
     console.log("서버로 전송할 데이터:", requestBody);
 
+    console.log("폰트 값:", selectedFont); // 이 부분으로 확인
     try {
       const response = await recipientsService.postRecipientsMessages(
-        id,
+        numericId, // numericId를 전달
         requestBody
       );
       console.log("서버 응답:", response);
-
-      navigate(`/post/${id}`);
+      navigate(`/post/${numericId}`); // 숫자형 id로 이동
     } catch (error) {
       console.error("서버 요청 실패:", error.response?.data || error.message);
     }
   };
+
   console.log(selectedRecipient);
   console.log(name);
+
   return (
     <Bone>
       <ProfileInputName value={name} onChange={setName} onError={setHasError} />

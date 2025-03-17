@@ -34,21 +34,27 @@ const WarningMessage = styled.div`
   position: absolute;
 `;
 
+// ProfileInputText 컴포넌트
 function ProfileInputText({ value, onChange, onError, onFontSelect }) {
   const [hasError, setHasError] = useState(false);
-  const options = ["Noto Sans", "프리텐다드", "나눔명조", "NanumSonPyeonJiCe"];
+  const options = [
+    "Noto Sans",
+    "Pretendard",
+    "나눔명조",
+    "나눔손글씨 손편지체",
+  ];
+  console.log(hasError);
   const [selectedOption, setSelectedOption] = useState("Noto Sans");
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
     onFontSelect(option);
-    console.log("선택된 폰트:", option);
   };
-  console.log(hasError);
+
   useEffect(() => {
     const isError = !value || value.trim().length === 0;
     setHasError(isError);
-    onError(isError); // 부모 컴포넌트로 에러 상태 전달
+    onError(isError);
   }, [value, onError]);
 
   return (
@@ -58,11 +64,9 @@ function ProfileInputText({ value, onChange, onError, onFontSelect }) {
         value={value}
         onChange={(content) => {
           onChange(content);
-          console.log("입력된 내용:", content);
         }}
-        style={{ fontFamily: selectedOption }}
+        selectedFont={selectedOption}
       />
-      {/* 경고 메시지가 항상 표시되도록 함 */}
       <WarningMessage>한 글자 이상 입력해 주세요.</WarningMessage>
       <DropdownBox>
         <RelationText>폰트 선택</RelationText>

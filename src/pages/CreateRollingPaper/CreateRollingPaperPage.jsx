@@ -1,4 +1,3 @@
-import InformationBar from "../../components/common/InformationBar/InformationBar";
 import Input from "../../components/common/Input/Input/Input";
 import styled, { css } from "styled-components";
 function CreateRollingPaperPage() {

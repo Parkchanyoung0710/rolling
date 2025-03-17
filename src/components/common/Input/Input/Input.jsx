@@ -41,11 +41,12 @@ function Input() {
   const [name, setName] = useState("");
   const [cardContent, setCardContent] = useState(null);
   const [hasError, setHasError] = useState(false);
+
   const saveUserName = (value) => {
     setName(value);
   };
 
-  const conditon = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
+  const condition = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
     setSelected(index);
@@ -62,14 +63,13 @@ function Input() {
       reactionCount: 0,
       topReactions: [],
     };
-    console.log("Request Body:", requestBody);
+
     recipientsService
       .postRecipients(requestBody)
       .then((response) => {
         const newId = response.data.id;
         console.log(response);
         navigate(`/post/${newId}`);
-        console.log("ID 생성:", newId);
       })
       .catch((error) => {
         console.error("ID 생성 실패:", error.response?.data || error.message);
@@ -90,8 +90,8 @@ function Input() {
     hasError,
     "!hasError:",
     !hasError,
-    "conditon:",
-    conditon
+    "condition:",
+    condition
   );
 
   return (
@@ -120,7 +120,7 @@ function Input() {
         size={56}
         width={720}
         onClick={goToPostId}
-        state={conditon ? "enabled" : "disabled"}
+        state={condition ? "enabled" : "disabled"}
       >
         생성하기
       </StyledButton>
