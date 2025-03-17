@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Modal from "./Modal";
 
 const CardContainer = styled.div`
   width: 384px;
@@ -10,8 +11,9 @@ const CardContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 28px 24px;
   box-sizing: border-box;
+  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
 `;
 
 const Header = styled.div`
@@ -21,8 +23,8 @@ const Header = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   margin-right: 8px;
 `;
@@ -52,19 +54,43 @@ const Date = styled.div`
 `;
 
 const CardWrite = ({ top, left }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [date, setDate] = useState("2023-07-08");
+  const [imageUrl, setImageUrl] = useState("https://example.com/profile.jpg");
+  const [name, setName] = useState("이름");
+  const [tag, setTag] = useState("태그");
+  const [content, setContent] = useState("내용");
+
+  const handleCardClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <CardContainer top={top} left={left}>
-      <Header>
-        <ProfileImage src="" alt="Profile" />
-        <Name>From. 김동훈</Name>
-        <Tag>가족</Tag>
-      </Header>
-      <Content>
-        코로나가 또다시 기승을 부리는 요즘이네요. 건강, 체력 모두 조심 또
-        하세요!
-      </Content>
-      <Date>2023.07.08</Date>
-    </CardContainer>
+    <>
+      <CardContainer top={top} left={left} onClick={handleCardClick}>
+        <Header>
+          <ProfileImage src={imageUrl} alt="Profile" />
+          <Name>{name}</Name>
+          <Tag>{tag}</Tag>
+        </Header>
+        <Content>{content}</Content>
+        <Date>{date}</Date>
+      </CardContainer>
+      {isModalOpen && (
+        <Modal
+          onClose={handleCloseModal}
+          date={date}
+          imageUrl={imageUrl}
+          name={name}
+          tag={tag}
+          content={content}
+        />
+      )}
+    </>
   );
 };
 

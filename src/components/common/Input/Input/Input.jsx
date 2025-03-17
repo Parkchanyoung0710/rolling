@@ -45,7 +45,7 @@ function Input() {
     setName(value);
   };
 
-  const conditon = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
+  const condition = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
     setSelected(index);
@@ -89,8 +89,8 @@ function Input() {
     hasError,
     "!hasError:",
     !hasError,
-    "conditon:",
-    conditon
+    "condition:",
+    condition
   );
 
   return (
@@ -119,7 +119,7 @@ function Input() {
         size={56}
         width={720}
         onClick={goToPostId}
-        state={conditon ? "enabled" : "disabled"}
+        state={condition ? "enabled" : "disabled"}
       >
         생성하기
       </StyledButton>
