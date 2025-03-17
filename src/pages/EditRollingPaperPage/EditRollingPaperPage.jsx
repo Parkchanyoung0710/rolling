@@ -1,19 +1,54 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InformationBar from "../../components/common/InformationBar/InformationBar";
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
 import Button from "../../components/common/Button/Button";
 import styled from "styled-components";
 import recipientsService from "../../api/services/recipientsService";
-import { textStyle } from "../../styles/textStyle";
 import messageService from "../../api/services/messagesService";
+
+const CardContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const DivWrap = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 28px;
+  padding-top: 112px;
+  position: relative;
+`;
+
+const BackgroundWrap = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    !["bgColor", "backgroundImageURL"].includes(prop),
+})`
+  background-image: ${({ backgroundImageURL }) =>
+    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
+  min-height: calc(100vh - 65px);
+  background-size: cover;
+  background-position: center;
+`;
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 60px;
+  right: -10px;
+`;
 
 function EditRollingPaperPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const [postData, setPostData] = useState(null);
-  const [selectedRecipient, setSelectedRecipient] = useState(null);
 
+  const { id } = useParams();
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [messages, setMessages] = useState([]);
   const colorMap = {
     beige: "#FFE2AD",
     purple: "#ECD9FF",
@@ -21,28 +56,99 @@ function EditRollingPaperPage() {
     green: "#D0F5C3",
   };
 
+  const observer = useRef(null);
+
+  const fetchMessages = async (page) => {
+    try {
+      const limit = 10;
+      const offset = (page - 1) * limit;
+      const response = await recipientsService.getRecipientsMessages(
+        id,
+        limit,
+        offset
+      );
+
+      setMessages((prevMessages) => {
+        const newMessages = response.data.results;
+
+        const uniqueMessages = [
+          ...prevMessages,
+          ...newMessages.filter(
+            (message) =>
+              !prevMessages.some((prevMessage) => prevMessage.id === message.id)
+          ),
+        ];
+
+        return uniqueMessages;
+      });
+
+      setLoading(false);
+    } catch (error) {
+      console.error("메시지 데이터를 가져오지 못했습니다:", error);
+      setLoading(false);
+    }
+  };
+
+  // recipients
+  const fetchRecipientData = async () => {
+    try {
+      const response = await recipientsService.getRecipients(
+        `/14-8/recipients/`
+      );
+      const foundRecipient = response.data.results.find(
+        (recipient) => recipient.id === Number(id)
+      );
+      setSelectedRecipient(foundRecipient);
+    } catch (error) {
+      console.error("받는 사람 데이터를 가져오지 못했습니다:", error);
+    }
+  };
+  // 메시지 로드 함수
+  const loadMoreMessages = () => {
+    if (loading) return;
+    setLoading(true);
+    setPage((prev) => prev + 1);
+  };
+  // id 로드
   useEffect(() => {
-    if (!id) return;
+    if (id) {
+      fetchRecipientData();
+    }
+  }, [id]);
+  // 메세지 로드
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        fetchMessages(page);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [page, loading]);
 
-    const fetchData = async () => {
-      try {
-        const response = await recipientsService.getRecipients(
-          `/14-8/recipients/`
-        );
-        setPostData(response.data);
+  // 밑에 스크롤 할 수 있음음
+  useEffect(() => {
+    if (!observer.current) {
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMoreMessages();
+          }
+        },
+        { rootMargin: "100px" }
+      );
+    }
 
-        const foundRecipient = response.data.results.find(
-          (recipient) => recipient.id === Number(id)
-        );
+    const lastCardElement = document.getElementById("last-card");
+    if (lastCardElement) {
+      observer.current.observe(lastCardElement);
+    }
 
-        setSelectedRecipient(foundRecipient);
-      } catch (error) {
-        console.error("데이터를 가져오지 못했습니다:", error);
+    return () => {
+      if (observer.current && lastCardElement) {
+        observer.current.unobserve(lastCardElement);
       }
     };
-
-    fetchData();
-  }, [id]);
+  }, []);
 
   const backgroundColor = selectedRecipient
     ? colorMap[selectedRecipient.backgroundColor] || "#FFFFFF"
@@ -58,10 +164,9 @@ function EditRollingPaperPage() {
     try {
       await messageService.deleteMessages(messageId);
       alert("메시지가 삭제되었습니다!");
-      setPostData((prev) => ({
-        ...prev,
-        results: prev.results.filter((msg) => msg.id !== messageId), // 화면에서도 제거
-      }));
+      setMessages((prevMessages) =>
+        prevMessages.filter((message) => message.id !== messageId)
+      );
     } catch (error) {
       console.error("메시지 삭제 실패:", error);
     }
@@ -81,19 +186,24 @@ function EditRollingPaperPage() {
 
   return (
     <BackgroundWrap
-      backgroundColor={backgroundColor}
+      bgColor={backgroundColor}
       backgroundImageURL={backgroundImageURL}
     >
       <InformationBar />
-      <ButtonWrapper>
-        <StyledButton onClick={handleDeleteRollingPaper}>삭제하기</StyledButton>
-      </ButtonWrapper>
       <CardContainer>
         <DivWrap>
-          <CardWrite postData={postData} onDelete={handleDeleteMessage} />
-          <CardWrite postData={postData} onDelete={handleDeleteMessage} />
-          <CardWrite postData={postData} onDelete={handleDeleteMessage} />
-          <CardWrite postData={postData} onDelete={handleDeleteMessage} />
+          <ButtonWrapper>
+            <Button onClick={handleDeleteRollingPaper}>삭제하기</Button>
+          </ButtonWrapper>
+          {messages?.map((message) => (
+            <CardWrite
+              key={message.id}
+              message={message}
+              fontFamily={message.font}
+              onDelete={handleDeleteMessage}
+            />
+          ))}
+          {messages?.length > 0 && <div id="last-card"></div>}
         </DivWrap>
       </CardContainer>
     </BackgroundWrap>
@@ -101,42 +211,3 @@ function EditRollingPaperPage() {
 }
 
 export default EditRollingPaperPage;
-
-const CardContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const DivWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, auto);
-  gap: 28px;
-  padding-top: 112px;
-`;
-
-const BackgroundWrap = styled.div`
-  position: relative;
-  background-image: url(${(props) => props.backgroundImageURL || null});
-  background-color: ${(props) => props.backgroundColor || "#FFE2AD"};
-  min-height: calc(100vh - 65px);
-  background-size: cover;
-  background-position: center;
-`;
-
-const ButtonWrapper = styled.div`
-  position: absolute;
-  top: 120px;
-  right: 420px;
-`;
-
-const StyledButton = styled(Button)`
-  width: 200px;
-  background-color: ${({ theme }) => theme.colors.purple[600]};
-  color: ${({ theme }) => theme.colors.white};
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.purple[700]};
-  }
-  ${textStyle(16, 400)}
-`;
