@@ -57,7 +57,6 @@ const EditorWrapper = styled.div.withConfig({
   }
 `;
 
-
 const CardContainer = styled.div`
   width: 384px;
   height: 280px;
@@ -123,10 +122,9 @@ const Date = styled.div`
   text-align: left;
 `;
 
-
 const CardWrite = ({ message }) => {
-   const [isModalOpen, setIsModalOpen] = useState(false);
-   const handleCardClick = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCardClick = () => {
     setIsModalOpen(true);
   };
 
@@ -138,47 +136,47 @@ const CardWrite = ({ message }) => {
   const textAlign = "left";
   const fontFamily = message.font || "Noto Sans KR";
   return (
-      <>
-    <CardContainer>
-      <Header>
-        <ProfileImage src={message.profileImageURL} alt="Profile" />
-        <div>
-          <NameWrap>
-            <From>From.</From>
-            <Name>{message.sender}</Name>
-          </NameWrap>
-          <Tag>{message.relationship}</Tag>
-        </div>
-      </Header>
-      <EditorWrapper
-        $fontFamily={fontFamily || "Noto Sans KR"}
-        $textAlign={textAlign}
-      >
-        <ReactQuill
-          theme="snow"
-          value={message.content || ""}
-          readOnly={true}
-          modules={{
-            toolbar: false, // 툴바를 없앰
-          }}
-          formats={[
-            "bold",
-            "italic",
-            "underline",
-            "blockquote",
-            "code-block",
-            "header",
-            "align",
-            "color",
-            "background",
-            "list",
-            "font",
-          ]}
-        />
-      </EditorWrapper>
-      <Date>{formatDate(message.createdAt)}</Date>
-    </CardContainer>
-              {isModalOpen && (
+    <>
+      <CardContainer>
+        <Header>
+          <ProfileImage src={message.profileImageURL} alt="Profile" />
+          <div>
+            <NameWrap>
+              <From>From.</From>
+              <Name>{message.sender}</Name>
+            </NameWrap>
+            <Tag>{message.relationship}</Tag>
+          </div>
+        </Header>
+        <EditorWrapper
+          $fontFamily={fontFamily || "Noto Sans KR"}
+          $textAlign={textAlign}
+        >
+          <ReactQuill
+            theme="snow"
+            value={message.content || ""}
+            readOnly={true}
+            modules={{
+              toolbar: false, // 툴바를 없앰
+            }}
+            formats={[
+              "bold",
+              "italic",
+              "underline",
+              "blockquote",
+              "code-block",
+              "header",
+              "align",
+              "color",
+              "background",
+              "list",
+              "font",
+            ]}
+          />
+        </EditorWrapper>
+        <Date>{formatDate(message.createdAt)}</Date>
+      </CardContainer>
+      {isModalOpen && (
         <Modal
           onClose={handleCloseModal}
           date={date}
@@ -188,8 +186,7 @@ const CardWrite = ({ message }) => {
           content={content}
         />
       )}
-        </>
-
+    </>
   );
 };
 

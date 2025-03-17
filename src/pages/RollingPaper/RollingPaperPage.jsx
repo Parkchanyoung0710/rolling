@@ -4,6 +4,7 @@ import InformationBar from "../../components/common/InformationBar/InformationBa
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
 import Card from "../../components/domain/rollingpaper/Card/Card";
 import styled from "styled-components";
+
 import recipientsService from "../../api/services/recipientsService"; // get 요청
 
 const CardContainer = styled.div`
