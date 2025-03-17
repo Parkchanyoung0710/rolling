@@ -11,8 +11,8 @@ var Font = Quill.import("formats/font");
 Font.whitelist = [
   "Noto Sans KR",
   "Pretendard",
-  "NanumMyeongjo",
-  "NanumSonPyeonJiCe",
+  "나눔명조",
+  "나눔손글씨 손편지체",
 ];
 const EditorWrapper = styled.div.withConfig({
   shouldForwardProp: (prop) => !["$textAlign", "$fontFamily"].includes(prop),
@@ -24,9 +24,8 @@ const EditorWrapper = styled.div.withConfig({
     line-height: 28px;
     padding: 16px 0;
     background: #fff;
-    font-family: ${(props) =>
-      props.$fontFamily || "Noto Sans KR"}; /* font-family 적용 */
-    text-align: ${(props) => props.$textAlign || "left"}; /* text-align 적용 */
+    font-family: ${(props) => props.$fontFamily || "Noto Sans KR"};
+    text-align: ${(props) => props.$textAlign || "left"};
   }
 
   .ql-picker.ql-font {
@@ -50,6 +49,7 @@ const EditorWrapper = styled.div.withConfig({
 
   .ql-editor p {
     font-family: ${({ $fontFamily }) => $fontFamily} !important;
+    ${(props) => textStyle(18, 400)(props)}
   }
   .ql-snow .ql-editor h2 {
     font-size: 1rem;
