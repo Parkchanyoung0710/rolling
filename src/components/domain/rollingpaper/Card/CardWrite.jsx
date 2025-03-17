@@ -20,13 +20,16 @@ const EditorWrapper = styled.div.withConfig({
 })`
   .ql-editor {
     width: 336px;
-    min-height: 106px;
+    height: 106px; /* 높이를 고정 */
     font-size: 1rem !important;
     line-height: 28px;
     padding: 16px 0;
     background: #fff;
     font-family: ${(props) => props.$fontFamily || "Noto Sans KR"};
     text-align: ${(props) => props.$textAlign || "left"};
+    overflow: hidden; /* 내용이 박스를 넘지 않도록 설정 */
+    white-space: pre-wrap; /* 줄 바꿈과 공백을 유지하면서 텍스트를 자동으로 줄 바꿈 */
+    word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
   }
 
   .ql-picker.ql-font {
@@ -137,11 +140,7 @@ const CardWrite = ({ message }) => {
   const fontFamily = message.font || "Noto Sans KR";
   return (
     <>
-<<<<<<< HEAD
-      <CardContainer>
-=======
       <CardContainer onClick={handleCardClick}>
->>>>>>> f81ef59511764eb0b14201339f91c4ba0f746c14
         <Header>
           <ProfileImage src={message.profileImageURL} alt="Profile" />
           <div>
