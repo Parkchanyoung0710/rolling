@@ -19,10 +19,8 @@ const SelectBox = styled.div.withConfig({
   cursor: pointer;
   border: 1px solid #cccccc;
   transition: border 0.1s ease-in-out;
-  ${(props) =>
-    props.isOpen &&
-    `border: 2px solid #555555;`} /* 목록이 열릴 때 테두리 변경 */
-    
+  ${(props) => props.isOpen && `border: 2px solid #555555;`}
+
   &:hover {
     border: 2px solid #555555;
   }
@@ -41,10 +39,7 @@ const IconStyle = styled.label.withConfig({
   align-items: center;
   margin-right: 1rem;
   cursor: pointer;
-  transform: ${(props) =>
-    props.$isReversed
-      ? "rotate(180deg)"
-      : "none"}; /* props 대신 $isReversed로 수정 */
+  transform: ${(props) => (props.$isReversed ? "rotate(180deg)" : "none")};
 `;
 
 const SelectOptions = styled.ul`

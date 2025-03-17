@@ -1,6 +1,62 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { textStyle } from "../../../../styles/textStyle";
+import { formatDate } from "../../../../utils/datetime";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "../../../../styles/font.css";
 import Modal from "./Modal";
+
+const Quill = ReactQuill.Quill;
+var Font = Quill.import("formats/font");
+Font.whitelist = [
+  "Noto Sans KR",
+  "Pretendard",
+  "나눔명조",
+  "나눔손글씨 손편지체",
+];
+const EditorWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["$textAlign", "$fontFamily"].includes(prop),
+})`
+  .ql-editor {
+    width: 336px;
+    min-height: 106px;
+    font-size: 1rem !important;
+    line-height: 28px;
+    padding: 16px 0;
+    background: #fff;
+    font-family: ${(props) => props.$fontFamily || "Noto Sans KR"};
+    text-align: ${(props) => props.$textAlign || "left"};
+  }
+
+  .ql-picker.ql-font {
+    width: 150px;
+    min-width: 150px;
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
+  }
+
+  .ql-picker.ql-font .ql-picker-item,
+  .ql-picker.ql-font .ql-picker-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
+  }
+
+  .ql-container.ql-snow {
+    border: none;
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
+  }
+
+  .ql-editor p {
+    font-family: ${({ $fontFamily }) => $fontFamily} !important;
+    ${(props) => textStyle(18, 400)(props)}
+  }
+  .ql-snow .ql-editor h2 {
+    font-size: 1rem;
+  }
+`;
+
 
 const CardContainer = styled.div`
   width: 384px;
@@ -19,7 +75,8 @@ const CardContainer = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  border-bottom: 1px solid #eeeeee;
+  padding-bottom: 15px;
 `;
 
 const ProfileImage = styled.img`
@@ -29,58 +86,99 @@ const ProfileImage = styled.img`
   margin-right: 8px;
 `;
 
+const NameWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 24px;
+`;
+
+const From = styled.div`
+  ${(props) => textStyle(20, 400)(props)}
+`;
+
 const Name = styled.div`
-  font-weight: bold;
-  margin-right: 8px;
+  ${(props) => textStyle(20, 700)(props)}
 `;
 
 const Tag = styled.div`
+  ${(props) => textStyle(14, 400)(props)}
   background: #e0f7fa;
   color: #00796b;
-  padding: 2px 8px;
-  border-radius: 12px;
+  width: 41px;
+  height: 20px;
+  padding: 8px;
+  border-radius: 4px;
   font-size: 12px;
-`;
-
-const Content = styled.div`
-  flex-grow: 1;
-  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Date = styled.div`
+  margin-top: auto;
   font-size: 12px;
   color: #757575;
   text-align: left;
 `;
 
-const CardWrite = ({ top, left }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [date, setDate] = useState("2023-07-08");
-  const [imageUrl, setImageUrl] = useState("https://example.com/profile.jpg");
-  const [name, setName] = useState("이름");
-  const [tag, setTag] = useState("태그");
-  const [content, setContent] = useState("내용");
 
-  const handleCardClick = () => {
+const CardWrite = ({ message }) => {
+   const [isModalOpen, setIsModalOpen] = useState(false);
+   const handleCardClick = () => {
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  if (!message) return null;
 
+  const textAlign = "left";
+  const fontFamily = message.font || "Noto Sans KR";
   return (
-    <>
-      <CardContainer top={top} left={left} onClick={handleCardClick}>
-        <Header>
-          <ProfileImage src={imageUrl} alt="Profile" />
-          <Name>{name}</Name>
-          <Tag>{tag}</Tag>
-        </Header>
-        <Content>{content}</Content>
-        <Date>{date}</Date>
-      </CardContainer>
-      {isModalOpen && (
+      <>
+    <CardContainer>
+      <Header>
+        <ProfileImage src={message.profileImageURL} alt="Profile" />
+        <div>
+          <NameWrap>
+            <From>From.</From>
+            <Name>{message.sender}</Name>
+          </NameWrap>
+          <Tag>{message.relationship}</Tag>
+        </div>
+      </Header>
+      <EditorWrapper
+        $fontFamily={fontFamily || "Noto Sans KR"}
+        $textAlign={textAlign}
+      >
+        <ReactQuill
+          theme="snow"
+          value={message.content || ""}
+          readOnly={true}
+          modules={{
+            toolbar: false, // 툴바를 없앰
+          }}
+          formats={[
+            "bold",
+            "italic",
+            "underline",
+            "blockquote",
+            "code-block",
+            "header",
+            "align",
+            "color",
+            "background",
+            "list",
+            "font",
+          ]}
+        />
+      </EditorWrapper>
+      <Date>{formatDate(message.createdAt)}</Date>
+    </CardContainer>
+              {isModalOpen && (
         <Modal
           onClose={handleCloseModal}
           date={date}
@@ -90,7 +188,8 @@ const CardWrite = ({ top, left }) => {
           content={content}
         />
       )}
-    </>
+        </>
+
   );
 };
 
