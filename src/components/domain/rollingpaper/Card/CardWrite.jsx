@@ -137,7 +137,11 @@ const CardWrite = ({ message }) => {
   const fontFamily = message.font || "Noto Sans KR";
   return (
     <>
+<<<<<<< HEAD
       <CardContainer>
+=======
+      <CardContainer onClick={handleCardClick}>
+>>>>>>> f81ef59511764eb0b14201339f91c4ba0f746c14
         <Header>
           <ProfileImage src={message.profileImageURL} alt="Profile" />
           <div>
@@ -179,11 +183,11 @@ const CardWrite = ({ message }) => {
       {isModalOpen && (
         <Modal
           onClose={handleCloseModal}
-          date={date}
-          imageUrl={imageUrl}
-          name={name}
-          tag={tag}
-          content={content}
+          date={formatDate(message.createdAt)}
+          imageUrl={message.profileImageURL}
+          name={message.sender}
+          tag={message.relationship}
+          content={message.content}
         />
       )}
     </>
