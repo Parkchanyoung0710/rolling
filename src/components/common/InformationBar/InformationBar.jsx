@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Emoji from "../Emoji/Emoji";
 import styled from "styled-components";
 import {
@@ -6,11 +7,37 @@ import {
   Complete,
   Close,
 } from "../../../assets/images/icon/IconIndex.jsx";
+import recipientsService from "../../../api/services/recipientsService.jsx";
 
 function InformationBar() {
+  const { id } = useParams();
+  const [name, setName] = useState("");
+  const [messageCount, setMessageCount] = useState(0);
+  const [profileImages, setProfileImages] = useState([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalRef = useRef(null);
   const [showToast, setShowToast] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const buttonRef = useRef(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    recipientsService
+      .getRecipientsId(id)
+      .then(({ data }) => {
+        setName(data.name);
+        setMessageCount(data.messageCount);
+
+        const images = data.recentMessages.slice(0, 3);
+        const imageUrls = images.map((msg) => msg.profileImageURL);
+        setProfileImages(imageUrls);
+      })
+      .catch((error) => console.error("Error data", error))
+      .finally(() => setIsLoading(false));
+  }, [id]);
 
   const shareToKakao = () => {
     if (window.Kakao) {
@@ -19,7 +46,7 @@ function InformationBar() {
         content: {
           title: "웹사이트 공유 제목",
           description: "웹사이트 설명",
-          imageUrl: "https://your-image-url.com",
+          imageUrl: "",
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,
@@ -53,16 +80,41 @@ function InformationBar() {
     setShowToast(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <InformationBarWrapper>
       <InformationBarContainer>
         <LeftSection>
-          <ToName>To. Ashley Kim</ToName>
+          <ToName>{`To. ${name}`}</ToName>
         </LeftSection>
 
         <RightSection>
           <WritedContainer>
-            <WriteCount>23</WriteCount>
+            {profileImages.slice(0, 3).map((url, index) => (
+              <Avatar key={index}>
+                <img src={url} alt={`프로필 이미지 ${index + 1}`} />
+              </Avatar>
+            ))}
+
+            {messageCount > 3 && <Avatar>+{messageCount - 3}</Avatar>}
+
+            <WriteCount>{messageCount}</WriteCount>
             <WritedText>명이 작성했어요!</WritedText>
           </WritedContainer>
 
@@ -76,7 +128,7 @@ function InformationBar() {
             <ShareIcon />
           </Button>
           {isModalOpen && (
-            <Modal>
+            <Modal ref={modalRef}>
               <Option onClick={shareToKakao}>카카오톡 공유</Option>
               <Option onClick={handleCopyUrl}>URL 공유</Option>
             </Modal>
@@ -179,10 +231,40 @@ const WriteCount = styled.span`
 const WritedText = styled.span`
   color: #181818;
   font-family: "Pretendard", sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 18px;
   line-height: 27px;
   letter-spacing: 0%;
+`;
+
+const Avatar = styled.div`
+  right: 10px;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale[200]};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -10px;
+
+  font-family: "Pretendard", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.grayScale[800]};
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  &:not(:has(img)) {
+    background-color: white;
+    color: ${({ theme }) => theme.colors.grayScale[800]};
+  }
 `;
 
 const Button = styled.button`
@@ -210,6 +292,19 @@ const Modal = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grayScale[300]};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+
+  @keyframes fadeInAll {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 `;
 
 const Option = styled.div`
@@ -259,16 +354,19 @@ const ToastMessage = styled.span`
 `;
 
 const IconWrapper = styled.div`
-  position: relative;
-  top: 4px;
-  margin-right: 16px;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
 `;
 
 const CloseButton = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
-  margin-left: 74px;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
 `;
 
 export default InformationBar;

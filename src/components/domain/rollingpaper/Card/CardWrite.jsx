@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { textStyle } from "../../../../styles/textStyle";
 import { formatDate } from "../../../../utils/datetime";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../../../styles/font.css";
+import Modal from "./Modal";
 
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
@@ -56,6 +57,7 @@ const EditorWrapper = styled.div.withConfig({
   }
 `;
 
+
 const CardContainer = styled.div`
   width: 384px;
   height: 280px;
@@ -67,6 +69,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   padding: 28px 24px;
   box-sizing: border-box;
+  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
 `;
 
 const Header = styled.div`
@@ -120,12 +123,22 @@ const Date = styled.div`
   text-align: left;
 `;
 
+
 const CardWrite = ({ message }) => {
+   const [isModalOpen, setIsModalOpen] = useState(false);
+   const handleCardClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   if (!message) return null;
 
   const textAlign = "left";
   const fontFamily = message.font || "Noto Sans KR";
   return (
+      <>
     <CardContainer>
       <Header>
         <ProfileImage src={message.profileImageURL} alt="Profile" />
@@ -165,6 +178,18 @@ const CardWrite = ({ message }) => {
       </EditorWrapper>
       <Date>{formatDate(message.createdAt)}</Date>
     </CardContainer>
+              {isModalOpen && (
+        <Modal
+          onClose={handleCloseModal}
+          date={date}
+          imageUrl={imageUrl}
+          name={name}
+          tag={tag}
+          content={content}
+        />
+      )}
+        </>
+
   );
 };
 
