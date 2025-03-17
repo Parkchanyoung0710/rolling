@@ -10,7 +10,7 @@ Font.whitelist = [
   "Noto Sans KR",
   "Pretendard",
   "NanumMyeongjo",
-  "Nanum Pen Script",
+  "NanumSonPyeonJiCe",
 ];
 
 Quill.register(Font, true);

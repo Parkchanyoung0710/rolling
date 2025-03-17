@@ -1,7 +1,7 @@
 /*Noto Sans*/
 
 @font-face {
-  font-family: "Noto Sans KR";
+  font-family: "Noto Sans";
   font-style: normal;
   font-weight: 300;
   src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2)
@@ -28,7 +28,7 @@
 /*MaruBuri*/
 
 @font-face {
-  font-family: "NanumMyeongjo";
+  font-family: "나눔명조";
   src: url(https://cdn.jsdelivr.net/gh/wizfile/font/NanumMyeongjo.eot);
   src: url(https://cdn.jsdelivr.net/gh/wizfile/font/NanumMyeongjo.woff)
     format("woff");
@@ -37,13 +37,14 @@
 
 /*NanumSonPyeonJiCe*/
 @font-face {
-  font-family: "Nanum Pen Script";
+  font-family: "나눔손글씨 손편지체";
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
-  src: url(https://fonts.gstatic.com/s/nanumpenscript/v25/daaDSSYiLGqEal3MvdA_FOL_3FkN2zuWfsNNAlvx8XyriiBoA4Qt-85VRg.54.woff2)
+  font-display: swap;
+  src: url(https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff2)
       format("woff2"),
-    url(https://fonts.gstatic.com/s/nanumpenscript/v25/daaDSSYiLGqEal3MvdA_FOL_3FkN2zuWfsNNAlvx8XyriiBoA4Qt-85VRg.54.woff)
+    url(https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff)
       format("woff"),
-    url(https://fonts.gstatic.com/s/nanumpenscript/v25/daaDSSYiLGqEal3MvdA_FOL_3FkN2zuWfsNNAlvx8XyriiBoA4Qt-85VRg.54.otf)
-      format("opentype");
+    url(https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.ttf)
+      format("truetype");
 }

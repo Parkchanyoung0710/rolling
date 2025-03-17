@@ -116,6 +116,7 @@ function RollingPaperDetailPage() {
     }
   }, [page, loading]);
 
+  // 밑에 스크롤 할 수 있음음
   useEffect(() => {
     if (!observer.current) {
       observer.current = new IntersectionObserver(

@@ -48,13 +48,13 @@ function ProfileInputText({ value, onChange, onError, onFontSelect }) {
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    onFontSelect(option); 
+    onFontSelect(option);
   };
 
   useEffect(() => {
     const isError = !value || value.trim().length === 0;
     setHasError(isError);
-    onError(isError); 
+    onError(isError);
   }, [value, onError]);
 
   return (
@@ -65,7 +65,7 @@ function ProfileInputText({ value, onChange, onError, onFontSelect }) {
         onChange={(content) => {
           onChange(content);
         }}
-        selectedFont={selectedOption} 
+        selectedFont={selectedOption}
       />
       <WarningMessage>한 글자 이상 입력해 주세요.</WarningMessage>
       <DropdownBox>

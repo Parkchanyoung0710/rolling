@@ -5,13 +5,14 @@ import { formatDate } from "../../../../utils/datetime";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../../../styles/font.css";
+
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
 Font.whitelist = [
   "Noto Sans KR",
   "Pretendard",
   "NanumMyeongjo",
-  "Nanum Pen Script",
+  "NanumSonPyeonJiCe",
 ];
 const EditorWrapper = styled.div.withConfig({
   shouldForwardProp: (prop) => !["$textAlign", "$fontFamily"].includes(prop),
@@ -19,7 +20,7 @@ const EditorWrapper = styled.div.withConfig({
   .ql-editor {
     width: 336px;
     min-height: 106px;
-    font-size: 18px;
+    font-size: 1rem !important;
     line-height: 28px;
     padding: 16px 0;
     background: #fff;
@@ -49,6 +50,9 @@ const EditorWrapper = styled.div.withConfig({
 
   .ql-editor p {
     font-family: ${({ $fontFamily }) => $fontFamily} !important;
+  }
+  .ql-snow .ql-editor h2 {
+    font-size: 1rem;
   }
 `;
 
