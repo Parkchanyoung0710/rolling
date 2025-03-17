@@ -168,10 +168,10 @@ function CreateAtCardList() {
         );
 
         const updatedRecipients = sortedRecipients.map((recipient) => {
-          const images = recipient.recentMessages?.slice(0, 3) || []; // recentMessages가 undefined일 경우 빈 배열 반환
+          const images = recipient.recentMessages?.slice(0, 3) || [];
           const imageUrls = images
             .map((msg) => msg.profileImageURL)
-            .filter(Boolean); // undefined 방지
+            .filter(Boolean);
           return {
             ...recipient,
             profileImages: imageUrls,
