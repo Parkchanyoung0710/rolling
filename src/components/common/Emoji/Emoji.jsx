@@ -3,16 +3,20 @@ import EmojiPicker from "emoji-picker-react";
 import styled from "styled-components";
 import EmojiIcon from "../../../assets/images/emoji.png";
 import toggle from "../../../assets/images/toggle.png";
+import recipientsService from "../../../api/services/recipientsService";
+import { useParams } from "react-router-dom";
 
 const MAX_EMOJIS = 8;
 const TOP_EMOJIS = 3;
 
-function Emoji() {
+function Emoji({ name, profileImageURL, cardContent }) {
   const [showPicker, setShowPicker] = useState(false);
   const [emojiMap, setEmojiMap] = useState({});
   const [showAllEmojis, setShowAllEmojis] = useState(false);
+  const [selected, setSelected] = useState(0);
   const moreEmojisRef = useRef(null);
   const pickerRef = useRef(null);
+  const { id } = useParams();
 
   const handleClickOutside = (event, ref, setter) => {
     if (ref.current && !ref.current.contains(event.target)) {
@@ -33,15 +37,67 @@ function Emoji() {
     };
   }, []);
 
-  function handleEmojiSelect(emojiObject) {
+  // 이모티콘 추가 및 상태 업데이트
+  function handleEmojiSelect(emojiObject, event) {
+    const emoji = emojiObject.emoji;
+    const type = emojiObject.name || "reaction";
+
     setEmojiMap((prevMap) => {
       const updatedMap = { ...prevMap };
-      const emoji = emojiObject.emoji;
-      updatedMap[emoji] = (updatedMap[emoji] || 0) + 1;
+      updatedMap[emoji] = updatedMap[emoji] ? updatedMap[emoji] + 1 : 1;
+
       return updatedMap;
     });
-    setShowPicker(false);
   }
+
+  // 서버에 이모티콘 전송
+  const sendReactionToServer = async (updatedMap) => {
+    if (!id) {
+      console.error("ID가 정의되지 않았습니다.");
+      return;
+    }
+
+    try {
+      const sortedReactions = Object.entries(updatedMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, TOP_EMOJIS)
+        .map(([emoji, count]) => ({
+          id: id,
+          emoji: emoji,
+          count: count,
+          action: count > 1 ? "increase" : "decrease",
+        }));
+
+      const requestBody = {
+        name: name || "Unknown", // name이 없을 경우 기본값 설정
+        profileImageURL: profileImageURL || "https://default-avatar.png",
+        backgroundColor: selected === 0 && cardContent ? cardContent : "beige",
+        reactionCount: Object.values(updatedMap).reduce(
+          (sum, count) => sum + count,
+          0
+        ),
+        topReactions: sortedReactions,
+        team: "14-8",
+      };
+
+      console.log("Sending request with body:", requestBody);
+
+      // 서버로 요청 보내기
+      const response = await recipientsService.postRecipientsReactions(
+        id,
+        requestBody
+      );
+      console.log("이모티콘 데이터 전송 성공:", response);
+    } catch (error) {
+      console.error("이모티콘 데이터 전송 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(emojiMap).length > 0) {
+      sendReactionToServer(emojiMap);
+    }
+  }, [emojiMap]);
 
   const sortedEmojiMap = Object.entries(emojiMap)
     .sort((a, b) => b[1] - a[1])

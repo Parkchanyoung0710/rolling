@@ -1,5 +1,4 @@
 import requestor from "../client/requestor";
-
 class RecipientsService {
   getRecipients() {
     return requestor.get(`/14-8/recipients/`);
@@ -37,7 +36,7 @@ class RecipientsService {
 
   getRecipientsReactions(id, limit, offset) {
     return requestor.get(
-      `/recipients/${id}/reactions/?limit=${limit}&offset=${offset}`
+      `/14-8/recipients/${id}/reactions/?limit=${limit}&offset=${offset}`
     );
   }
 
@@ -46,6 +45,7 @@ class RecipientsService {
       ...body,
       team: "14-8",
     };
+
     return requestor.post(`/14-8/recipients/${id}/reactions/`, requestBody);
   }
 }
