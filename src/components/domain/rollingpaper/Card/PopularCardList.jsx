@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import recipientsService from "../../../../api/services/recipientsService";
 import ArrowButton from "../../../common/Button/ArrowButton";
 import { useNavigate } from "react-router-dom";
-
 const BoneWrap = styled.div`
   width: 1160px;
   position: relative;
@@ -26,6 +25,7 @@ const Bone = styled.div`
   width: fit-content;
   transition: transform 0.5s ease;
   transform: translateX(${(props) => props.scrollPosition}px);
+  position: relative;
 `;
 
 const BackgroundWrap = styled.div.withConfig({
@@ -119,37 +119,36 @@ const WritedText = styled.div`
 `;
 
 const ArrowButtonDisplay = styled.div`
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
+align-items: center;
+   
+    transform: translateY(40%);
+    z-index: 2;
+    transform: matrix(1, 0, 0, 1, 0, 108);
+    transition: opacity 0.3s ease;
+}
 `;
-
 const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
-  position: absolute;
-  left: 186px; // 왼쪽에 위치하도록 설정
-  top: 23%;
-  transform: translateY(-50%);
-  z-index: 1;
   display: ${({ show }) => (show ? "block" : "none")};
+  position: relative;
+  left: 38px;
+  top: 23%;
+  transform: translateY(42%);
+  z-index: 1;
 `;
 
 const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
-  position: absolute;
-  right: 186px; // 오른쪽에 위치하도록 설정
+  position: relative;
+  right: 38px;
   top: 23%;
-  transform: translateY(-50%);
+  transform: translateY(42%);
   z-index: 1;
-  display: ${({ show }) => (show ? "block" : "none")};
+  display: block;
 `;
-
 function CreateAtCardList() {
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const cardWidth = 295;
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
   const colorMap = {
     beige: "#FFE2AD",
     purple: "#ECD9FF",
@@ -168,10 +167,10 @@ function CreateAtCardList() {
         );
 
         const updatedRecipients = sortedRecipients.map((recipient) => {
-          const images = recipient.recentMessages?.slice(0, 3) || []; // recentMessages가 undefined일 경우 빈 배열 반환
+          const images = recipient.recentMessages?.slice(0, 3) || [];
           const imageUrls = images
             .map((msg) => msg.profileImageURL)
-            .filter(Boolean); // undefined 방지
+            .filter(Boolean);
           return {
             ...recipient,
             profileImages: imageUrls,

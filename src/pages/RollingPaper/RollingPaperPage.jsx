@@ -159,11 +159,13 @@ function RollingPaperDetailPage() {
         <DivWrap>
           <Card postData={postData} />
           {messages?.map((message) => (
-            <CardWrite
-              key={message.id}
-              message={message}
-              fontFamily={message.font}
-            />
+            <div key={message.id}>
+              <CardWrite
+                key={message.id}
+                message={message}
+                fontFamily={message.font}
+              />
+            </div>
           ))}
           {messages?.length > 0 && <div id="last-card"></div>}
         </DivWrap>
