@@ -35,9 +35,11 @@ const BackgroundWrap = styled.div.withConfig({
 function RollingPaperDetailPage() {
   const { id } = useParams();
   const postData = null;
-  const [selectedRecipient, setSelectedRecipient] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isRecipientLoading, setIsRecipientLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [recipientData, setRecipientData] = useState({});
+
   const [messages, setMessages] = useState([]);
   const colorMap = {
     beige: "#FFE2AD",
@@ -53,14 +55,14 @@ function RollingPaperDetailPage() {
     try {
       const limit = 10;
       const offset = (page - 1) * limit;
-      const response = await recipientsService.getRecipientsMessages(
-        id,
-        limit,
-        offset
-      );
+
+      const [messagesResponse, recipientResponse] = await Promise.all([
+        recipientsService.getRecipientsMessages(id, limit, offset),
+        recipientsService.getRecipientsId(id),
+      ]);
 
       setMessages((prevMessages) => {
-        const newMessages = response.data.results;
+        const newMessages = messagesResponse.data.results;
 
         const uniqueMessages = [
           ...prevMessages,
@@ -73,47 +75,26 @@ function RollingPaperDetailPage() {
         return uniqueMessages;
       });
 
+      setRecipientData(recipientResponse.data);
+
       setLoading(false);
+      setIsRecipientLoading(false);
     } catch (error) {
-      console.error("메시지 데이터를 가져오지 못했습니다:", error);
       setLoading(false);
     }
   };
 
-  // recipients
-  const fetchRecipientData = async () => {
-    try {
-      const response = await recipientsService.getRecipients(
-        `/14-8/recipients/`
-      );
-      const foundRecipient = response.data.results.find(
-        (recipient) => recipient.id === Number(id)
-      );
-      setSelectedRecipient(foundRecipient);
-    } catch (error) {
-      console.error("받는 사람 데이터를 가져오지 못했습니다:", error);
-    }
-  };
   // 메시지 로드 함수
   const loadMoreMessages = () => {
     if (loading) return;
     setLoading(true);
     setPage((prev) => prev + 1);
   };
-  // id 로드
+
   useEffect(() => {
-    if (id) {
-      fetchRecipientData();
-    }
-  }, [id]);
-  // 메세지 로드
-  useEffect(() => {
-    if (!loading) {
-      const timer = setTimeout(() => {
-        fetchMessages(page);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
+    if (!id) return;
+
+    fetchMessages(page);
   }, [page, loading]);
 
   // 밑에 스크롤 할 수 있음음
@@ -141,19 +122,22 @@ function RollingPaperDetailPage() {
     };
   }, []);
 
-  const backgroundColor = selectedRecipient
-    ? colorMap[selectedRecipient.backgroundColor] || "#FFFFFF"
-    : "#FFFFFF";
-  const backgroundImageURL = selectedRecipient
-    ? selectedRecipient.backgroundImageURL || null
-    : null;
+  if (loading || isRecipientLoading) return <div>로딩중...</div>;
 
   return (
     <BackgroundWrap
-      bgColor={backgroundColor}
-      backgroundImageURL={backgroundImageURL}
+      bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
+      backgroundImageURL={recipientData?.backgroundImageUrl ?? null}
     >
-      <InformationBar />
+      <InformationBar
+        name={recipientData?.name ?? ""}
+        count={recipientData?.messageCount ?? 0}
+        profileImages={(recipientData?.recentMessages ?? []).map(
+          ({ profileImageURL }) => profileImageURL
+        )}
+        topReactions={recipientData?.topReactions ?? []}
+        setRecipientData={setRecipientData}
+      />
       <CardContainer>
         <DivWrap>
           <Card postData={postData} />

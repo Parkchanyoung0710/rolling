@@ -41,12 +41,7 @@ class RecipientsService {
   }
 
   postRecipientsReactions(id, body) {
-    const requestBody = {
-      ...body,
-      team: "14-8",
-    };
-
-    return requestor.post(`/14-8/recipients/${id}/reactions/`, requestBody);
+    return requestor.post(`/14-8/recipients/${id}/reactions/`, body);
   }
 }
 
