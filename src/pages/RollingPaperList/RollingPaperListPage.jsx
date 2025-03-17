@@ -25,7 +25,6 @@ const Title = styled.div`
   display: flex;
   width: -webkit-fill-available;
   justify-content: left;
-  padding-left: 66px;
 `;
 
 const ButtonWrapper = styled.div`

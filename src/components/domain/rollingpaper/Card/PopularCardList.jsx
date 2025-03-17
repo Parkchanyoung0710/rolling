@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import recipientsService from "../../../../api/services/recipientsService";
 import ArrowButton from "../../../common/Button/ArrowButton";
+import { useNavigate } from "react-router-dom";
 
 const BoneWrap = styled.div`
   width: 1160px;
@@ -44,6 +45,19 @@ const BackgroundWrap = styled.div.withConfig({
   color: ${({ backgroundImageURL }) =>
     backgroundImageURL ? "#ffffff;" : "#000000"};
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+
+  &:hover {
+    transform: scale(1);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
+  }
 `;
 const TextDisplay = styled.div`
   display: flex;
@@ -114,26 +128,35 @@ const ArrowButtonDisplay = styled.div`
 `;
 
 const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
-  position: relative;
-  right: -38px;
-  top: 118px;
+  position: absolute;
+  left: 186px; // 왼쪽에 위치하도록 설정
+  top: 23%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: ${({ show }) => (show ? "block" : "none")};
 `;
 
 const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
-  position: relative;
-  left: -38px;
-  top: 118px;
+  position: absolute;
+  right: 186px; // 오른쪽에 위치하도록 설정
+  top: 23%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: ${({ show }) => (show ? "block" : "none")};
 `;
-function PopularCardList() {
+
+function CreateAtCardList() {
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const cardWidth = 295;
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const colorMap = {
     beige: "#FFE2AD",
     purple: "#ECD9FF",
     blue: "#B1E4FF",
     green: "#D0F5C3",
   };
+
   useEffect(() => {
     const loadRecipients = async () => {
       try {
@@ -175,9 +198,21 @@ function PopularCardList() {
   const handlePrev = () => {
     setScrollPosition((prev) => (prev < 0 ? prev + 2 * cardWidth : 0));
   };
+
+  const handleCardClick = (id) => {
+    // 클릭 시 해당 id로 페이지 이동
+    navigate(`/post/${id}`);
+  };
+
+  // 좌측 버튼 숨기기 조건
+  const showLeftButton = scrollPosition !== 0;
+  // 우측 버튼 숨기기 조건
+  const showRightButton =
+    scrollPosition > -(selectedRecipients.length * cardWidth - 1160);
+
   return (
     <>
-      <LeftArrowButtonDisplay>
+      <LeftArrowButtonDisplay show={showLeftButton}>
         <ArrowButton
           direction="left"
           onClick={handlePrev}
@@ -187,10 +222,12 @@ function PopularCardList() {
       <BoneWrap>
         <BoneContainer>
           <Bone scrollPosition={scrollPosition}>
-            {selectedRecipients.map((recipient) => (
+            {selectedRecipients.map((recipient, index) => (
               <BackgroundWrap
+                key={index}
                 bgColor={colorMap[recipient.backgroundColor] || "#FFFFFF"}
                 backgroundImageURL={recipient.backgroundImageURL || null}
+                onClick={() => handleCardClick(recipient.id)} // 클릭 시 해당 id로 이동
               >
                 <div>
                   <TextDisplay>
@@ -211,7 +248,6 @@ function PopularCardList() {
                       <Avatar>+{recipient.messageCount - 3}</Avatar>
                     )}
                   </WritedContainer>
-
                   <WriteCountDisplay>
                     <WriteCount>{recipient.messageCount}</WriteCount>
                     <WritedText>명이 작성했어요!</WritedText>
@@ -222,12 +258,12 @@ function PopularCardList() {
           </Bone>
         </BoneContainer>
       </BoneWrap>
-      <RightArrowButtonDisplay>
+      <RightArrowButtonDisplay show={showRightButton}>
         <ArrowButton
           direction="right"
           onClick={handleNext}
           disabled={
-            selectedRecipients.length * cardWidth + scrollPosition <= 1160
+            scrollPosition <= -(selectedRecipients.length * cardWidth - 1160)
           }
         />
       </RightArrowButtonDisplay>
@@ -235,4 +271,4 @@ function PopularCardList() {
   );
 }
 
-export default PopularCardList;
+export default CreateAtCardList;
