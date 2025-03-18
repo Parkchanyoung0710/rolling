@@ -7,7 +7,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../../../styles/font.css";
 import Modal from "./Modal";
-
+import Badge from "../../../common/Badge/Badge";
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
 Font.whitelist = [
@@ -21,7 +21,7 @@ const EditorWrapper = styled.div.withConfig({
 })`
   .ql-editor {
     width: 336px;
-    min-height: 106px;
+    max-height: 106px;
     font-size: 1rem !important;
     line-height: 28px;
     padding: 16px 0;
@@ -153,7 +153,7 @@ const CardWrite = ({ message, onDelete }) => {
                 <From>From.</From>
                 <Name>{message.sender}</Name>
               </NameWrap>
-              <Tag>{message.relationship}</Tag>
+              <Badge relationship={message.relationship} />
             </div>
           </ProfileWrap>
           {onDelete && (

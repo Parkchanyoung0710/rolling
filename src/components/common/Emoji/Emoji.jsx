@@ -3,16 +3,20 @@ import EmojiPicker from "emoji-picker-react";
 import styled from "styled-components";
 import EmojiIcon from "../../../assets/images/emoji.png";
 import toggle from "../../../assets/images/toggle.png";
+import recipientsService from "../../../api/services/recipientsService";
+import { useParams } from "react-router-dom";
 
 const MAX_EMOJIS = 8;
 const TOP_EMOJIS = 3;
 
-function Emoji() {
+function Emoji({ topReactions = [], setRecipientData }) {
   const [showPicker, setShowPicker] = useState(false);
-  const [emojiMap, setEmojiMap] = useState({});
+
   const [showAllEmojis, setShowAllEmojis] = useState(false);
+
   const moreEmojisRef = useRef(null);
   const pickerRef = useRef(null);
+  const { id } = useParams();
 
   const handleClickOutside = (event, ref, setter) => {
     if (ref.current && !ref.current.contains(event.target)) {
@@ -33,25 +37,45 @@ function Emoji() {
     };
   }, []);
 
+  // 이모티콘 추가 및 상태 업데이트
   function handleEmojiSelect(emojiObject) {
-    setEmojiMap((prevMap) => {
-      const updatedMap = { ...prevMap };
-      const emoji = emojiObject.emoji;
-      updatedMap[emoji] = (updatedMap[emoji] || 0) + 1;
-      return updatedMap;
-    });
-    setShowPicker(false);
+    const { emoji } = emojiObject;
+    const type = "increase";
+
+    sendReactionToServer({ emoji, type });
   }
 
-  const sortedEmojiMap = Object.entries(emojiMap)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, MAX_EMOJIS);
+  const sendReactionToServer = async ({ emoji, type }) => {
+    try {
+      const response = await recipientsService.postRecipientsReactions(id, {
+        emoji,
+        type,
+      });
+
+      await fetchUpdatedReactions();
+    } catch (error) {
+      console.error("Error sending reaction:", error);
+    }
+  };
+
+  const fetchUpdatedReactions = async () => {
+    try {
+      const response = await recipientsService.getRecipientsReactions(id);
+
+      setRecipientData((prev) => ({
+        ...prev,
+        topReactions: response.data.results,
+      }));
+    } catch (error) {
+      console.error("Error fetching reactions:", error);
+    }
+  };
 
   return (
     <ServiceContainer>
       <Header>
         <TopEmojisContainer>
-          {sortedEmojiMap.slice(0, TOP_EMOJIS).map(([emoji, count]) => (
+          {topReactions.slice(0, TOP_EMOJIS).map(({ emoji, count }) => (
             <TopEmojiItem key={emoji}>
               <EmojiImage>{emoji}</EmojiImage>
               <EmojiCount>{count}</EmojiCount>
@@ -60,7 +84,7 @@ function Emoji() {
         </TopEmojisContainer>
 
         <ActionsContainer>
-          {sortedEmojiMap.length > TOP_EMOJIS && (
+          {topReactions.length > TOP_EMOJIS && (
             <ShowMoreButton onClick={() => setShowAllEmojis(!showAllEmojis)}>
               <Icon src={toggle} alt="더 보기" />
             </ShowMoreButton>
@@ -86,7 +110,7 @@ function Emoji() {
       {showAllEmojis && (
         <AllEmojisContainer ref={moreEmojisRef}>
           <MoreEmojisWrapper>
-            {sortedEmojiMap.map(([emoji, count]) => (
+            {topReactions.map(({ emoji, count }) => (
               <AllEmojiItem key={emoji}>
                 <EmojiImage>{emoji}</EmojiImage>
                 <EmojiCount>{count}</EmojiCount>
