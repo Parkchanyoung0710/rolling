@@ -1,8 +1,17 @@
 import { css, styled } from "styled-components";
 
-import plusIcon from "../../../assets/images/plus.png";
-import trashIcon from "../../../assets/images/trash.png";
-import shareIcon from "../../../assets/images/share.png";
+import {
+  Add,
+  ArrowDown,
+  Check,
+  Deleted,
+  Plus,
+  Share,
+  Close,
+  Complete,
+  ArrowLeft,
+  ArrowRight,
+} from "../../../assets/images/icon/IconIndex";
 
 const ButtonWrapper = styled.button`
   display: flex;
@@ -94,9 +103,16 @@ const focusStyles = {
 };
 
 const imageMap = {
-  plus: plusIcon,
-  trash: trashIcon,
-  share: shareIcon,
+  add: Add,
+  arrowDown: ArrowDown,
+  check: Check,
+  trash: Deleted,
+  plus: Plus,
+  share: Share,
+  close: Close,
+  complete: Complete,
+  arrowLeft: ArrowLeft,
+  arrowRight: ArrowRight,
 };
 
 const Button = ({
@@ -116,13 +132,11 @@ const Button = ({
       onClick={onClick}
       disabled={state === "disabled"}
     >
-      {image && (
-        <img
-          src={imageMap[image]}
-          alt={image}
-          style={{ width: 24, height: 24 }}
-        />
-      )}
+      {image &&
+        (() => {
+          const IconComponent = imageMap[image];
+          return <IconComponent style={{ width: 24, height: 24 }} />;
+        })()}
       {children}
     </ButtonWrapper>
   );

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-import arrowLeftIcon from "../../../assets/images/arrow-left.png";
-import arrowRightIcon from "../../../assets/images/arrow-right.png";
+import { ArrowLeft, ArrowRight } from "../../../assets/images/icon/IconIndex";
 
 const ArrowButtonWrapper = styled.button`
   display: flex;
@@ -10,12 +9,7 @@ const ArrowButtonWrapper = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.5
-  ); // 색깔만 바꿨어요 조금만 더 투명으로
+  background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid ${({ theme }) => theme.colors.grayScale[300]};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(4px);
@@ -27,8 +21,8 @@ const ArrowButtonWrapper = styled.button`
 `;
 
 const imageMap = {
-  left: arrowLeftIcon,
-  right: arrowRightIcon,
+  left: ArrowLeft,
+  right: ArrowRight,
 };
 
 const ArrowButton = ({ direction = "left", onClick }) => {
