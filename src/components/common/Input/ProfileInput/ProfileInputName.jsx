@@ -62,17 +62,18 @@ const ErrorMessage = styled.div`
 function ProfileInputName({ value, onChange, onError }) {
   const [hasError, setHasError] = useState(false);
 
+  // 값이 변경될 때마다 에러 초기화
   useEffect(() => {
-    if (value) {
+    if (value && (value.length >= 2 && value.length <= 8)) {
       setHasError(false);
-      onError(false);
+      onError(false); // 에러 상태를 부모로 전달
     }
   }, [value, onError]);
 
   const handleBlur = () => {
-    if (!value) {
-      setHasError(true);
-      onError(true);
+    if (!value || value.length < 2 || value.length > 8) {
+      setHasError(true); // 이름 길이가 2글자 미만이거나 8글자 초과이면 에러 상태로 변경
+      onError(true); // 에러 상태를 부모로 전달
     }
   };
 
@@ -93,7 +94,7 @@ function ProfileInputName({ value, onChange, onError }) {
         />
       </ToLabel>
       {hasError && (
-        <ErrorMessage>두 글자 이상 이름을 입력해 주세요.</ErrorMessage>
+        <ErrorMessage>이름은 2글자 이상, 8글자 이하로 입력해주세요.</ErrorMessage>
       )}
     </>
   );

@@ -51,7 +51,8 @@ function Input() {
     setName(value);
   };
 
-  const condition = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
+  const condition = name.length >= 2 && name.length <= 8 && !!cardContent && !hasError;
+ // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
     setSelected(index);
@@ -81,23 +82,7 @@ function Input() {
       });
   }
   console.log("cardContent 값.:", cardContent);
-  console.log(name);
-  console.log(
-    "name:",
-    name,
-    "name.length >= 2:",
-    name.length >= 2,
-    "cardContent:",
-    cardContent,
-    "!!cardContent:",
-    !!cardContent,
-    "hasError:",
-    hasError,
-    "!hasError:",
-    !hasError,
-    "condition:",
-    condition
-  );
+
 
   return (
     <Bone>

@@ -7,7 +7,7 @@ const Bone = styled.div`
   background-color: #ffffff;
   min-height: calc(100vh - 65px);
   width: 100%;
-
+  padding: 47px 24px;
   @media (max-width: 768px) {
     padding: 49px 24px;
   }
