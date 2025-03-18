@@ -33,7 +33,7 @@ const ProfileImg = styled.img`
   border-radius: 50%;
 `;
 
-const ProfileCoiceText = styled.div`
+const ProfileChoiceText = styled.div`
   ${(props) => textStyle(16, 400)(props)}
 `;
 
@@ -96,7 +96,7 @@ function ProfileInputChoiceImage({ onImageSelect }) {
       <ProfileBox>
         <ProfileImg src={selectedImg || images[0]} />
         <div>
-          <ProfileCoiceText>프로필 이미지를 선택해주세요!</ProfileCoiceText>
+          <ProfileChoiceText>프로필 이미지를 선택해주세요!</ProfileChoiceText>
           <ProfileImgChoice>
             {images.map((image, index) => (
               <Image
