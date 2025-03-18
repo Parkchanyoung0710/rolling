@@ -13,9 +13,7 @@ import Button from "../../Button/Button";
 import recipientsService from "../../../../api/services/recipientsService"; // post 해줘야 함
 
 export const Bone = styled.div`
-  margin: 3.562rem auto;
   width: 45rem;
-  height: 33.875rem;
 `;
 
 const Picker = styled.div`

@@ -4,7 +4,9 @@ import styled from "styled-components";
 const Bone = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  background-color: #ffffff;
+  padding: 47px 600px;
+  min-height: calc(100vh - 65px);
 `;
 
 function MessagePage() {
