@@ -6,8 +6,9 @@ import { formatDate } from "../../../../utils/datetime";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../../../styles/font.css";
-import Modal from "./Modal";
 import Badge from "../../../common/Badge/Badge";
+import Modal from "./Modal"
+
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
 Font.whitelist = [
@@ -145,6 +146,7 @@ const CardWrite = ({ message, onDelete }) => {
 
   const textAlign = "left";
   const fontFamily = message.font || "Noto Sans KR";
+    console.log(fontFamily)
   return (
     <>
       <CardContainer onClick={handleCardClick}>
@@ -207,6 +209,7 @@ const CardWrite = ({ message, onDelete }) => {
           name={message.sender}
           tag={message.relationship}
           content={message.content}
+          font={fontFamily}
         />
       )}
     </>
