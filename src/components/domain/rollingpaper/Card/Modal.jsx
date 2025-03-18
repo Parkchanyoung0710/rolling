@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import { textStyle } from "../../../../styles/textStyle";
 import "../../../../styles/font.css";
+import Badge from "../../../common/Badge/Badge";
 
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
@@ -164,13 +165,6 @@ const Name = styled.div`
   margin-right: 8px;
 `;
 
-const Tag = styled.div`
-  background: #e0f7fa;
-  color: #00796b;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-`;
 
 const Divider = styled.div`
   position: absolute;
@@ -181,7 +175,7 @@ const Divider = styled.div`
   background: #eeeeee;
 `;
 
-const Modal = ({ onClose, date, imageUrl, name, tag, content, font }) => {
+const Modal = ({ onClose, date, imageUrl, name,tag , content, font }) => {
   const textAlign = "left";
   console.log(font)
   const fontFamily = font || "Noto Sans KR";
@@ -194,7 +188,7 @@ const Modal = ({ onClose, date, imageUrl, name, tag, content, font }) => {
           </ImageContainer>
           <div>
             <Name>{name}</Name>
-            <Tag>{tag}</Tag>
+            <Badge relationship={tag} />
           </div>
         </InfoContainer>
         <DateContainer>{date}</DateContainer>
@@ -226,7 +220,7 @@ const Modal = ({ onClose, date, imageUrl, name, tag, content, font }) => {
                       "list",
                       "font",
             ]}
-            style={{ fontFamily: fontFamily }} 
+              style={{ fontFamily: fontFamily }} 
                   />
                 </EditorWrapper>
         <ConfirmButton onClick={onClose}>확인</ConfirmButton>
