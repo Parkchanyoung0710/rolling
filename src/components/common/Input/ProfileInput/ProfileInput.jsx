@@ -82,6 +82,7 @@ function ProfileInput() {
         requestBody
       );
       console.log("서버 응답:", response);
+
       navigate(`/post/${numericId}`); // 숫자형 id로 이동
     } catch (error) {
       console.error("서버 요청 실패:", error.response?.data || error.message);
