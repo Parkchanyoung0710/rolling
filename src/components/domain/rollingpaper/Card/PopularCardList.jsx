@@ -129,29 +129,27 @@ const WritedText = styled.div`
 `;
 
 const ArrowButtonDisplay = styled.div`
-  align-items: center;
-  transform: translateY(40%);
-  z-index: 2;
-  transform: matrix(1, 0, 0, 1, 0, 108);
-  transition: opacity 0.3s ease;
+    align-items: center;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
 `;
-
 const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
   display: ${({ show }) => (show ? "block" : "none")};
-  position: relative;
-  left: 38px;
-  top: 23%;
-  transform: translateY(42%);
+  position: absolute;
+  left: 22.5rem;
+  top: 28%;
+  transform: translateY(0%);
   z-index: 1;
 `;
 
 const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
-  position: relative;
-  right: 38px;
-  top: 23%;
-  transform: translateY(42%);
+  display: ${({ show }) => (show ? "block" : "none")};
+  position: absolute;
+  right: 22.5rem;
+  top: 28%;
+  transform: translateY(0%);
   z-index: 1;
-  display: block;
 `;
 const TopEmojisContainer = styled.div`
   display: flex;
