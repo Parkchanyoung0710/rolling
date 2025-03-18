@@ -13,6 +13,9 @@ const Bone = styled.div`
   margin: 3.125rem auto 3.875rem;
   width: 44.813rem;
   height: auto;
+  @media (max-width: 768px) {
+    width: auto;
+  }
 `;
 
 const RelationText = styled.div`
@@ -25,7 +28,6 @@ const RelationText = styled.div`
 
 const DropdownBox = styled.div`
   margin: 50px 0;
-  width: 20rem;
   height: 6.125rem;
 `;
 

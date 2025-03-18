@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { textStyle } from "../../../../styles/textStyle";
 
 const TextBone = styled.div`
-  height: 4.125rem;
   margin: 3.125rem auto 1.5rem 0;
 `;
 const BackgroundText = styled.div`
@@ -20,6 +19,9 @@ const BackgroundChoice = styled.div`
   display: flex;
   align-items: center;
   color: #555555;
+  @media (max-width: 368px) {
+    ${(props) => textStyle(15, 400)(props)}
+  }
 `;
 
 // ChoiceText 컴포넌트

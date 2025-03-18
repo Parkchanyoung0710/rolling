@@ -129,7 +129,7 @@ function RollingPaperDetailPage() {
   return (
     <BackgroundWrap
       bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
-      backgroundImageURL={recipientData?.backgroundImageUrl ?? null}
+      backgroundImageURL={recipientData?.backgroundImageURL ?? null}
     >
       <InformationBar
         name={recipientData?.name ?? ""}

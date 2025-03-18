@@ -13,13 +13,20 @@ import Button from "../../Button/Button";
 import recipientsService from "../../../../api/services/recipientsService"; // post 해줘야 함
 
 export const Bone = styled.div`
-  width: 45rem;
+  width: 100%;
+  max-width: 720px;
+
+  @media (max-width: 768px) {
+    padding: 0;
+  }
+
+  @media (max-width: 360px) {
+    padding: 0;
+  }
 `;
 
 const Picker = styled.div`
-  width: 45rem;
-  height: 10.5rem;
-  margin-bottom: 4.3125rem;
+  width:100%;
 `;
 
 const StyledButton = styled(Button)`

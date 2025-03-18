@@ -16,11 +16,15 @@ const ToLabel = styled.label.withConfig({
 })`
   display: block;
   border: 1px solid #cccccc;
-  width: 45rem;
+
   height: 3.125rem;
   border-radius: 0.5rem;
   position: relative;
-  /* input이 포커스를 받으면 label에 스타일 적용 */
+
+  /* 반응형 모바일 */
+  @media (max-width: 360px) {
+    width: 100%;
+  }
   &:focus-within {
     border: 1px solid #00a2fe;
     box-shadow: 0 0 5px rgba(0, 162, 254, 0.5);
@@ -38,10 +42,14 @@ const ToInput = styled.input`
   ${(props) => textStyle(16, 400)(props)}
   border: none;
   color: #555555;
-  width: 43rem;
+width: calc(100% - 2rem);
   height: 1.625rem;
   margin: 0.75rem 1rem;
   outline: none;
+  /* 반응형 모바일 */
+  @media (max-width: 360px) {
+    width: calc(100% - 2rem);
+  }
 `;
 
 const ErrorMessage = styled.div`

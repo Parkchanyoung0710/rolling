@@ -19,7 +19,11 @@ const StyledButton = styled(Button)`
     cursor: not-allowed;
   }
 `;
+const Hello = styled.div`
+  width: 100%;
+ 
 
+`;
 function ProfileInput() {
   const navigate = useNavigate();
   const { id } = useParams(); // URL에서 id를 가져옵니다.
@@ -103,6 +107,7 @@ function ProfileInput() {
         onError={setHasError}
         onFontSelect={setSelectedFont}
       />
+      
       <StyledButton
         variant="primary"
         size={56}
@@ -111,7 +116,8 @@ function ProfileInput() {
         state={condition ? "enabled" : "disabled"}
       >
         생성하기
-      </StyledButton>
+        </StyledButton>
+     
     </Bone>
   );
 }

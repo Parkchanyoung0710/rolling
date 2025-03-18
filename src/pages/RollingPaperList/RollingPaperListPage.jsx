@@ -47,17 +47,13 @@ function RollingPaperListPage() {
     <Container>
       <PageWrapper>
         <Title>인기 롤링 페이퍼🔥</Title>
-
         <StyledCardList>
           <PopularCardList />
         </StyledCardList>
-
         <Title>최근에 만든 롤링 페이퍼⭐</Title>
-
         <StyledCardList>
           <CreateAtCardList />
         </StyledCardList>
-
         <ButtonWrapper>
           <Button
             variant="primary"
