@@ -128,13 +128,15 @@ const ContentContainer = styled.div`
   border-radius: 8px;
   padding: 16px;
   box-sizing: border-box;
-  overflow-y: auto; /* 스크롤바 추가 */
+  overflow-y: auto; /* 세로 스크롤바 추가 */
+  overflow-x: hidden; /* 가로 스크롤바 숨김 */
   white-space: pre-wrap; /* 줄 바꿈과 공백을 유지하면서 텍스트를 자동으로 줄 바꿈 */
+  word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: #cccccc #ffffff; /* Firefox */
 
   &::-webkit-scrollbar {
-    width: 20px; /* 스크롤바 너비 */
+    width: 4px; /* 스크롤바 너비 */
   }
 
   &::-webkit-scrollbar-track {
@@ -144,7 +146,6 @@ const ContentContainer = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: #cccccc; /* 스크롤바 색상 */
     border-radius: 8px; /* 스크롤바 둥글게 */
-    border: 4px solid #ffffff; /* 스크롤바 테두리 */
   }
 `;
 
@@ -163,7 +164,7 @@ const Modal = ({ onClose, date, imageUrl, name, tag, content }) => {
         </InfoContainer>
         <DateContainer>{date}</DateContainer>
         <Divider />
-        <ContentContainer>{content}</ContentContainer>
+        <ContentContainer dangerouslySetInnerHTML={{ __html: content }} />
         <ConfirmButton onClick={onClose}>확인</ConfirmButton>
       </ModalContainer>
     </Background>

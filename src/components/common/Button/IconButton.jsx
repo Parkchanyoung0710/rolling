@@ -1,7 +1,17 @@
 import styled, { css } from "styled-components";
 
-import plusIcon from "../../../assets/images/plus.png";
-import trashIcon from "../../../assets/images/trash.png";
+import {
+  Add,
+  ArrowDown,
+  Check,
+  Deleted,
+  Plus,
+  Share,
+  Close,
+  Complete,
+  ArrowLeft,
+  ArrowRight,
+} from "../../../assets/images/icon/IconIndex";
 
 const IconButtonWrapper = styled.button`
   padding: 6px;
@@ -27,21 +37,40 @@ const IconButtonWrapper = styled.button`
     css`
       width: ${width}px;
     `}
+
+  ${({ height }) =>
+    height &&
+    css`
+      height: ${height}px;
+    `}
 `;
 
 const imageMap = {
-  plus: plusIcon,
-  trash: trashIcon,
+  add: Add,
+  arrowDown: ArrowDown,
+  check: Check,
+  trash: Deleted,
+  plus: Plus,
+  share: Share,
+  close: Close,
+  complete: Complete,
+  arrowLeft: ArrowLeft,
+  arrowRight: ArrowRight,
 };
 
-const IconButton = ({ image, width, onClick, state = "enabled" }) => {
+const IconButton = ({ image, width, height, onClick, state = "enabled" }) => {
   return (
     <IconButtonWrapper
       onClick={onClick}
       width={width}
+      height={height}
       disabled={state === "disabled"}
     >
-      <img src={imageMap[image]} alt="icon" style={{ width: 24, height: 24 }} />
+      <IconComponent
+        style={{ width: 24, height: 24 }}
+        role="img"
+        aria-label={image || "icon"}
+      />
     </IconButtonWrapper>
   );
 };
