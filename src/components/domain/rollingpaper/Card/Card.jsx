@@ -100,8 +100,6 @@ const Card = () => {
   const handleCardButtonClick = () => {
     navigate(`/post/${id}/message`);
   };
-  console.log(postData);
-  console.log(selectedRecipient);
   return (
     <CardContainer>
       <CircleButton onClick={handleCardButtonClick}>
