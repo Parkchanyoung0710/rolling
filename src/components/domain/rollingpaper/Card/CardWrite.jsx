@@ -6,7 +6,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../../../styles/font.css";
 import Modal from "./Modal";
-
+import Badge from "../../../common/Badge/Badge";
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
 Font.whitelist = [
@@ -148,7 +148,7 @@ const CardWrite = ({ message }) => {
               <From>From.</From>
               <Name>{message.sender}</Name>
             </NameWrap>
-            <Tag>{message.relationship}</Tag>
+            <Badge relationship={message.relationship} />
           </div>
         </Header>
         <EditorWrapper
