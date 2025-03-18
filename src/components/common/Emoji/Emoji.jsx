@@ -6,7 +6,6 @@ import toggle from "../../../assets/images/toggle.png";
 import recipientsService from "../../../api/services/recipientsService";
 import { useParams } from "react-router-dom";
 
-const MAX_EMOJIS = 8;
 const TOP_EMOJIS = 3;
 
 function Emoji({ topReactions = [], setRecipientData }) {

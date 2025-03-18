@@ -19,11 +19,12 @@ const PageWrapper = styled.div`
 `;
 
 const Title = styled.div`
+  font-family: Pretendard;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 10px;
   display: flex;
-  width: -webkit-fill-available;
+  align-items: flex-start;
   justify-content: left;
 `;
 

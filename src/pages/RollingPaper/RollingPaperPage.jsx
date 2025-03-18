@@ -4,7 +4,6 @@ import InformationBar from "../../components/common/InformationBar/InformationBa
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
 import Card from "../../components/domain/rollingpaper/Card/Card";
 import styled from "styled-components";
-
 import recipientsService from "../../api/services/recipientsService"; // get 요청
 
 const CardContainer = styled.div`
@@ -49,7 +48,6 @@ function RollingPaperDetailPage() {
     green: "#D0F5C3",
   };
 
-  // 무한 스크롤 때 사용합니다다
   const observer = useRef(null);
 
   // API 호출 함수
@@ -99,7 +97,6 @@ function RollingPaperDetailPage() {
     fetchMessages(page);
   }, [page, loading]);
 
-  // 밑에 무한 스크롤 할 수 있음
   useEffect(() => {
     if (!observer.current) {
       observer.current = new IntersectionObserver(
