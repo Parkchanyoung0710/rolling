@@ -1,23 +1,19 @@
 import Input from "../../components/common/Input/Input/Input";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 function CreateRollingPaperPage() {
   return (
-    <>
-      <Bone>
-        <Input />
-      </Bone>
-    </>
+    <Bone>
+      <Input />
+    </Bone>
   );
 }
 
 export default CreateRollingPaperPage;
 
-const flexCenter = css`
+const Bone = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
-`;
-
-const Bone = styled.div`
-  ${flexCenter}
+  background-color: #ffffff;
+  padding: 57px 600px;
+  min-height: calc(100vh - 65px);
 `;

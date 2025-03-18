@@ -48,6 +48,7 @@ function RollingPaperDetailPage() {
     green: "#D0F5C3",
   };
 
+  // 무한 스크롤 때 사용합니다다
   const observer = useRef(null);
 
   // API 호출 함수
@@ -97,7 +98,7 @@ function RollingPaperDetailPage() {
     fetchMessages(page);
   }, [page, loading]);
 
-  // 밑에 스크롤 할 수 있음음
+  // 밑에 무한 스크롤 할 수 있음
   useEffect(() => {
     if (!observer.current) {
       observer.current = new IntersectionObserver(
@@ -142,11 +143,13 @@ function RollingPaperDetailPage() {
         <DivWrap>
           <Card postData={postData} />
           {messages?.map((message) => (
-            <CardWrite
-              key={message.id}
-              message={message}
-              fontFamily={message.font}
-            />
+            <div key={message.id}>
+              <CardWrite
+                key={message.id}
+                message={message}
+                fontFamily={message.font}
+              />
+            </div>
           ))}
           {messages?.length > 0 && <div id="last-card"></div>}
         </DivWrap>
