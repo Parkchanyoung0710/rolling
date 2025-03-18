@@ -27,6 +27,12 @@ const IconButtonWrapper = styled.button`
     css`
       width: ${width}px;
     `}
+
+  ${({ height }) =>
+    height &&
+    css`
+      height: ${height}px;
+    `}
 `;
 
 const imageMap = {
@@ -34,11 +40,12 @@ const imageMap = {
   trash: trashIcon,
 };
 
-const IconButton = ({ image, width, onClick, state = "enabled" }) => {
+const IconButton = ({ image, width, height, onClick, state = "enabled" }) => {
   return (
     <IconButtonWrapper
       onClick={onClick}
       width={width}
+      height={height}
       disabled={state === "disabled"}
     >
       <img src={imageMap[image]} alt="icon" style={{ width: 24, height: 24 }} />

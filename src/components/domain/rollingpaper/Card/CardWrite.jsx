@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import IconButton from "../../../common/Button/IconButton";
 import { textStyle } from "../../../../styles/textStyle";
 import { formatDate } from "../../../../utils/datetime";
 import ReactQuill from "react-quill";
@@ -74,6 +75,7 @@ const CardContainer = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid #eeeeee;
   padding-bottom: 15px;
 `;
@@ -122,7 +124,12 @@ const Date = styled.div`
   text-align: left;
 `;
 
-const CardWrite = ({ message }) => {
+const ProfileWrap = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CardWrite = ({ message, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCardClick = () => {
     setIsModalOpen(true);
@@ -139,14 +146,27 @@ const CardWrite = ({ message }) => {
     <>
       <CardContainer onClick={handleCardClick}>
         <Header>
-          <ProfileImage src={message.profileImageURL} alt="Profile" />
-          <div>
-            <NameWrap>
-              <From>From.</From>
-              <Name>{message.sender}</Name>
-            </NameWrap>
-            <Badge relationship={message.relationship} />
-          </div>
+          <ProfileWrap>
+            <ProfileImage src={message.profileImageURL} alt="Profile" />
+            <div>
+              <NameWrap>
+                <From>From.</From>
+                <Name>{message.sender}</Name>
+              </NameWrap>
+              <Badge relationship={message.relationship} />
+            </div>
+          </ProfileWrap>
+          {onDelete && (
+            <IconButton
+              image="trash"
+              width="40"
+              height="40"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(message.id);
+              }}
+            />
+          )}
         </Header>
         <EditorWrapper
           $fontFamily={fontFamily || "Noto Sans KR"}
