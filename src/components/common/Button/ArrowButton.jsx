@@ -26,12 +26,13 @@ const imageMap = {
 };
 
 const ArrowButton = ({ direction = "left", onClick }) => {
+  const IconComponent = imageMap[direction] || ArrowLeft;
   return (
     <ArrowButtonWrapper onClick={onClick}>
-      <img
-        src={imageMap[direction]}
-        alt={`${direction} arrow`}
+      <IconComponent
         style={{ width: 16, height: 16 }}
+        role="img"
+        aria-label={`${direction} arrow`}
       />
     </ArrowButtonWrapper>
   );
