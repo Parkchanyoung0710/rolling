@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import Button from "../Button/Button";
 
-import logo from "../../../assets/images/Rolling-logo.png";
+import { LogoImg } from "../../../assets/images/icon/IconIndex";
 import styled from "styled-components";
 
 const NavbarWrapper = styled.nav`
@@ -22,7 +22,7 @@ const NavbarContainer = styled.nav`
   padding: 11px 24px;
 `;
 
-const Logo = styled.img`
+const StyledLogo = styled(LogoImg)`
   display: flex;
   width: 106px;
   cursor: pointer;
@@ -36,7 +36,7 @@ function Navbar() {
     <NavbarWrapper>
       <NavbarContainer>
         <Link to="/">
-          <Logo src={logo} alt="Rolling Logo" />
+          <StyledLogo alt="Rolling Logo" />
         </Link>
         {!isPostPage && (
           <Link to="/post">
