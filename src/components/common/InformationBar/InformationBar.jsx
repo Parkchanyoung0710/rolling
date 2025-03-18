@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+
 import Emoji from "../Emoji/Emoji";
 import styled from "styled-components";
 import {
@@ -7,37 +7,19 @@ import {
   Complete,
   Close,
 } from "../../../assets/images/icon/IconIndex.jsx";
-import recipientsService from "../../../api/services/recipientsService.jsx";
 
-function InformationBar() {
-  const { id } = useParams();
-  const [name, setName] = useState("");
-  const [messageCount, setMessageCount] = useState(0);
-  const [profileImages, setProfileImages] = useState([]);
-
+function InformationBar({
+  name,
+  profileImages,
+  count,
+  topReactions,
+  setRecipientData,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
   const [showToast, setShowToast] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const buttonRef = useRef(null);
-
-  useEffect(() => {
-    if (!id) return;
-
-    recipientsService
-      .getRecipientsId(id)
-      .then(({ data }) => {
-        setName(data.name);
-        setMessageCount(data.messageCount);
-
-        const images = data.recentMessages.slice(0, 3);
-        const imageUrls = images.map((msg) => msg.profileImageURL);
-        setProfileImages(imageUrls);
-      })
-      .catch((error) => console.error("Error data", error))
-      .finally(() => setIsLoading(false));
-  }, [id]);
 
   const shareToKakao = () => {
     if (window.Kakao) {
@@ -112,9 +94,9 @@ function InformationBar() {
               </Avatar>
             ))}
 
-            {messageCount > 3 && <Avatar>+{messageCount - 3}</Avatar>}
+            {count > 3 && <Avatar>+{count - 3}</Avatar>}
 
-            <WriteCount>{messageCount}</WriteCount>
+            <WriteCount>{count}</WriteCount>
             <WritedText>명이 작성했어요!</WritedText>
           </WritedContainer>
 
@@ -122,7 +104,13 @@ function InformationBar() {
             <Separator />
           </SeparatorContainer>
 
-          <Emoji type="" count={5} />
+          <Emoji
+            type=""
+            count={5}
+            name={name}
+            topReactions={topReactions}
+            setRecipientData={setRecipientData}
+          />
           <Separator />
           <Button ref={buttonRef} onClick={toggleModal}>
             <ShareIcon />
