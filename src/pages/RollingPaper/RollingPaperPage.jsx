@@ -7,7 +7,12 @@ import styled from "styled-components";
 import recipientsService from "../../api/services/recipientsService";
 import axios from "axios";
 
+
 const CardContainer = styled.div`
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   height: 1140px;
@@ -37,6 +42,8 @@ const DivWrap = styled.div`
   opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
   height: fit-content;
+  padding-top: 112px;
+
 `;
 
 const BackgroundWrap = styled.div`
@@ -72,6 +79,7 @@ function RollingPaperDetailPage() {
     green: "#D0F5C3",
   };
 
+
   useEffect(() => {
     async function fetchInitialData() {
       try {
@@ -90,6 +98,7 @@ function RollingPaperDetailPage() {
     }
     if (id) fetchInitialData();
   }, [id]);
+
 
   const loadMoreMessages = async () => {
     if (!nextUrl || isFetchingRef.current) return;

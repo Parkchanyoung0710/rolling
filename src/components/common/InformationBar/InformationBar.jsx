@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-
 import Emoji from "../Emoji/Emoji";
 import styled from "styled-components";
 import {
@@ -88,11 +87,12 @@ function InformationBar({
 
         <RightSection>
           <WritedContainer>
-            {profileImages.slice(0, 3).map((url, index) => (
-              <Avatar key={index}>
-                <img src={url} alt={`프로필 이미지 ${index + 1}`} />
-              </Avatar>
-            ))}
+            {profileImages &&
+              profileImages.slice(0, 3).map((url, index) => (
+                <Avatar key={index}>
+                  <img src={url} alt={`프로필 이미지 ${index + 1}`} />
+                </Avatar>
+              ))}
 
             {count > 3 && <Avatar>+{count - 3}</Avatar>}
 
@@ -173,11 +173,16 @@ const InformationBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 1207px;
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
   height: 64px;
-  padding: 13px 24px;
   background-color: ${({ theme }) => theme.colors.white};
+
+  @media (max-width: 1248px) {
+    padding: 0 24px;
+  }
 `;
 
 const LeftSection = styled.div`
@@ -280,10 +285,8 @@ const Modal = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grayScale[300]};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  opacity: 0;
   animation: fadeIn 0.3s forwards;
-
-  @keyframes fadeInAll {
+  @keyframes fadeIn {
     0% {
       opacity: 0;
       transform: scale(0.8);

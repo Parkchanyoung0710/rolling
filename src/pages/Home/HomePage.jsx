@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/common/Button/Button";
-import styled from "styled-components";
+import { styled, css } from "styled-components";
 
 import cardExample from "../../assets/images/main-page/card-example.png";
 import emojiExample from "../../assets/images/main-page/emoji-example.png";
@@ -21,6 +21,15 @@ const HomeContainer = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
+
+  @media (max-width: 1199px) {
+    max-width: 900px;
+  }
+
+  @media (max-width: 767px) {
+    max-width: 100%;
+    padding: 0 24px;
+  }
 `;
 
 const Section = styled.div`
@@ -32,6 +41,17 @@ const Section = styled.div`
   border-radius: 16px;
   padding: 60px 60px;
   margin-bottom: 32px;
+
+  @media (max-width: 1199px) {
+    flex-direction: column;
+    height: auto;
+    padding: 40px;
+  }
+
+  @media (max-width: 767px) {
+    padding: 24px;
+    border-radius: 20px;
+  }
 `;
 
 const TextSection = styled.div`
@@ -41,6 +61,10 @@ const TextSection = styled.div`
   gap: 16px;
   flex: 0.6;
   align-self: flex-start;
+
+  @media (max-width: 767px) {
+    align-items: start;
+  }
 `;
 
 const Tag = styled.div`
@@ -60,11 +84,19 @@ const TitleSection = styled.div`
 const Title = styled.h2`
   color: ${({ theme }) => theme.colors.grayScale[900]};
   ${textStyle(24, 700)};
+
+  @media (max-width: 767px) {
+    ${textStyle(18, 700)};
+  }
 `;
 
 const Description = styled.p`
   color: ${({ theme }) => theme.colors.grayScale[500]};
   ${textStyle(18, 400)};
+
+  @media (max-width: 767px) {
+    ${textStyle(15, 400)};
+  }
 `;
 
 const ImgWrapper = styled.div`
@@ -72,6 +104,11 @@ const ImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 1199px) {
+    order: 1;
+    margin-top: 30px;
+  }
 `;
 
 const StyledImg = styled.img`
@@ -85,6 +122,19 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
+const StyledButton = styled(Button)`
+  width: ${({ width }) =>
+    typeof width === "number" ? `${width}px` : width || "280px"};
+
+  @media (max-width: 1199px) {
+    width: 100%;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+`;
+
 function HomePage() {
   const navigate = useNavigate();
 
@@ -95,11 +145,7 @@ function HomePage() {
           <TextSection>
             <Tag>Point. 01</Tag>
             <TitleSection>
-              <Title>
-                누구나 손쉽게, 온라인
-                <br />
-                롤링 페이퍼를 만들 수 있어요
-              </Title>
+              <Title>누구나 손쉽게, 온라인 롤링 페이퍼를 만들 수 있어요</Title>
               <Description>로그인 없이 자유롭게 만들어요.</Description>
             </TitleSection>
           </TextSection>
@@ -114,11 +160,7 @@ function HomePage() {
           <TextSection>
             <Tag>Point. 02</Tag>
             <TitleSection>
-              <Title>
-                서로에게 이모지로 감정을
-                <br />
-                표현해보세요.
-              </Title>
+              <Title>서로에게 이모지로 감정을 표현해보세요.</Title>
               <Description>
                 롤링 페이퍼에 이모지를 추가할 수 있어요.
               </Description>
@@ -126,14 +168,14 @@ function HomePage() {
           </TextSection>
         </Section>
         <ButtonWrapper>
-          <Button
+          <StyledButton
             variant="primary"
             size="56"
             width={280}
             onClick={() => navigate("/list")}
           >
             구경해보기
-          </Button>
+          </StyledButton>
         </ButtonWrapper>
       </ContentWrapper>
     </HomeContainer>
