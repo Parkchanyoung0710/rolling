@@ -27,7 +27,7 @@ const EditorWrapper = styled.div.withConfig({
     position: relative;
     top: 120px;
     background: #fff;
-       font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
+    font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
     text-align: ${(props) => props.$textAlign || "left"};
     overflow: auto; 
     white-space: pre-wrap; 
@@ -75,7 +75,7 @@ const Background = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* z-index를 높게 설정 */
+  z-index: 1000; 
 `;
 
 const ModalContainer = styled.div`
