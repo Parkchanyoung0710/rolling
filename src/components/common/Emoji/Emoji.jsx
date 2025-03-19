@@ -10,61 +10,59 @@ const TOP_EMOJIS = 3;
 
 function Emoji({ topReactions = [], setRecipientData }) {
   const [showPicker, setShowPicker] = useState(false);
-
   const [showAllEmojis, setShowAllEmojis] = useState(false);
+  const [allReactions, setAllReactions] = useState(() => {
+
+    const storedReactions = localStorage.getItem("allReactions");
+    return storedReactions ? JSON.parse(storedReactions) : topReactions;
+  });
 
   const moreEmojisRef = useRef(null);
   const pickerRef = useRef(null);
   const { id } = useParams();
 
-  const handleClickOutside = (event, ref, setter) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setter(false);
-    }
-  };
-
   useEffect(() => {
-    const handleClickOutsideWrapper = (event) => {
-      handleClickOutside(event, moreEmojisRef, setShowAllEmojis);
-      handleClickOutside(event, pickerRef, setShowPicker);
+    const handleClickOutside = (event) => {
+      if (
+        (moreEmojisRef.current && !moreEmojisRef.current.contains(event.target)) &&
+        (pickerRef.current && !pickerRef.current.contains(event.target))
+      ) {
+        setShowAllEmojis(false);
+        setShowPicker(false);
+      }
     };
 
-    document.addEventListener("mousedown", handleClickOutsideWrapper);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideWrapper);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // 이모티콘 추가 및 상태 업데이트
-  function handleEmojiSelect(emojiObject) {
+  const handleEmojiSelect = async (emojiObject) => {
     const { emoji } = emojiObject;
     const type = "increase";
 
-    sendReactionToServer({ emoji, type });
-  }
-
-  const sendReactionToServer = async ({ emoji, type }) => {
     try {
-      const response = await recipientsService.postRecipientsReactions(id, {
-        emoji,
-        type,
-      });
-
+      await recipientsService.postRecipientsReactions(id, { emoji, type });
       await fetchUpdatedReactions();
     } catch (error) {
       console.error("Error sending reaction:", error);
     }
   };
 
+  
   const fetchUpdatedReactions = async () => {
     try {
       const response = await recipientsService.getRecipientsReactions(id);
+      const updatedReactions = response.data.results;
 
       setRecipientData((prev) => ({
         ...prev,
-        topReactions: response.data.results,
+        topReactions: updatedReactions,
       }));
+
+      // 전체 이모티콘 리스트 업데이트 후 로컬 스토리지 저장
+      setAllReactions(updatedReactions);
+      localStorage.setItem("allReactions", JSON.stringify(updatedReactions));
     } catch (error) {
       console.error("Error fetching reactions:", error);
     }
@@ -83,7 +81,7 @@ function Emoji({ topReactions = [], setRecipientData }) {
         </TopEmojisContainer>
 
         <ActionsContainer>
-          {topReactions.length > TOP_EMOJIS && (
+          {allReactions.length > TOP_EMOJIS && (
             <ShowMoreButton onClick={() => setShowAllEmojis(!showAllEmojis)}>
               <ArrowDown alt="더 보기" />
             </ShowMoreButton>
@@ -94,18 +92,14 @@ function Emoji({ topReactions = [], setRecipientData }) {
 
       {showPicker && (
         <PickerWrapper ref={pickerRef}>
-          <EmojiPicker
-            onEmojiClick={handleEmojiSelect}
-            width={306}
-            height={392}
-          />
+          <EmojiPicker onEmojiClick={handleEmojiSelect} width={306} height={392} />
         </PickerWrapper>
       )}
 
       {showAllEmojis && (
         <AllEmojisContainer ref={moreEmojisRef}>
           <MoreEmojisWrapper>
-            {topReactions.map(({ emoji, count }) => (
+            {allReactions.map(({ emoji, count }) => (
               <AllEmojiItem key={emoji}>
                 <EmojiImage>{emoji}</EmojiImage>
                 <EmojiCount>{count}</EmojiCount>

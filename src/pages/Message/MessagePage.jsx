@@ -15,7 +15,6 @@ const Bone = styled.div`
   @media (max-width: 360px) {
     padding: 50px 20px;
   }
-  overflow: auto;
 `;
 
 function MessagePage() {

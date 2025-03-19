@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html", "statusCode": 200 }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*).js",
+      "headers": [{ "key": "Content-Type", "value": "application/javascript" }]
+    },
+    {
+      "source": "/assets/(.*).css",
+      "headers": [{ "key": "Content-Type", "value": "text/css" }]
+    }
+  ]
+}
