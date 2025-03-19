@@ -4,7 +4,8 @@ import { LogoImg } from "../../../assets/images/icon/IconIndex";
 import styled from "styled-components";
 
 const NavbarWrapper = styled.nav`
-  position:fixed;
+  position: sticky;
+  top:0;
   z-index:999;
   display: flex;
   justify-content: center;

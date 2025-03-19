@@ -39,7 +39,7 @@ const TitleWrapper = styled.div`
   background-color: #ffffff;
   z-index: 10;
   padding: 10px 0;
- 
+
   
 
 `;
@@ -60,11 +60,8 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 
   @media (max-width: 1199px) {
-    margin-top: 156px;
+    margin-bottom:24px;
   }
-  @media (max-width: 767px) {
-    margin-top: 66px;
-  }  
 `;
 
   
