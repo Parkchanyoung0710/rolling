@@ -15,12 +15,6 @@ const CardContainer = styled.div`
   justify-content: center;
   padding: 100px 24px;
   width: 100%;
-  background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
-  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-attachment: fixed;
   @media (max-width: 768px) {
     background-attachment: scroll;
   }
@@ -37,7 +31,10 @@ const DivWrap = styled.div`
 `;
 
 const BackgroundWrap = styled.div`
-  background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+   background-image: ${({ backgroundImageURL }) =>
+    backgroundImageURL
+      ? `linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.54) 100%), url(${backgroundImageURL})`
+      : "none"};
   background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
   min-height: calc(100vh - 65px);
   background-size: cover;
@@ -70,11 +67,13 @@ function RollingPaperDetailPage() {
 
   useEffect(() => {
     async function fetchInitialData() {
+      const limit = 5;
       try {
         const [messagesResponse, recipientResponse] = await Promise.all([
-          recipientsService.getRecipientsMessages(id, 8, 0),
+          recipientsService.getRecipientsMessages(id, limit, 0),
           recipientsService.getRecipientsId(id),
         ]);
+           console.log("Messages Response:", messagesResponse.data); 
         setMessages(messagesResponse.data.results);
         setNextUrl(messagesResponse.data.next);
         setRecipientData(recipientResponse.data);
@@ -106,7 +105,7 @@ function RollingPaperDetailPage() {
     if (!lastMessageRef.current) return;
     observerRef.current = new IntersectionObserver(
       ([entry]) => entry.isIntersecting && loadMoreMessages(),
-      { root: null, rootMargin: "-50px" }
+      { root: null, rootMargin: "100px" }
     );
     observerRef.current.observe(lastMessageRef.current);
     return () => observerRef.current?.disconnect();
