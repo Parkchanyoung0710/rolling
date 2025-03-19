@@ -4,19 +4,18 @@ import InformationBar from "../../components/common/InformationBar/InformationBa
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
 import Card from "../../components/domain/rollingpaper/Card/Card";
 import styled from "styled-components";
+import recipientsService from "../../api/services/recipientsService";
+import axios from "axios";
 
-import recipientsService from "../../api/services/recipientsService"; // get 요청
 
 const CardContainer = styled.div`
   margin: auto;
   display: flex;
-  align-items: center;
   justify-content: center;
-
   padding: 100px 24px;
   width: 100%;
   box-sizing: border-box;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     background-attachment: scroll;
   }
 `;
@@ -25,17 +24,18 @@ const DivWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
-
-  @media (max-width: 1248px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
+  @media (max-width: 1199px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+    @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const BackgroundWrap = styled.div`
-  background-image: ${({ backgroundImageURL }) =>
+   background-image: ${({ backgroundImageURL }) =>
     backgroundImageURL
       ? `linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.54) 100%), url(${backgroundImageURL})`
       : "ffffff"};
@@ -45,8 +45,8 @@ const BackgroundWrap = styled.div`
   background-repeat: no-repeat;
   background-position: center top;
   background-attachment: fixed;
-
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
+    background-attachment: scroll;
     grid-template-columns: 1fr;
   }
 `;
@@ -58,12 +58,10 @@ const colorMap = {
   green: "#D0F5C3",
 };
 
-
 function RollingPaperDetailPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [recipientData, setRecipientData] = useState({});
-
   const [messages, setMessages] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -89,10 +87,7 @@ function RollingPaperDetailPage() {
     if (id) fetchInitialData();
   }, [id]);
 
-
-
-  // 메시지 로드 함수
-const loadMoreMessages = async () => {
+  const loadMoreMessages = async () => {
     if (!nextUrl || isFetchingRef.current) return;
     isFetchingRef.current = true;
     try {
@@ -116,7 +111,6 @@ const loadMoreMessages = async () => {
     return () => observer.disconnect();
   }, [messages]);
 
-
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 100);
   }, []);
@@ -129,9 +123,7 @@ const loadMoreMessages = async () => {
       <InformationBar
         name={recipientData?.name ?? ""}
         count={recipientData?.messageCount ?? 0}
-        profileImages={(recipientData?.recentMessages ?? []).map(
-          ({ profileImageURL }) => profileImageURL
-        )}
+        profileImages={recipientData?.recentMessages?.map(({ profileImageURL }) => profileImageURL) || []}
         topReactions={recipientData?.topReactions ?? []}
         setRecipientData={setRecipientData}
       />
@@ -143,7 +135,6 @@ const loadMoreMessages = async () => {
               <CardWrite message={message} fontFamily={message.font} />
             </div>
           ))}
-          {messages?.length > 0 && <div id="last-card"></div>}
         </DivWrap>
       </CardContainer>
     </BackgroundWrap>

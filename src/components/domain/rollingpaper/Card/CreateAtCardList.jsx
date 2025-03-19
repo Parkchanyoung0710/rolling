@@ -8,7 +8,10 @@ import { useNavigate } from "react-router-dom";
 const BoneWrap = styled.div`
   width: 1160px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  @media (max-width: 1199px) {
+   width: 100% ;
+  }
 `;
 
 const BoneContainer = styled.div`
@@ -17,6 +20,15 @@ const BoneContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+  margin-bottom: 50px;
+   @media (max-width: 1199px) {
+   overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+    &::-webkit-scrollbar {
+      display: none; 
+    }
+  }
 `;
 
 const Bone = styled.div`
@@ -26,6 +38,7 @@ const Bone = styled.div`
   transition: transform 0.5s ease;
   transform: translateX(${(props) => props.scrollPosition}px);
   position: relative;
+  
 `;
 
 const BackgroundWrap = styled.div.withConfig({
@@ -34,9 +47,7 @@ const BackgroundWrap = styled.div.withConfig({
 })`
   background-color: ${({ bgColor }) => bgColor || "#FFFFFF"};
   background-image: ${({ backgroundImageURL }) =>
-    backgroundImageURL
-      ? `linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.54) 100%), url(${backgroundImageURL})`
-      : "none"};
+    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -45,7 +56,7 @@ const BackgroundWrap = styled.div.withConfig({
   padding: 30px 24px;
   border-radius: 1rem;
   color: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? "#ffffff" : "#000000"};
+    backgroundImageURL ? "#ffffff;" : "#000000"};
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease,
     background-color 0.3s ease;
@@ -60,11 +71,10 @@ const BackgroundWrap = styled.div.withConfig({
     transform: scale(0.98);
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
   }
-
-  @media (max-width: 767px) {
-    width:208px;
-    height:232px;
-  }
+  @media (max-width: 359px) {
+    width: 208px;
+    height: 232px;
+  }  
 `;
 const TextDisplay = styled.div`
   display: flex;
@@ -76,15 +86,8 @@ const ToText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
   margin-bottom: 0.75rem;
   height: 2.625rem;
-  word-break: keep-all;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  @media (max-width: 767px) {
+  @media (max-width: 359px) {
     ${(props) => textStyle(18, 700)(props)}
-    font-family: Pretendard;
-    line-height:28px;
   }
 `;
 
@@ -121,14 +124,8 @@ const Avatar = styled.div`
 `;
 
 const WriteCount = styled.div`
-  ${(props) => textStyle(14, 700)(props)}
-  font-weight: 700;
-
-  @media (max-width: 767px) {
-    ${(props) => textStyle(14, 700)(props)}
-    font-family: Pretendard;
-    line-height:20px;
-  }
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 const WriteCountDisplay = styled.div`
@@ -138,37 +135,43 @@ const WriteCountDisplay = styled.div`
 `;
 
 const WritedText = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-
-  @media (max-width: 767px) {
-    ${(props) => textStyle(14, 400)(props)}
-    font-family: Pretendard;
-    line-height:20px;
+  font-size: 14px;
+  @media (max-width: 359px) {
+    ${(props) => textStyle(14, 700)(props)}
   }
 `;
 
 const ArrowButtonDisplay = styled.div`
-    align-items: center;
-    z-index: 1;
+align-items: center;
+   
+    transform: translateY(40%);
+    z-index: 2;
+    transform: matrix(1, 0, 0, 1, 0, 108);
     transition: opacity 0.3s ease;
 }
 `;
 const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
   display: ${({ show }) => (show ? "block" : "none")};
   position: absolute;
-  left: 22.5rem;
-  top: 64%;
-  transform: translateY(0%);
+  left: -24px;
+  top: 30%;
+  transform: translateY(42%);
   z-index: 1;
+    @media (max-width: 1199px) {
+    display: none;
+  }
 `;
+
 const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
-  display: ${({ show }) => (show ? "block" : "none")};
+   display: ${({ show }) => (show ? "block" : "none")};
   position: absolute;
-  right: 22.5rem;
-  top: 64%;
-  transform: translateY(0%);
+  right: -24px;
+  top: 30%;
+  transform: translateY(42%);
   z-index: 1;
+    @media (max-width: 1199px) {
+    display: none;
+  }
 `;
 
 const TopEmojisContainer = styled.div`
@@ -248,20 +251,17 @@ function CreateAtCardList() {
           "/14-8/recipients/"
         );
         const sortedRecipients = response.data.results.sort(
-          (a, b) => b.createdAt - a.createdAt
+          (a, b) => b.createAt - a.createAt
         );
 
         const updatedRecipients = sortedRecipients.map((recipient) => {
-          const topReactions = recipient.topReactions.slice(0, 3);
           const images = recipient.recentMessages?.slice(0, 3) || [];
           const imageUrls = images
             .map((msg) => msg.profileImageURL)
             .filter(Boolean);
-
           return {
             ...recipient,
-            topReactions,
-            profileImages: imageUrls, // topReactions 3개만 가져오기
+            profileImages: imageUrls,
           };
         });
 
@@ -287,6 +287,7 @@ function CreateAtCardList() {
   };
 
   const handleCardClick = (id) => {
+    // 클릭 시 해당 id로 페이지 이동
     navigate(`/post/${id}`);
   };
 
@@ -298,14 +299,15 @@ function CreateAtCardList() {
 
   return (
     <>
-      <LeftArrowButtonDisplay show={showLeftButton}>
+      
+      <BoneWrap>
+        <LeftArrowButtonDisplay show={showLeftButton}>
         <ArrowButton
           direction="left"
           onClick={handlePrev}
           disabled={scrollPosition === 0}
         />
       </LeftArrowButtonDisplay>
-      <BoneWrap>
         <BoneContainer>
           <Bone scrollPosition={scrollPosition}>
             {selectedRecipients.map((recipient, index) => (
@@ -313,30 +315,32 @@ function CreateAtCardList() {
                 key={index}
                 bgColor={colorMap[recipient.backgroundColor] || "#FFFFFF"}
                 backgroundImageURL={recipient.backgroundImageURL || null}
-                onClick={() => handleCardClick(recipient.id)}
+                onClick={() => handleCardClick(recipient.id)} // 클릭 시 해당 id로 이동
               >
-                <TextDisplay>
-                  <ToText>
-                    To.
-                    {recipient.name === "Unknown"
-                      ? "이름 없음"
-                      : recipient.name}
-                  </ToText>
-                </TextDisplay>
-                <WritedContainer>
-                  {recipient.profileImages?.slice(0, 3).map((url, i) => (
-                    <Avatar key={i}>
-                      <img src={url} alt={`프로필 이미지 ${i + 1}`} />
-                    </Avatar>
-                  ))}
-                  {recipient.messageCount > 3 && (
-                    <Avatar>+{recipient.messageCount - 3}</Avatar>
-                  )}
-                </WritedContainer>
-                <WriteCountDisplay>
-                  <WriteCount>{recipient.messageCount}</WriteCount>
-                  <WritedText>명이 작성했어요!</WritedText>
-                </WriteCountDisplay>
+                
+                  <TextDisplay>
+                    <ToText>To.</ToText>
+                    <ToText>
+                      {recipient.name === "Unknown"
+                        ? "이름 없음"
+                        : recipient.name}
+                    </ToText>
+                  </TextDisplay>
+                  <WritedContainer>
+                    {recipient.profileImages?.slice(0, 3).map((url, i) => (
+                      <Avatar key={i}>
+                        <img src={url} alt={`프로필 이미지 ${i + 1}`} />
+                      </Avatar>
+                    ))}
+                    {recipient.messageCount > 3 && (
+                      <Avatar>+{recipient.messageCount - 3}</Avatar>
+                    )}
+                  </WritedContainer>
+                  <WriteCountDisplay>
+                    <WriteCount>{recipient.messageCount}</WriteCount>
+                    <WritedText>명이 작성했어요!</WritedText>
+                  </WriteCountDisplay>
+                <div>
                 <EmojiWrapper>
                   <EmojiDiv>
                     {/* 이모티콘 상위 3개 표시 */}
@@ -349,13 +353,13 @@ function CreateAtCardList() {
                       ))}
                     </TopEmojisContainer>
                   </EmojiDiv>
-                </EmojiWrapper>
+                  </EmojiWrapper>
+                  </div>
               </BackgroundWrap>
             ))}
           </Bone>
         </BoneContainer>
-      </BoneWrap>
-      <RightArrowButtonDisplay show={showRightButton}>
+        <RightArrowButtonDisplay show={showRightButton}>
         <ArrowButton
           direction="right"
           onClick={handleNext}
@@ -364,6 +368,8 @@ function CreateAtCardList() {
           }
         />
       </RightArrowButtonDisplay>
+      </BoneWrap>
+      
     </>
   );
 }
