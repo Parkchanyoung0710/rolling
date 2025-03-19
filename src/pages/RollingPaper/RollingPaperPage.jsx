@@ -52,17 +52,7 @@ const BackgroundWrap = styled.div`
 `;
 
 
-const BackgroundWrap = styled.div.withConfig({
-  shouldForwardProp: (prop) =>
-    !["bgColor", "backgroundImageURL"].includes(prop),
-})`
-  background-image: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
-  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
-  min-height: calc(100vh - 65px);
-  background-size: cover;
-  background-position: center;
-`;
+
 
 const colorMap = {
   beige: "#FFE2AD",
