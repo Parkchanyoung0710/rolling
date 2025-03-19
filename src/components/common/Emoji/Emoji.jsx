@@ -243,8 +243,8 @@ const AllEmojisContainer = styled.div`
 const MoreEmojisWrapper = styled.div`
   z-index: 10;
   position: absolute;
-  top: -16px;
-  right: -82px;
+  top: 100%;
+  right: -106px;
   width: 312px;
   background-color: ${(props) => props.theme.colors.white};
   border: 1px solid ${(props) => props.theme.colors.grayScale[300]};
@@ -254,7 +254,15 @@ const MoreEmojisWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
+  margin-top: -14px;
+  @media (max-width: 1199px) {
+  right: -54px;
+  }
+  @media (max-width: 767px) {
+  right: -156px;
+  }
 `;
+
 
 const AllEmojiItem = styled.div`
   display: flex;

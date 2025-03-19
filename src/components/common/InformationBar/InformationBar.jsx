@@ -120,7 +120,8 @@ function InformationBar({
             setRecipientData={setRecipientData}
             />
           <Separator />
-          
+          <ShareContainer>
+
           <IconButton ref={buttonRef} onClick={toggleModal}
           image="share" width="56" height="40"/>
           
@@ -130,6 +131,7 @@ function InformationBar({
               <Option onClick={handleCopyUrl}>URL 공유</Option>
             </Modal>
           )}
+          </ShareContainer>
         </RightSection>
       </InformationBarContainer>
 
@@ -150,7 +152,10 @@ function InformationBar({
     </InformationBarWrapper>
   );
 }
-
+const ShareContainer = styled.div`
+  position: relative;
+  display: inline-block; // 버튼 크기에 맞게 조정
+`;
 
 const LeftSeparator = styled.span`
 display: inline-block;
@@ -235,7 +240,7 @@ const RightSection = styled.div`
   @media (max-width: 767px) {
     margin-top:-8px;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
   }
 `;
 
@@ -336,9 +341,11 @@ const Avatar = styled.div`
 `;
 
 const Modal = styled.div`
-  padding: 10px 1px;
   position: absolute;
-  top: 122px;
+  padding: 12px 0px;
+  right:0px;
+  margin-top:10px;
+  top: 100%;
   background-color: ${({ theme }) => theme.colors.white};
   width: 140px;
   height: 120px;
@@ -357,16 +364,22 @@ const Modal = styled.div`
       transform: scale(1);
     }
   }
-
+  @@media (max-width: 1199px) {
+    right:7%;
+    bottom: 100%;
+    width: 140px;
+    height: 120px;
+  }
   @media (max-width: 767px) {
-    top: 100px;
-    width: 120px;
-    height: 100px;
+    right:7%;
+    bottom: 100%;
+    width: 140px;
+    height: 120px;
   }
 `;
 
 const Option = styled.div`
-  padding: 10px;
+  padding: 12px;
   cursor: pointer;
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
