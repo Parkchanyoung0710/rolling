@@ -3,6 +3,7 @@ import CreateAtCardList from "../../components/domain/rollingpaper/Card/CreateAt
 import styled from "styled-components";
 import PopularCardList from "../../components/domain/rollingpaper/Card/PopularCardList";
 import Button from "../../components/common/Button/Button";
+import { useEffect, useState, useCallback } from "react";
 
 // Container 스타일 수정
 const Container = styled.div`
@@ -76,6 +77,7 @@ const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  width: 100%;
 
   @media (max-width: 1199px) {
     margin-top: 15px;
@@ -85,6 +87,10 @@ const ButtonWrapper = styled.div`
     margin-top: 10px;
   }
 `;
+
+const StyledButton = styled(Button)`
+  width: ${({ isTablet }) => (isTablet ? "100%" : "280px")};
+`
 
 // StyledCardList 수정 (카드 리스트가 오른쪽에서 사라지도록 설정)
 const StyledCardList = styled.div`
@@ -108,6 +114,19 @@ const StyledCardList = styled.div`
 
 function RollingPaperListPage() {
   const navigate = useNavigate();
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1199);
+
+  const handleResize = useCallback(() => {
+    setIsTablet(window.innerWidth <= 1199);
+  }, []);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]);
 
   return (
     <Container>
@@ -133,14 +152,14 @@ function RollingPaperListPage() {
         </StyledCardList>
 
         <ButtonWrapper>
-          <Button
+          <StyledButton
             variant="primary"
             size="56"
-            width="280"
+            width={isTablet ? "100%" : 280}
             onClick={() => navigate(`/post`)}
           >
             나도 만들어보기
-          </Button>
+          </StyledButton>
         </ButtonWrapper>
       </PageWrapper>
     </Container>
