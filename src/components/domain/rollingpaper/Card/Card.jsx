@@ -15,6 +15,14 @@ const CardContainer = styled.div`
   justify-content: center;
   top: ${(props) => props.top || "0"}; 
   left: ${(props) => props.left || "0"}; 
+  @media (max-width:1199px) {
+    width: 352px;
+    height: 284px;
+  }
+    @media (max-width:767px) {
+    width: 320px;
+    height: 230px;
+  }
 `;
 
 const CircleButton = styled.button`

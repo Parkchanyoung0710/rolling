@@ -9,7 +9,7 @@ import { useEffect, useState, useCallback } from "react";
 const Container = styled.div`
   background-color: #ffffff;
   width: 100%;
-  padding: 0 20px;
+  padding: 0;
 `;
 
 const PageWrapper = styled.div`
@@ -27,7 +27,7 @@ const PageWrapper = styled.div`
     width: 100%;
   }
   @media (max-width: 767px) {
-    padding: 20px;
+    padding-top: 50px;
   }
 `;
 
