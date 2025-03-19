@@ -13,8 +13,8 @@ const CardContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  top: ${(props) => props.top || "0"}; /* top 값을 받아서 사용 */
-  left: ${(props) => props.left || "0"}; /* left 값을 받아서 사용 */
+  top: ${(props) => props.top || "0"}; 
+  left: ${(props) => props.left || "0"}; 
 `;
 
 const CircleButton = styled.button`
