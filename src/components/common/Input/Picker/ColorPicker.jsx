@@ -8,8 +8,10 @@ const Bone = styled.div`
   gap: 12px;
   flex-wrap: wrap;
   margin: 45px 0;
-  @media (max-width: 768px) {
-    justify-content: flex-start;
+  @media (max-width: 767px) {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr;
+    width: fit-content;
   }
 `;
 
@@ -24,7 +26,7 @@ const Color = styled.div`
   justify-content: center;
   position: relative;
   background-color: ${(props) => props.color};
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 154px;
     height: 154px;
   }

@@ -16,11 +16,7 @@ export const Bone = styled.div`
   width: 100%;
   max-width: 720px;
 
-  @media (max-width: 768px) {
-    padding: 0;
-  }
-
-  @media (max-width: 360px) {
+  @media (max-width: 767px) {
     padding: 0;
   }
 `;
@@ -32,6 +28,9 @@ const Picker = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  @media (max-width: 767px) {
+    margin-top: auto;
+  }
 `
 
 // To 전체적인 컴포넌
