@@ -4,6 +4,8 @@ import styled from "styled-components";
 import PopularCardList from "../../components/domain/rollingpaper/Card/PopularCardList";
 import Button from "../../components/common/Button/Button";
 import { textStyle } from "../../styles/textStyle";
+import { useEffect, useState, useCallback } from "react";
+
 const Container = styled.div`
   background-color: #ffffff;
 `;
@@ -21,7 +23,7 @@ const PageWrapper = styled.div`
     margin: 0;
     width: 100%;
   }
-  @media (max-width: 359px) {
+  @media (max-width: 767px) {
     padding-top: 40px;
   }   
   
@@ -32,15 +34,21 @@ const Title = styled.div`
   display: flex;
   width: -webkit-fill-available;
   justify-content: left;
-  @media (max-width: 366px) {
+  @media (max-width: 767px) {
     ${(props) => textStyle(20, 600)(props)}
   }
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 156px;
+  margin-top: 64px;
   display: flex;
   justify-content: center;
+  @media (max-width: 1199px) {
+    margin-top: 156px;
+  }
+  @media (max-width: 767px) {
+    margin-top: 66px;
+  }  
 `;
 
 const StyledCardList = styled.div`
@@ -55,10 +63,23 @@ const StyledCardList = styled.div`
   }
 
 `;
+const StyledButton = styled(Button)`
+  width: ${({ isTablet }) => (isTablet ? "calc(100% - 24px)" : "280px")};
+`;
 
 function RollingPaperListPage() {
   const navigate = useNavigate();
-
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1199);
+  const handleResize = useCallback(() => {
+      setIsTablet(window.innerWidth <= 1199);
+  }, []);
+  useEffect(() => {
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, [handleResize]);
   return (
     <Container>
       
@@ -72,14 +93,14 @@ function RollingPaperListPage() {
         </StyledCardList>
         <CreateAtCardList />
         <ButtonWrapper>
-          <Button
+          <StyledButton
             variant="primary"
             size="56"
-            width="280"
+            width={isTablet ? "calc(100% - 24px)" : 280}
             onClick={() => navigate(`/post`)}
           >
             나도 만들어보기
-          </Button>
+          </StyledButton>
         </ButtonWrapper>
       </PageWrapper>
     </Container>

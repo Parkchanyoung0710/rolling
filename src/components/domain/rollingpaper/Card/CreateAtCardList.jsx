@@ -9,9 +9,13 @@ const BoneWrap = styled.div`
   width: 1160px;
   position: relative;
   overflow: visible;
+  height: 260px;
   @media (max-width: 1199px) {
-   width: 100% ;
+   width: 100%;
   }
+  @media (max-width: 767px) {
+   height: 232px;
+  } 
 `;
 
 const BoneContainer = styled.div`
@@ -71,7 +75,7 @@ const BackgroundWrap = styled.div.withConfig({
     transform: scale(0.98);
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
   }
-  @media (max-width: 359px) {
+  @media (max-width: 767px) {
     width: 208px;
     height: 232px;
   }  
@@ -86,7 +90,7 @@ const ToText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
   margin-bottom: 0.75rem;
   height: 2.625rem;
-  @media (max-width: 359px) {
+  @media (max-width: 767px) {
     ${(props) => textStyle(18, 700)(props)}
   }
 `;
@@ -136,18 +140,17 @@ const WriteCountDisplay = styled.div`
 
 const WritedText = styled.div`
   font-size: 14px;
-  @media (max-width: 359px) {
+  @media (max-width: 767px) {
     ${(props) => textStyle(14, 700)(props)}
   }
 `;
 
 const ArrowButtonDisplay = styled.div`
-align-items: center;
-   
-    transform: translateY(40%);
-    z-index: 2;
-    transform: matrix(1, 0, 0, 1, 0, 108);
-    transition: opacity 0.3s ease;
+  align-items: center;
+  transform: translateY(40%);
+  z-index: 2;
+  transform: matrix(1, 0, 0, 1, 0, 108);
+  transition: opacity 0.3s ease;
 }
 `;
 const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
@@ -179,7 +182,6 @@ const TopEmojisContainer = styled.div`
   gap: 8px;
   @media (max-width: 767px) {
     padding: 0 4px;
-    
   }
 `;
 
