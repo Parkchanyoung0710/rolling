@@ -68,24 +68,17 @@ function ProfileInput() {
       font: selectedFont || "Noto Sans",
     };
 
-    console.log("서버로 전송할 데이터:", requestBody);
-
-    console.log("폰트 값:", selectedFont); // 이 부분으로 확인
     try {
       const response = await recipientsService.postRecipientsMessages(
         numericId, // numericId를 전달
         requestBody
       );
-      console.log("서버 응답:", response);
 
       navigate(`/post/${numericId}`); // 숫자형 id로 이동
     } catch (error) {
       console.error("서버 요청 실패:", error.response?.data || error.message);
     }
   };
-
-  console.log(selectedRecipient);
-  console.log(name);
 
   return (
     <Bone>

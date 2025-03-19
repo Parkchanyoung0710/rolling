@@ -45,7 +45,6 @@ function ProfileInputText({ value, onChange, onError, onFontSelect }) {
     "나눔명조",
     "나눔손글씨 손편지체",
   ];
-  console.log(hasError);
   const [selectedOption, setSelectedOption] = useState("Noto Sans");
 
   const handleOptionSelect = (option) => {

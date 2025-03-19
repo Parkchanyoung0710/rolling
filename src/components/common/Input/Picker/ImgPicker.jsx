@@ -73,7 +73,6 @@ const ImgPicker = ({ onSelect }) => {
         if (response.data && response.data.imageUrls) {
           setImages(response.data.imageUrls);
         } else {
-          console.log("이미지가 없습니다.");
         }
       } catch (error) {
         console.error("이미지를 불러오는 중 오류 발생:", error);

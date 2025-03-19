@@ -103,7 +103,6 @@ function ProfileInputChoiceImage({ onImageSelect }) {
       try {
         const response = await profileImageService.getProfileImageService();
         setImages(response.data.imageUrls);
-        console.log(response);
       } catch (error) {
         console.error("이미지를 불러오는 중 오류 발생:", error);
       }
@@ -114,7 +113,6 @@ function ProfileInputChoiceImage({ onImageSelect }) {
   const handleImageChange = (image) => {
     setSelectedImg(image);
     onImageSelect(image);
-    console.log("선택된 프로필 이미지:", image);
   };
 
   return (
