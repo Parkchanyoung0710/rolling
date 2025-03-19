@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import { textStyle } from "../../../../styles/textStyle";
 import "../../../../styles/font.css";
 import Badge from "../../../common/Badge/Badge";
+import Button from "../../../common/Button/Button";
 
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");
@@ -54,12 +55,12 @@ const EditorWrapper = styled.div.withConfig({
   }
 
   .ql-editor p {
-   font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
+    font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
     ${(props) => textStyle(18, 400)(props)}
   }
     ql-editor h2 {
-   font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
-    ${(props) => textStyle(18, 400)(props)}
+      font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
+      ${(props) => textStyle(18, 400)(props)}
   }
   .ql-snow .ql-editor h2 {
     font-size: 1rem;
@@ -89,33 +90,6 @@ const ModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-`;
-
-const ConfirmButton = styled.button`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 7px 16px;
-  gap: 10px;
-  position: absolute;
-  width: 120px;
-  height: 40px;
-  left: 240px;
-  top: 396px;
-  background: #9935ff;
-  border-radius: 6px;
-  color: white;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background: #7a2ecc;
-  }
-
-  &:active {
-    background: #5c2399;
-  }
 `;
 
 const DateContainer = styled.div`
@@ -175,9 +149,16 @@ const Divider = styled.div`
   background: #eeeeee;
 `;
 
+const ButtonWrapper = styled.div`
+  position: absolute;
+  width: 120px;
+  height: 40px;
+  left: 240px;
+  top: 396px;
+`
+
 const Modal = ({ onClose, date, imageUrl, name,tag , content, font }) => {
   const textAlign = "left";
-  console.log(font)
   const fontFamily = font || "Noto Sans KR";
   return (
     <Background>
@@ -223,7 +204,11 @@ const Modal = ({ onClose, date, imageUrl, name,tag , content, font }) => {
               style={{ fontFamily: fontFamily }} 
                   />
                 </EditorWrapper>
-        <ConfirmButton onClick={onClose}>확인</ConfirmButton>
+        <ButtonWrapper>
+          <Button variant="primary" size="40" width="120px" onClick={onClose}>
+            확인
+          </Button>
+        </ButtonWrapper>
       </ModalContainer>
     </Background>
   );
