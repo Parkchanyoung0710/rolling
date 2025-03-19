@@ -229,6 +229,9 @@ const RightSection = styled.div`
   gap: 10px;
   margin-top: 10px;
 
+  @media (max-width: 1199px) {
+    margin-top:0px;
+  }
   @media (max-width: 767px) {
     margin-top:-8px;
     justify-content: center;
@@ -272,6 +275,9 @@ const WriteCount = styled.span`
   letter-spacing: 0%;
   line-height: 27px;
 
+  @media (max-width: 1199px) {
+    display: none;  
+  }
   @media (max-width: 767px) {
     display: none;
   }
@@ -285,6 +291,9 @@ const WritedText = styled.span`
   line-height: 27px;
   letter-spacing: 0%;
 
+  @media (max-width: 1199px) {
+    display: none;  
+  }
   @media (max-width: 767px) {
     display: none;
   }
@@ -318,6 +327,9 @@ const Avatar = styled.div`
     color: ${({ theme }) => theme.colors.grayScale[800]};
   }
 
+  @media (max-width: 1199px) {
+    display: none;  
+  }
   @media (max-width: 767px) {
     display: none;
   }
