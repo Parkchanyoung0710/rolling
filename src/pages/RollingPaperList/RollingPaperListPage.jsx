@@ -3,7 +3,9 @@ import CreateAtCardList from "../../components/domain/rollingpaper/Card/CreateAt
 import styled from "styled-components";
 import PopularCardList from "../../components/domain/rollingpaper/Card/PopularCardList";
 import Button from "../../components/common/Button/Button";
+
 import { textStyle } from "../../styles/textStyle";
+
 import { useEffect, useState, useCallback } from "react";
 
 const Container = styled.div`
@@ -43,6 +45,7 @@ const ButtonWrapper = styled.div`
   margin-top: 64px;
   display: flex;
   justify-content: center;
+
   @media (max-width: 1199px) {
     margin-top: 156px;
   }
@@ -70,6 +73,7 @@ const StyledButton = styled(Button)`
 function RollingPaperListPage() {
   const navigate = useNavigate();
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 1199);
+
   const handleResize = useCallback(() => {
       setIsTablet(window.innerWidth <= 1199);
   }, []);
@@ -80,6 +84,7 @@ function RollingPaperListPage() {
         window.removeEventListener("resize", handleResize);
       };
     }, [handleResize]);
+
   return (
     <Container>
       
@@ -96,7 +101,9 @@ function RollingPaperListPage() {
           <StyledButton
             variant="primary"
             size="56"
+
             width={isTablet ? "calc(100% - 24px)" : 280}
+
             onClick={() => navigate(`/post`)}
           >
             나도 만들어보기

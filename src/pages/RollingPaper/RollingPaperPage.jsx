@@ -9,14 +9,19 @@ import axios from "axios";
 
 
 const CardContainer = styled.div`
-  margin: auto;
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
+
   padding: 100px 24px;
   width: 100%;
   box-sizing: border-box;
   @media (max-width: 767px) {
     background-attachment: scroll;
+
   }
 `;
 
@@ -45,9 +50,11 @@ const BackgroundWrap = styled.div`
   background-repeat: no-repeat;
   background-position: center top;
   background-attachment: fixed;
+
   @media (max-width: 767px) {
     background-attachment: scroll;
     grid-template-columns: 1fr;
+
   }
 `;
 
