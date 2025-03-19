@@ -10,6 +10,8 @@ const BoneWrap = styled.div`
   width: 1160px;
   position: relative;
   overflow: hidden;
+
+  }
 `;
 
 const BoneContainer = styled.div`
@@ -19,6 +21,8 @@ const BoneContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+
+
 `;
 
 const Bone = styled.div`
@@ -28,6 +32,8 @@ const Bone = styled.div`
   transition: transform 0.5s ease;
   transform: translateX(${(props) => props.scrollPosition}px);
   position: relative;
+
+  
 `;
 
 const BackgroundWrap = styled.div.withConfig({
@@ -62,6 +68,11 @@ const BackgroundWrap = styled.div.withConfig({
     transform: scale(0.98);
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
   }
+  @media (max-width: 767px) {
+    width:208px;
+    height:232px;
+  }
+
 `;
 
 const TextDisplay = styled.div`
@@ -78,6 +89,12 @@ const ToText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 767px) {
+    ${(props) => textStyle(18, 700)(props)}
+    font-family: Pretendard;
+    line-height:28px;
+  }
 `;
 
 const WritedContainer = styled.div`
@@ -113,8 +130,14 @@ const Avatar = styled.div`
 `;
 
 const WriteCount = styled.div`
-  font-size: 16px;
-  font-weight: 600;
+  ${(props) => textStyle(14, 700)(props)}
+  font-weight: 700;
+
+  @media (max-width: 767px) {
+    ${(props) => textStyle(14, 700)(props)}
+    font-family: Pretendard;
+    line-height:20px;
+  }
 `;
 
 const WriteCountDisplay = styled.div`
@@ -126,6 +149,12 @@ const WriteCountDisplay = styled.div`
 const WritedText = styled.div`
   font-size: 16px;
   font-weight: 600;
+
+  @media (max-width: 767px) {
+    ${(props) => textStyle(14, 400)(props)}
+    font-family: Pretendard;
+    line-height:20px;
+  }
 `;
 
 const ArrowButtonDisplay = styled.div`
@@ -154,6 +183,10 @@ const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
 const TopEmojisContainer = styled.div`
   display: flex;
   gap: 8px;
+  @media (max-width: 767px) {
+    padding: 0 4px;
+    
+  }
 `;
 
 const TopEmojiItem = styled.div`
@@ -169,6 +202,12 @@ const TopEmojiItem = styled.div`
   gap: 2px;
   font-size: 20px;
   text-align: center;
+
+  @media (max-width: 767px) {
+    width: 46px;
+    height: 32px;
+    
+  }
 `;
 const EmojiWrapper = styled.div`
   position: absolute;
@@ -203,6 +242,9 @@ const EmojiCount = styled.span`
 function PopularCardList() {
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startPosition, setStartPosition] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
   const cardWidth = 295;
   const navigate = useNavigate();
   const colorMap = {
@@ -211,6 +253,8 @@ function PopularCardList() {
     blue: "#B1E4FF",
     green: "#D0F5C3",
   };
+
+  const isMobile = window.innerWidth <= 1199; // 1199px 이하인지 확인
 
   useEffect(() => {
     const loadRecipients = async () => {
@@ -223,7 +267,6 @@ function PopularCardList() {
         );
 
         const updatedRecipients = sortedRecipients.map((recipient) => {
-          // topReactions에서 가장 많이 눌린 3개만 가져오기
           const topReactions = recipient.topReactions.slice(0, 3);
           const images = recipient.recentMessages?.slice(0, 3) || [];
           const imageUrls = images
@@ -233,11 +276,10 @@ function PopularCardList() {
           return {
             ...recipient,
             topReactions,
-            profileImages: imageUrls, // topReactions 3개만 가져오기
+            profileImages: imageUrls,
           };
         });
 
-        console.log(updatedRecipients);
         setSelectedRecipients(updatedRecipients);
       } catch (error) {
         console.error("받는 사람 데이터를 가져오지 못했습니다:", error);
@@ -262,11 +304,45 @@ function PopularCardList() {
     navigate(`/post/${id}`);
   };
 
-  // 좌측 버튼 숨기기 조건
   const showLeftButton = scrollPosition !== 0;
-  // 우측 버튼 숨기기 조건
   const showRightButton =
     scrollPosition > -(selectedRecipients.length * cardWidth - 1160);
+
+  const handleMouseDown = (e) => {
+    if (!isMobile) return; // 모바일 화면에서만 드래그 시작
+
+    setIsDragging(true);
+    setStartPosition(e.clientX);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging || !isMobile) return;
+
+    const offset = e.clientX - startPosition;
+    setDragOffset(offset); // 드래그 이동 값 계산
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging || !isMobile) return;
+
+    setIsDragging(false);
+    setScrollPosition((prev) => prev + dragOffset); // 드래그 후 새로운 scrollPosition 설정
+    setDragOffset(0);
+  };
+
+  useEffect(() => {
+    if (isMobile) {
+      document.addEventListener("mousedown", handleMouseDown);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+
+      return () => {
+        document.removeEventListener("mousedown", handleMouseDown);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  }, [isMobile, isDragging, dragOffset, startPosition]);
 
   return (
     <>
@@ -279,7 +355,12 @@ function PopularCardList() {
       </LeftArrowButtonDisplay>
       <BoneWrap>
         <BoneContainer>
-          <Bone scrollPosition={scrollPosition}>
+          <Bone
+            scrollPosition={scrollPosition}
+            onMouseDown={handleMouseDown} // Mouse down 이벤트 추가
+            onMouseMove={handleMouseMove} // Mouse move 이벤트 추가
+            onMouseUp={handleMouseUp} // Mouse up 이벤트 추가
+          >
             {selectedRecipients.map((recipient, index) => (
               <BackgroundWrap
                 key={index}
@@ -312,7 +393,6 @@ function PopularCardList() {
 
                 <EmojiWrapper>
                   <EmojiDiv>
-                    {/* 이모티콘 상위 3개 표시 */}
                     <TopEmojisContainer>
                       {recipient.topReactions.map(({ emoji, count }, i) => (
                         <TopEmojiItem key={i}>
@@ -332,9 +412,7 @@ function PopularCardList() {
         <ArrowButton
           direction="right"
           onClick={handleNext}
-          disabled={
-            scrollPosition <= -(selectedRecipients.length * cardWidth - 1160)
-          }
+          disabled={scrollPosition <= -(selectedRecipients.length * cardWidth - 1160)}
         />
       </RightArrowButtonDisplay>
     </>

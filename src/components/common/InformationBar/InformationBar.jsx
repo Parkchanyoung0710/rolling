@@ -6,6 +6,7 @@ import {
   Complete,
   Close,
 } from "../../../assets/images/icon/IconIndex.jsx";
+import Navbar from "../Navbar/Navbar.jsx";
 
 function InformationBar({
   name,
@@ -78,14 +79,15 @@ function InformationBar({
         setIsModalOpen(false);
       }
     };
-
+    
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
+  
   return (
+    
     <InformationBarWrapper>
       <InformationBarContainer>
         <LeftSection>
@@ -117,7 +119,7 @@ function InformationBar({
             name={name}
             topReactions={topReactions}
             setRecipientData={setRecipientData}
-          />
+            />
           <Separator />
           <Button ref={buttonRef} onClick={toggleModal}>
             <ShareIcon />
@@ -184,11 +186,15 @@ const InformationBarContainer = styled.div`
   margin-inline: auto;
   padding: 0 24px;
   box-sizing: border-box;
-  height: 64px;
+  height: 68px;
   background-color: ${({ theme }) => theme.colors.white};
 
-  @media (max-width: 1248px) {
-    padding: 0 24px;
+  @media (max-width: 1199px) {
+    padding: 13px 24px;
+  }
+
+  @media (max-width: 767px) {
+    
   }
 `;
 
@@ -212,6 +218,7 @@ const ToName = styled.div`
   line-height: 42px;
   letter-spacing: -0.01em;
   color: ${({ theme }) => theme.colors.grayScale[800]};
+
 `;
 
 const WritedContainer = styled.div`
@@ -226,6 +233,9 @@ const WriteCount = styled.span`
   font-size: 18px;
   letter-spacing: 0%;
   line-height: 27px;
+  @media (max-width: 1199px) {
+    display: none;  
+  }
 `;
 
 const WritedText = styled.span`
@@ -235,6 +245,10 @@ const WritedText = styled.span`
   font-size: 18px;
   line-height: 27px;
   letter-spacing: 0%;
+
+  @media (max-width: 1199px) {
+    display: none;  
+  }
 `;
 
 const Avatar = styled.div`
@@ -249,7 +263,6 @@ const Avatar = styled.div`
   align-items: center;
   justify-content: center;
   margin-left: -10px;
-
   font-family: "Pretendard", sans-serif;
   font-weight: 500;
   font-size: 12px;
@@ -264,6 +277,10 @@ const Avatar = styled.div`
   &:not(:has(img)) {
     background-color: white;
     color: ${({ theme }) => theme.colors.grayScale[800]};
+  }
+
+  @media (max-width: 1199px) {
+    display: none;  
   }
 `;
 
@@ -333,6 +350,19 @@ const Toast = styled.div`
   align-items: center;
   padding: 20px 40px;
   z-index: 100;
+
+  @media (max-width: 767px) {
+    width: 320px;
+    height: 64px;
+  }
+`;
+const ToastMessage = styled.span`
+  font-family: "Pretendard", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -1%;
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const IconTextWrapper = styled.div`
@@ -342,14 +372,6 @@ const IconTextWrapper = styled.div`
   align-items: center;
 `;
 
-const ToastMessage = styled.span`
-  font-family: "Pretendard", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 26px;
-  letter-spacing: -1%;
-  color: ${({ theme }) => theme.colors.white};
-`;
 
 const IconWrapper = styled.div`
   width: 24px;
