@@ -25,7 +25,7 @@ const DivWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
- 
+
   @media (max-width: 1248px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -35,7 +35,7 @@ const DivWrap = styled.div`
 `;
 
 const BackgroundWrap = styled.div`
-   background-image: ${({ backgroundImageURL }) =>
+  background-image: ${({ backgroundImageURL }) =>
     backgroundImageURL
       ? `linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.54) 100%), url(${backgroundImageURL})`
       : "ffffff"};
@@ -50,8 +50,6 @@ const BackgroundWrap = styled.div`
     grid-template-columns: 1fr;
   }
 `;
-
-
 
 
 const colorMap = {
@@ -92,7 +90,7 @@ function RollingPaperDetailPage() {
     if (id) fetchInitialData();
   }, [id]);
 
- 
+
 
   // 메시지 로드 함수
 const loadMoreMessages = async () => {
