@@ -60,6 +60,11 @@ const BackgroundWrap = styled.div.withConfig({
     transform: scale(0.98);
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
   }
+
+  @media (max-width: 767px) {
+    width:208px;
+    height:232px;
+  }
 `;
 const TextDisplay = styled.div`
   display: flex;
@@ -75,6 +80,12 @@ const ToText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 767px) {
+    ${(props) => textStyle(18, 700)(props)}
+    font-family: Pretendard;
+    line-height:28px;
+  }
 `;
 
 const WritedContainer = styled.div`
@@ -110,8 +121,14 @@ const Avatar = styled.div`
 `;
 
 const WriteCount = styled.div`
-  font-size: 16px;
-  font-weight: 600;
+  ${(props) => textStyle(14, 700)(props)}
+  font-weight: 700;
+
+  @media (max-width: 767px) {
+    ${(props) => textStyle(14, 700)(props)}
+    font-family: Pretendard;
+    line-height:20px;
+  }
 `;
 
 const WriteCountDisplay = styled.div`
@@ -122,7 +139,13 @@ const WriteCountDisplay = styled.div`
 
 const WritedText = styled.div`
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
+
+  @media (max-width: 767px) {
+    ${(props) => textStyle(14, 400)(props)}
+    font-family: Pretendard;
+    line-height:20px;
+  }
 `;
 
 const ArrowButtonDisplay = styled.div`
@@ -151,6 +174,10 @@ const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
 const TopEmojisContainer = styled.div`
   display: flex;
   gap: 8px;
+  @media (max-width: 767px) {
+    padding: 0 4px;
+    
+  }
 `;
 
 const TopEmojiItem = styled.div`
@@ -166,6 +193,11 @@ const TopEmojiItem = styled.div`
   gap: 2px;
   font-size: 20px;
   text-align: center;
+
+  @media (max-width: 767px) {
+    width: 46px;
+    height: 32px;
+  }
 `;
 const EmojiWrapper = styled.div`
   position: absolute;

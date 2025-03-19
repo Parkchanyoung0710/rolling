@@ -20,6 +20,8 @@ const NavbarContainer = styled.nav`
   max-width: 1207px;
   height: 64px;
   padding: 11px 24px;
+
+
 `;
 
 const StyledLogo = styled(LogoImg)`
@@ -27,9 +29,7 @@ const StyledLogo = styled(LogoImg)`
   width: 106px;
   cursor: pointer;
   
-  @media (max-width: 767px) {
-    display: none;
-  }
+  
 `;
 
 function Navbar() {
