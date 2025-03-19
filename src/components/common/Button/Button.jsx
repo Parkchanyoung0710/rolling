@@ -51,7 +51,7 @@ const ButtonWrapper = styled.button`
   ${({ width }) =>
     width &&
     css`
-      width: ${width}px;
+      width: ${typeof width === "number" ? `${width}px` : width};
     `}
 `;
 

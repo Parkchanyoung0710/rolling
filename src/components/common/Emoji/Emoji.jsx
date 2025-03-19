@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import EmojiPicker from "emoji-picker-react";
 import styled from "styled-components";
-import EmojiIcon from "../../../assets/images/emoji.png";
-import toggle from "../../../assets/images/toggle.png";
+import { ArrowDown } from "../../../assets/images/icon/IconIndex";
 import recipientsService from "../../../api/services/recipientsService";
 import { useParams } from "react-router-dom";
+import Button from "../Button/Button";
 
 const TOP_EMOJIS = 3;
 
@@ -83,14 +83,10 @@ function Emoji({ topReactions = [], setRecipientData }) {
         <ActionsContainer>
           {allReactions.length > TOP_EMOJIS && (
             <ShowMoreButton onClick={() => setShowAllEmojis(!showAllEmojis)}>
-              <Icon src={toggle} alt="더 보기" />
+              <ArrowDown alt="더 보기" />
             </ShowMoreButton>
           )}
-
-          <AddButton onClick={() => setShowPicker(!showPicker)}>
-            <Icon src={EmojiIcon} alt="EmojiIcon" />
-            추가
-          </AddButton>
+          <Button onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">추가</Button>
         </ActionsContainer>
       </Header>
 
@@ -117,11 +113,6 @@ function Emoji({ topReactions = [], setRecipientData }) {
 }
 
 export default Emoji;
-
-const Icon = styled.img`
-  width: 24px;
-  height: 24px;
-`;
 
 const ServiceContainer = styled.div`
   top: 6px;
@@ -182,19 +173,6 @@ const ShowMoreButton = styled.button`
   cursor: pointer;
   width: 36px;
   height: 36px;
-`;
-
-const AddButton = styled.button`
-  width: 88px;
-  height: 36px;
-  border-radius: 6px;
-  border: 1px solid ${(props) => props.theme.colors.grayScale[300]};
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-size: ${(props) => props.theme?.Typography?.[16]?.fontSize || "16px"};
-  padding: 6px 12px;
-  color: ${(props) => props.theme.colors.black};
 `;
 
 const PickerWrapper = styled.div`

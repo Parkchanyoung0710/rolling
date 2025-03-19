@@ -2,11 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import Emoji from "../Emoji/Emoji";
 import styled from "styled-components";
 import {
-  Share,
   Complete,
   Close,
 } from "../../../assets/images/icon/IconIndex.jsx";
-import Navbar from "../Navbar/Navbar.jsx";
+import IconButton from "../Button/IconButton.jsx";
 
 function InformationBar({
   name,
@@ -121,9 +120,7 @@ function InformationBar({
             setRecipientData={setRecipientData}
             />
           <Separator />
-          <Button ref={buttonRef} onClick={toggleModal}>
-            <ShareIcon />
-          </Button>
+          <IconButton ref={buttonRef} onClick={toggleModal} image="share" width="56" />
           {isModalOpen && (
             <Modal ref={modalRef}>
               <Option onClick={shareToKakao}> 카카오톡 공유</Option>
@@ -150,12 +147,6 @@ function InformationBar({
     </InformationBarWrapper>
   );
 }
-
-const ShareIcon = styled(Share)`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-`;
 
 const Separator = styled.span`
   display: inline-block;
@@ -281,20 +272,6 @@ const Avatar = styled.div`
   @media (max-width: 1199px) {
     display: none;  
   }
-`;
-
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale[300]};
-  width: 56px;
-  height: 36px;
-  border-radius: 6px;
-  padding: 6px 16px;
-  cursor: pointer;
-  font-size: 16px;
 `;
 
 const Modal = styled.div`
