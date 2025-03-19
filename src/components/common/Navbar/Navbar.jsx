@@ -26,6 +26,10 @@ const StyledLogo = styled(LogoImg)`
   display: flex;
   width: 106px;
   cursor: pointer;
+  
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 function Navbar() {
