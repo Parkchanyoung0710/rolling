@@ -19,12 +19,19 @@ const PageWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
   display: flex;
-  width: -webkit-fill-available;
-  justify-content: left;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+`;
+
+const TitleText = styled.div`
+  text-align: left;
+  width: 100%;
+  font-family: Pretendard;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -46,13 +53,17 @@ function RollingPaperListPage() {
   return (
     <Container>
       <PageWrapper>
-        <Title>인기 롤링 페이퍼🔥</Title>
+        <Title>
+          <TitleText>인기 롤링 페이퍼🔥</TitleText>
+        </Title>
 
         <StyledCardList>
           <PopularCardList />
         </StyledCardList>
 
-        <Title>최근에 만든 롤링 페이퍼⭐</Title>
+        <Title>
+          <TitleText>최근에 만든 롤링 페이퍼⭐</TitleText>
+        </Title>
 
         <StyledCardList>
           <CreateAtCardList />

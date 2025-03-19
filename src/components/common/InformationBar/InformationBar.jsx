@@ -88,11 +88,12 @@ function InformationBar({
 
         <RightSection>
           <WritedContainer>
-            {profileImages.slice(0, 3).map((url, index) => (
-              <Avatar key={index}>
-                <img src={url} alt={`프로필 이미지 ${index + 1}`} />
-              </Avatar>
-            ))}
+            {profileImages &&
+              profileImages.slice(0, 3).map((url, index) => (
+                <Avatar key={index}>
+                  <img src={url} alt={`프로필 이미지 ${index + 1}`} />
+                </Avatar>
+              ))}
 
             {count > 3 && <Avatar>+{count - 3}</Avatar>}
 
@@ -280,10 +281,8 @@ const Modal = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grayScale[300]};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  opacity: 0;
   animation: fadeIn 0.3s forwards;
-
-  @keyframes fadeInAll {
+  @keyframes fadeIn {
     0% {
       opacity: 0;
       transform: scale(0.8);

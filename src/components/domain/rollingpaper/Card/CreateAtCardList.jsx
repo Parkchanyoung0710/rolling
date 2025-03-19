@@ -34,7 +34,9 @@ const BackgroundWrap = styled.div.withConfig({
 })`
   background-color: ${({ bgColor }) => bgColor || "#FFFFFF"};
   background-image: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+    backgroundImageURL
+      ? `linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.54) 100%), url(${backgroundImageURL})`
+      : "none"};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -43,7 +45,7 @@ const BackgroundWrap = styled.div.withConfig({
   padding: 30px 24px;
   border-radius: 1rem;
   color: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? "#ffffff;" : "#000000"};
+    backgroundImageURL ? "#ffffff" : "#000000"};
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease,
     background-color 0.3s ease;
@@ -69,6 +71,10 @@ const ToText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
   margin-bottom: 0.75rem;
   height: 2.625rem;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const WritedContainer = styled.div`
@@ -115,35 +121,82 @@ const WriteCountDisplay = styled.div`
 `;
 
 const WritedText = styled.div`
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 400;
 `;
 
 const ArrowButtonDisplay = styled.div`
-align-items: center;
-   
-    transform: translateY(40%);
-    z-index: 2;
-    transform: matrix(1, 0, 0, 1, 0, 108);
+    align-items: center;
+    z-index: 1;
     transition: opacity 0.3s ease;
 }
 `;
 const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
   display: ${({ show }) => (show ? "block" : "none")};
-  position: relative;
-  left: 38px;
-  top: 23%;
-  transform: translateY(42%);
+  position: absolute;
+  left: 22.5rem;
+  top: 64%;
+  transform: translateY(0%);
+  z-index: 1;
+`;
+const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
+  display: ${({ show }) => (show ? "block" : "none")};
+  position: absolute;
+  right: 22.5rem;
+  top: 64%;
+  transform: translateY(0%);
   z-index: 1;
 `;
 
-const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
-  position: relative;
-  right: 38px;
-  top: 23%;
-  transform: translateY(42%);
-  z-index: 1;
-  display: block;
+const TopEmojisContainer = styled.div`
+  display: flex;
+  gap: 8px;
 `;
+
+const TopEmojiItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 36px;
+  border-radius: 32px;
+  background-color: rgba(0, 0, 0, 0.54);
+  color: white;
+  padding: 8px 12px;
+  gap: 2px;
+  font-size: 20px;
+  text-align: center;
+`;
+const EmojiWrapper = styled.div`
+  position: absolute;
+  bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 80%;
+`;
+
+const EmojiDiv = styled.div`
+  position: relative;
+  margin-top: 2rem;
+  padding-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+`;
+const EmojiImage = styled.span`
+  font-size: 20px;
+`;
+
+const EmojiCount = styled.span`
+  font-size: 14px;
+  font-weight: bold;
+`;
+
 function CreateAtCardList() {
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -167,13 +220,16 @@ function CreateAtCardList() {
         );
 
         const updatedRecipients = sortedRecipients.map((recipient) => {
+          const topReactions = recipient.topReactions.slice(0, 3);
           const images = recipient.recentMessages?.slice(0, 3) || [];
           const imageUrls = images
             .map((msg) => msg.profileImageURL)
             .filter(Boolean);
+
           return {
             ...recipient,
-            profileImages: imageUrls,
+            topReactions,
+            profileImages: imageUrls, // topReactions 3개만 가져오기
           };
         });
 
@@ -199,7 +255,6 @@ function CreateAtCardList() {
   };
 
   const handleCardClick = (id) => {
-    // 클릭 시 해당 id로 페이지 이동
     navigate(`/post/${id}`);
   };
 
@@ -226,32 +281,43 @@ function CreateAtCardList() {
                 key={index}
                 bgColor={colorMap[recipient.backgroundColor] || "#FFFFFF"}
                 backgroundImageURL={recipient.backgroundImageURL || null}
-                onClick={() => handleCardClick(recipient.id)} // 클릭 시 해당 id로 이동
+                onClick={() => handleCardClick(recipient.id)}
               >
-                <div>
-                  <TextDisplay>
-                    <ToText>To.</ToText>
-                    <ToText>
-                      {recipient.name === "Unknown"
-                        ? "이름 없음"
-                        : recipient.name}
-                    </ToText>
-                  </TextDisplay>
-                  <WritedContainer>
-                    {recipient.profileImages?.slice(0, 3).map((url, i) => (
-                      <Avatar key={i}>
-                        <img src={url} alt={`프로필 이미지 ${i + 1}`} />
-                      </Avatar>
-                    ))}
-                    {recipient.messageCount > 3 && (
-                      <Avatar>+{recipient.messageCount - 3}</Avatar>
-                    )}
-                  </WritedContainer>
-                  <WriteCountDisplay>
-                    <WriteCount>{recipient.messageCount}</WriteCount>
-                    <WritedText>명이 작성했어요!</WritedText>
-                  </WriteCountDisplay>
-                </div>
+                <TextDisplay>
+                  <ToText>
+                    To.
+                    {recipient.name === "Unknown"
+                      ? "이름 없음"
+                      : recipient.name}
+                  </ToText>
+                </TextDisplay>
+                <WritedContainer>
+                  {recipient.profileImages?.slice(0, 3).map((url, i) => (
+                    <Avatar key={i}>
+                      <img src={url} alt={`프로필 이미지 ${i + 1}`} />
+                    </Avatar>
+                  ))}
+                  {recipient.messageCount > 3 && (
+                    <Avatar>+{recipient.messageCount - 3}</Avatar>
+                  )}
+                </WritedContainer>
+                <WriteCountDisplay>
+                  <WriteCount>{recipient.messageCount}</WriteCount>
+                  <WritedText>명이 작성했어요!</WritedText>
+                </WriteCountDisplay>
+                <EmojiWrapper>
+                  <EmojiDiv>
+                    {/* 이모티콘 상위 3개 표시 */}
+                    <TopEmojisContainer>
+                      {recipient.topReactions.map(({ emoji, count }, i) => (
+                        <TopEmojiItem key={i}>
+                          <EmojiImage>{emoji}</EmojiImage>
+                          <EmojiCount>{count}</EmojiCount>
+                        </TopEmojiItem>
+                      ))}
+                    </TopEmojisContainer>
+                  </EmojiDiv>
+                </EmojiWrapper>
               </BackgroundWrap>
             ))}
           </Bone>
