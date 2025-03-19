@@ -103,6 +103,7 @@ function ProfileInput() {
         onError={setHasError}
         onFontSelect={setSelectedFont}
       />
+      
       <StyledButton
         variant="primary"
         size={56}
@@ -111,7 +112,8 @@ function ProfileInput() {
         state={condition ? "enabled" : "disabled"}
       >
         생성하기
-      </StyledButton>
+        </StyledButton>
+     
     </Bone>
   );
 }

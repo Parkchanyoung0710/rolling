@@ -3,11 +3,14 @@ import styled from "styled-components";
 import { Check } from "../../../../assets/images/icon/IconIndex"; // Check 아이콘 불러오기
 
 const Bone = styled.div`
-  width: 45rem;
-  height: 10.5rem;
   display: flex;
   justify-content: space-between;
-  margin: 2.813rem 0;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 45px 0;
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+  }
 `;
 
 const Color = styled.div`
@@ -21,6 +24,10 @@ const Color = styled.div`
   justify-content: center;
   position: relative;
   background-color: ${(props) => props.color};
+  @media (max-width: 768px) {
+    width: 154px;
+    height: 154px;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -34,7 +41,7 @@ const IconWrapper = styled.div`
 `;
 
 // 토글 버튼 클릭시 컬러에 대한 컴포넌트트
-const ColorPicker = ({ onSelect }) => {
+const   ColorPicker = ({ onSelect }) => {
   const [selectedColor, setSelectedColor] = useState("");
 
   const handleColorChange = (color) => {

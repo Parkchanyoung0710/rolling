@@ -4,7 +4,9 @@ import InformationBar from "../../components/common/InformationBar/InformationBa
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
 import Card from "../../components/domain/rollingpaper/Card/Card";
 import styled from "styled-components";
-import recipientsService from "../../api/services/recipientsService"; // get 요청
+import recipientsService from "../../api/services/recipientsService";
+import axios from "axios";
+
 
 const CardContainer = styled.div`
   width: min(100%, 1200px);
@@ -12,11 +14,23 @@ const CardContainer = styled.div`
   padding: 0 24px;
   box-sizing: border-box;
   display: flex;
-  align-items: center;
   justify-content: center;
+  height: 1140px;
+  min-height: 50vh;
+  padding: 100px 24px;
+  width: 100%;
+  
+  background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
+  min-height: calc(100vh - 65px);
+  height: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: fixed;
 
-  @media (max-width: 1248px) {
-    padding: 0 24px;
+  @media (max-width: 768px) {
+    background-attachment: scroll;
   }
 `;
 
@@ -25,34 +39,39 @@ const DivWrap = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
   gap: 28px;
+  opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
+  transition: opacity 0.5s ease-in-out;
+  height: fit-content;
   padding-top: 112px;
 
-  @media (max-width: 1248px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
-const BackgroundWrap = styled.div.withConfig({
-  shouldForwardProp: (prop) =>
-    !["bgColor", "backgroundImageURL"].includes(prop),
-})`
-  background-image: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+const BackgroundWrap = styled.div`
+  background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
   background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
-  min-height: calc(100vh - 65px);
-  background-size: cover;
-  background-position: center;
+  min-height: 100vh;
+  height: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: fixed;
+
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+  }
 `;
 
 function RollingPaperDetailPage() {
   const { id } = useParams();
-  const postData = null;
   const [loading, setLoading] = useState(true);
-  const [isRecipientLoading, setIsRecipientLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [recipientData, setRecipientData] = useState({});
-
   const [messages, setMessages] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const observerRef = useRef(null);
+  const lastMessageRef = useRef(null);
+  const isFetchingRef = useRef(false);
+
   const colorMap = {
     beige: "#FFE2AD",
     purple: "#ECD9FF",
@@ -60,108 +79,76 @@ function RollingPaperDetailPage() {
     green: "#D0F5C3",
   };
 
-  const observer = useRef(null);
-
-  // API 호출 함수
-  const fetchMessages = async (page) => {
-    try {
-      const limit = 10;
-      const offset = (page - 1) * limit;
-
-      const [messagesResponse, recipientResponse] = await Promise.all([
-        recipientsService.getRecipientsMessages(id, limit, offset),
-        recipientsService.getRecipientsId(id),
-      ]);
-
-      setMessages((prevMessages) => {
-        const newMessages = messagesResponse.data.results;
-
-        const uniqueMessages = [
-          ...prevMessages,
-          ...newMessages.filter(
-            (message) =>
-              !prevMessages.some((prevMessage) => prevMessage.id === message.id)
-          ),
-        ];
-
-        return uniqueMessages;
-      });
-
-      setRecipientData(recipientResponse.data);
-
-      setLoading(false);
-      setIsRecipientLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  };
-
-  // 메시지 로드 함수
-  const loadMoreMessages = () => {
-    if (loading) return;
-    setLoading(true);
-    setPage((prev) => prev + 1);
-  };
 
   useEffect(() => {
-    if (!id) return;
-
-    fetchMessages(page);
-  }, [page, loading]);
-
-  useEffect(() => {
-    if (!observer.current) {
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            loadMoreMessages();
-          }
-        },
-        { rootMargin: "100px" }
-      );
-    }
-
-    const lastCardElement = document.getElementById("last-card");
-    if (lastCardElement) {
-      observer.current.observe(lastCardElement);
-    }
-
-    return () => {
-      if (observer.current && lastCardElement) {
-        observer.current.unobserve(lastCardElement);
+    async function fetchInitialData() {
+      try {
+        const [messagesResponse, recipientResponse] = await Promise.all([
+          recipientsService.getRecipientsMessages(id, 8, 0),
+          recipientsService.getRecipientsId(id),
+        ]);
+        setMessages(messagesResponse.data.results);
+        setNextUrl(messagesResponse.data.next);
+        setRecipientData(recipientResponse.data);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      } finally {
+        setLoading(false);
       }
-    };
-  }, []);
+    }
+    if (id) fetchInitialData();
+  }, [id]);
 
-  if (loading || isRecipientLoading) return <div>로딩중...</div>;
+
+  const loadMoreMessages = async () => {
+    if (!nextUrl || isFetchingRef.current) return;
+    isFetchingRef.current = true;
+    try {
+      const response = await axios.get(nextUrl);
+      setMessages((prev) => [...prev, ...response.data.results]);
+      setNextUrl(response.data.next);
+    } catch (error) {
+      console.error("Error loading messages:", error);
+    } finally {
+      isFetchingRef.current = false;
+    }
+  };
+
+  useEffect(() => {
+    if (!lastMessageRef.current) return;
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && loadMoreMessages(),
+      { root: null, rootMargin: "-50px" }
+    );
+    observerRef.current.observe(lastMessageRef.current);
+    return () => observerRef.current?.disconnect();
+  }, [messages.length]);
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 100);
+  }, []);
 
   return (
     <BackgroundWrap
       bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
-      backgroundImageURL={recipientData?.backgroundImageUrl ?? null}
+      backgroundImageURL={recipientData?.backgroundImageURL ?? null}
     >
       <InformationBar
         name={recipientData?.name ?? ""}
         count={recipientData?.messageCount ?? 0}
-        profileImages={(recipientData?.recentMessages ?? []).map(
-          ({ profileImageURL }) => profileImageURL
-        )}
+        profileImages={recipientData?.recentMessages?.map(({ profileImageURL }) => profileImageURL) || []}
         topReactions={recipientData?.topReactions ?? []}
         setRecipientData={setRecipientData}
       />
-      <CardContainer>
-        <DivWrap>
-          <Card postData={postData} />
-          {messages?.map((message) => (
-            <div key={message.id}>
-              <CardWrite
-                key={message.id}
-                message={message}
-                fontFamily={message.font}
-              />
+      <CardContainer bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
+      backgroundImageURL={recipientData?.backgroundImageURL ?? null}>
+        <DivWrap isLoaded={isLoaded}>
+          <Card postData={null} />
+          {messages.map((message, index) => (
+            <div key={message.id} ref={index === messages.length - 1 ? lastMessageRef : null}>
+              <CardWrite message={message} fontFamily={message.font} />
             </div>
           ))}
-          {messages?.length > 0 && <div id="last-card"></div>}
         </DivWrap>
       </CardContainer>
     </BackgroundWrap>

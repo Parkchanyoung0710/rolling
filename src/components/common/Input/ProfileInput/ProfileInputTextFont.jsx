@@ -31,7 +31,7 @@ const EditorWrapper = styled.div`
     background: #eeeeee;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
-    padding: 10px;
+ 
   }
 
   .ql-toolbar button {

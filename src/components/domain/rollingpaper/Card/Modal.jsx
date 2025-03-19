@@ -1,6 +1,70 @@
 import React from "react";
 import styled from "styled-components";
+import ReactQuill from "react-quill";
+import { textStyle } from "../../../../styles/textStyle";
+import "../../../../styles/font.css";
+import Badge from "../../../common/Badge/Badge";
 
+const Quill = ReactQuill.Quill;
+var Font = Quill.import("formats/font");
+Font.whitelist = [
+  "Noto Sans KR",
+  "Pretendard",
+  "나눔명조",
+  "나눔손글씨 손편지체",
+];
+Quill.register(Font, true);
+
+const EditorWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["$textAlign", "$fontFamily"].includes(prop),
+})`
+  .ql-editor {
+    width: 500px;
+    height: 240px; /* 높이를 고정 */
+    font-size: 1rem !important;
+    line-height: 28px;
+    padding: 16px 0;
+    position: relative;
+    top: 120px;
+    background: #fff;
+       font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
+    text-align: ${(props) => props.$textAlign || "left"};
+    overflow: auto; 
+    white-space: pre-wrap; 
+    word-wrap: break-word;
+  }
+
+  .ql-picker.ql-font {
+    width: 150px;
+    min-width: 150px;
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
+  }
+
+  .ql-picker.ql-font .ql-picker-item,
+  .ql-picker.ql-font .ql-picker-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
+  }
+
+  .ql-container.ql-snow {
+    border: none;
+    text-align: ${({ $textAlign }) => $textAlign || "left"};
+  }
+
+  .ql-editor p {
+   font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
+    ${(props) => textStyle(18, 400)(props)}
+  }
+    ql-editor h2 {
+   font-family: ${(props) => `'${props.$fontFamily || "Noto Sans KR"}'`} !important;
+    ${(props) => textStyle(18, 400)(props)}
+  }
+  .ql-snow .ql-editor h2 {
+    font-size: 1rem;
+  }
+`;
 const Background = styled.div`
   position: fixed;
   width: 100%;
@@ -101,13 +165,6 @@ const Name = styled.div`
   margin-right: 8px;
 `;
 
-const Tag = styled.div`
-  background: #e0f7fa;
-  color: #00796b;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-`;
 
 const Divider = styled.div`
   position: absolute;
@@ -118,38 +175,10 @@ const Divider = styled.div`
   background: #eeeeee;
 `;
 
-const ContentContainer = styled.div`
-  position: absolute;
-  width: 520px;
-  height: 256px;
-  top: 116px;
-  left: 40px;
-  background: #ffffff; /* 배경색을 #FFFFFF로 설정 */
-  border-radius: 8px;
-  padding: 16px;
-  box-sizing: border-box;
-  overflow-y: auto; /* 세로 스크롤바 추가 */
-  overflow-x: hidden; /* 가로 스크롤바 숨김 */
-  white-space: pre-wrap; /* 줄 바꿈과 공백을 유지하면서 텍스트를 자동으로 줄 바꿈 */
-  word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #cccccc #ffffff; /* Firefox */
-
-  &::-webkit-scrollbar {
-    width: 4px; /* 스크롤바 너비 */
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #ffffff; /* 스크롤바 트랙 배경색 */
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #cccccc; /* 스크롤바 색상 */
-    border-radius: 8px; /* 스크롤바 둥글게 */
-  }
-`;
-
-const Modal = ({ onClose, date, imageUrl, name, tag, content }) => {
+const Modal = ({ onClose, date, imageUrl, name,tag , content, font }) => {
+  const textAlign = "left";
+  console.log(font)
+  const fontFamily = font || "Noto Sans KR";
   return (
     <Background>
       <ModalContainer>
@@ -159,12 +188,41 @@ const Modal = ({ onClose, date, imageUrl, name, tag, content }) => {
           </ImageContainer>
           <div>
             <Name>{name}</Name>
-            <Tag>{tag}</Tag>
+            <Badge relationship={tag} />
           </div>
         </InfoContainer>
         <DateContainer>{date}</DateContainer>
         <Divider />
-        <ContentContainer dangerouslySetInnerHTML={{ __html: content }} />
+        <EditorWrapper
+                $fontFamily={fontFamily || "Noto Sans KR"}
+          $textAlign={textAlign}
+                >
+                  <ReactQuill
+                    theme="snow"
+                    value={content || ""}
+                    readOnly={true}
+                    modules={{
+                      toolbar: false,
+                      clipboard: {
+                        matchVisual: false,
+                      },
+                    }}
+                    formats={[
+                      "bold",
+                      "italic",
+                      "underline",
+                      "blockquote",
+                      "code-block",
+                      "header",
+                      "align",
+                      "color",
+                      "background",
+                      "list",
+                      "font",
+            ]}
+              style={{ fontFamily: fontFamily }} 
+                  />
+                </EditorWrapper>
         <ConfirmButton onClick={onClose}>확인</ConfirmButton>
       </ModalContainer>
     </Background>

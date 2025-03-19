@@ -13,13 +13,20 @@ import Button from "../../Button/Button";
 import recipientsService from "../../../../api/services/recipientsService"; // post 해줘야 함
 
 export const Bone = styled.div`
-  width: 45rem;
+  width: 100%;
+  max-width: 720px;
+
+  @media (max-width: 768px) {
+    padding: 0;
+  }
+
+  @media (max-width: 360px) {
+    padding: 0;
+  }
 `;
 
 const Picker = styled.div`
-  width: 45rem;
-  height: 10.5rem;
-  margin-bottom: 4.3125rem;
+  width:100%;
 `;
 
 const StyledButton = styled(Button)`
@@ -44,7 +51,8 @@ function Input() {
     setName(value);
   };
 
-  const condition = name.length >= 2 && !!cardContent && !hasError; // 에러가 없을 때 버튼 활성화
+  const condition = name.length >= 2 && name.length <= 8 && !!cardContent && !hasError;
+ // 에러가 없을 때 버튼 활성화
 
   const handleToggle = (index) => {
     setSelected(index);
@@ -74,23 +82,7 @@ function Input() {
       });
   }
   console.log("cardContent 값.:", cardContent);
-  console.log(name);
-  console.log(
-    "name:",
-    name,
-    "name.length >= 2:",
-    name.length >= 2,
-    "cardContent:",
-    cardContent,
-    "!!cardContent:",
-    !!cardContent,
-    "hasError:",
-    hasError,
-    "!hasError:",
-    !hasError,
-    "condition:",
-    condition
-  );
+
 
   return (
     <Bone>

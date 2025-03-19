@@ -20,7 +20,9 @@ const SelectBox = styled.div.withConfig({
   border: 1px solid #cccccc;
   transition: border 0.1s ease-in-out;
   ${(props) => props.isOpen && `border: 2px solid #555555;`}
-
+@media (max-width: 360px) {
+    width: 100%;
+  }
   &:hover {
     border: 2px solid #555555;
   }
@@ -122,7 +124,6 @@ function DropDown({ currentValue, options, onSelect }) {
     >
       <Label>{selectedValue}</Label>
       <IconStyle onClick={handleArrowDownClick} $isReversed={isReversed}>
-        {" "}
         <ArrowDown />
       </IconStyle>
       {isShowOptions && (

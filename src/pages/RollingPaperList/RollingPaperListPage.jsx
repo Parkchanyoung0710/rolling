@@ -53,6 +53,7 @@ function RollingPaperListPage() {
   return (
     <Container>
       <PageWrapper>
+
         <Title>
           <TitleText>인기 롤링 페이퍼🔥</TitleText>
         </Title>
@@ -68,7 +69,6 @@ function RollingPaperListPage() {
         <StyledCardList>
           <CreateAtCardList />
         </StyledCardList>
-
         <ButtonWrapper>
           <Button
             variant="primary"

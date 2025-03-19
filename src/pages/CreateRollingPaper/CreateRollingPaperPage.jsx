@@ -14,6 +14,10 @@ const Bone = styled.div`
   display: flex;
   justify-content: center;
   background-color: #ffffff;
-  padding: 57px 600px;
+  width: 100%;
   min-height: calc(100vh - 65px);
+  padding: 49px 24px;
+  @media (max-width: 368px) {
+    padding: 50px 20px;
+  }
 `;
