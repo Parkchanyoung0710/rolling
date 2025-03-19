@@ -38,35 +38,46 @@ function Emoji({ topReactions = [], setRecipientData }) {
 
   // 이모티콘 추가 및 상태 업데이트
   const handleEmojiSelect = async (emojiObject) => {
-    const { emoji } = emojiObject;
-    const type = "increase";
+  const { emoji } = emojiObject;
+  const type = "increase";
 
-    try {
-      await recipientsService.postRecipientsReactions(id, { emoji, type });
-      await fetchUpdatedReactions();
-    } catch (error) {
-      console.error("Error sending reaction:", error);
-    }
-  };
+  try {
+    // 서버에 반응을 보냄
+    await recipientsService.postRecipientsReactions(id, { emoji, type });
+
+    // 반응 데이터 갱신
+    await fetchUpdatedReactions();
+  } catch (error) {
+    console.error("Error sending reaction:", error);
+  }
+};
+
+const fetchUpdatedReactions = async () => {
+  try {
+    const response = await recipientsService.getRecipientsReactions(id);
+    const updatedReactions = response.data.results;
 
   
-  const fetchUpdatedReactions = async () => {
-    try {
-      const response = await recipientsService.getRecipientsReactions(id);
-      const updatedReactions = response.data.results;
+    const topEmojis = updatedReactions.slice(0, TOP_EMOJIS);
 
-      setRecipientData((prev) => ({
-        ...prev,
-        topReactions: updatedReactions,
-      }));
+  
+    const allEmojis = updatedReactions.length > 8 ? updatedReactions.slice(0, 8) : updatedReactions;
 
-      // 전체 이모티콘 리스트 업데이트 후 로컬 스토리지 저장
-      setAllReactions(updatedReactions);
-      localStorage.setItem("allReactions", JSON.stringify(updatedReactions));
-    } catch (error) {
-      console.error("Error fetching reactions:", error);
-    }
-  };
+    
+    setRecipientData((prev) => ({
+      ...prev,
+      topReactions: topEmojis, 
+    }));
+
+    setAllReactions(allEmojis); 
+
+    
+    localStorage.setItem("allReactions", JSON.stringify(allEmojis));
+
+  } catch (error) {
+    console.error("Error fetching reactions:", error);
+  }
+};
 
   return (
     <ServiceContainer>
