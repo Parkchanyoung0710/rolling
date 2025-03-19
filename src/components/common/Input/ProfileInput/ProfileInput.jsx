@@ -10,15 +10,10 @@ import styled from "styled-components";
 import "../../../../styles/font.css";
 import recipientsService from "../../../../api/services/recipientsService"; // 서버 호출
 
-const StyledButton = styled(Button)`
-  background-color: ${({ disabled }) => (disabled ? "#ccc" : "#007BFF")};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
-  &:disabled {
-    background-color: ${({ theme }) => theme.colors.grayScale[300]};
-    color: ${({ theme }) => theme.colors.white};
-    cursor: not-allowed;
-  }
-`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 function ProfileInput() {
   const navigate = useNavigate();
@@ -103,17 +98,17 @@ function ProfileInput() {
         onError={setHasError}
         onFontSelect={setSelectedFont}
       />
-      
-      <StyledButton
-        variant="primary"
-        size={56}
-        width={720}
-        onClick={handleSubmit}
-        state={condition ? "enabled" : "disabled"}
-      >
+      <ButtonWrapper>
+        <Button
+          variant="primary"
+          size={56}
+          width={720}
+          onClick={handleSubmit}
+          state={condition ? "enabled" : "disabled"}
+        >
         생성하기
-        </StyledButton>
-     
+        </Button>
+      </ButtonWrapper>
     </Bone>
   );
 }

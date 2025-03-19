@@ -29,15 +29,10 @@ const Picker = styled.div`
   width:100%;
 `;
 
-const StyledButton = styled(Button)`
-  background-color: ${({ disabled }) => (disabled ? "#ccc" : "#007BFF")};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
-  &:disabled {
-    background-color: ${({ theme }) => theme.colors.grayScale[300]};
-    color: ${({ theme }) => theme.colors.white};
-    cursor: not-allowed;
-  }
-`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 // To 전체적인 컴포넌
 function Input() {
@@ -105,7 +100,8 @@ function Input() {
           <ImgPicker onSelect={(img) => setCardContent(img)} />
         )}
       </Picker>
-      <StyledButton
+      <ButtonWrapper>
+      <Button
         variant="primary"
         size={56}
         width={720}
@@ -113,7 +109,8 @@ function Input() {
         state={condition ? "enabled" : "disabled"}
       >
         생성하기
-      </StyledButton>
+      </Button>
+      </ButtonWrapper>
     </Bone>
   );
 }

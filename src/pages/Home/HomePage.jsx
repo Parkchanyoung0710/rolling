@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/common/Button/Button";
-import { styled, css } from "styled-components";
+import { styled } from "styled-components";
 
 import cardExample from "../../assets/images/main-page/card-example.png";
 import emojiExample from "../../assets/images/main-page/emoji-example.png";
 import { textStyle } from "../../styles/textStyle";
+import { useEffect, useState, useCallback } from "react";
 
 const NAVBAR_HEIGHT = 65;
 
@@ -23,7 +24,7 @@ const ContentWrapper = styled.div`
   max-width: 1200px;
 
   @media (max-width: 1199px) {
-    max-width: 900px;
+    max-width: 100%;
   }
 
   @media (max-width: 767px) {
@@ -79,6 +80,10 @@ const TitleSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  @media (max-width: 767px) {
+    gap: 4px;
+  }
 `;
 
 const Title = styled.h2`
@@ -123,20 +128,24 @@ const ButtonWrapper = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: ${({ width }) =>
-    typeof width === "number" ? `${width}px` : width || "280px"};
-
-  @media (max-width: 1199px) {
-    width: 100%;
-  }
-
-  @media (max-width: 767px) {
-    width: 100%;
-  }
+  width: ${({ isTablet }) => (isTablet ? "100%" : "280px")};
 `;
 
 function HomePage() {
   const navigate = useNavigate();
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1199);
+
+  const handleResize = useCallback(() => {
+    setIsTablet(window.innerWidth <= 1199);
+  }, []);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]);
 
   return (
     <HomeContainer>
@@ -171,7 +180,7 @@ function HomePage() {
           <StyledButton
             variant="primary"
             size="56"
-            width={280}
+            width={isTablet ? "100%" : 280}
             onClick={() => navigate("/list")}
           >
             구경해보기
