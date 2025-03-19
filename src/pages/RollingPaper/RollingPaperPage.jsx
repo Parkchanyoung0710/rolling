@@ -123,17 +123,19 @@ function RollingPaperDetailPage() {
   }, []);
 
   return (
-    <BackgroundWrap
-      bgColor={colorMap[recipientData?.backgroundColor] ?? "#ffffff"}
-      backgroundImageURL={recipientData?.backgroundImageURL ?? null}
-    >
+    <div>
       <InformationBar
         name={recipientData?.name ?? ""}
         count={recipientData?.messageCount ?? 0}
         profileImages={recipientData?.recentMessages?.map(({ profileImageURL }) => profileImageURL) || []}
         topReactions={recipientData?.topReactions ?? []}
         setRecipientData={setRecipientData}
-      />
+        />
+
+    <BackgroundWrap
+    bgColor={colorMap[recipientData?.backgroundColor] ?? "#ffffff"}
+    backgroundImageURL={recipientData?.backgroundImageURL ?? null}
+    >
       <CardContainer>
         <DivWrap isLoaded={isLoaded}>
           <Card postData={null} />
@@ -145,6 +147,7 @@ function RollingPaperDetailPage() {
         </DivWrap>
       </CardContainer>
     </BackgroundWrap>
+          </div>
   );
 }
 

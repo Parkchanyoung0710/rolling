@@ -19,11 +19,11 @@ function InformationBar({
   const [showToast, setShowToast] = useState(false);
   const buttonRef = useRef(null);
 
-  // ✅ 카카오 SDK 초기화 (한 번만 실행)
+
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("0e75199aafea8afc76aa6dd724c8f4bd");  // 🔥 여기에 JavaScript 키 입력
-      console.log("✅ Kakao SDK Initialized");
+      console.log("Kakao SDK Initialized");
     }
   }, []);
 
@@ -109,7 +109,7 @@ function InformationBar({
           </WritedContainer>
 
           <SeparatorContainer>
-            <Separator />
+            <LeftSeparator />
           </SeparatorContainer>
 
           <Emoji
@@ -120,13 +120,18 @@ function InformationBar({
             setRecipientData={setRecipientData}
             />
           <Separator />
-          <IconButton ref={buttonRef} onClick={toggleModal} image="share" width="56" />
+          <ShareContainer>
+
+          <IconButton ref={buttonRef} onClick={toggleModal}
+          image="share" width="56" height="40"/>
+          
           {isModalOpen && (
             <Modal ref={modalRef}>
               <Option onClick={shareToKakao}> 카카오톡 공유</Option>
               <Option onClick={handleCopyUrl}>URL 공유</Option>
             </Modal>
           )}
+          </ShareContainer>
         </RightSection>
       </InformationBarContainer>
 
@@ -148,12 +153,32 @@ function InformationBar({
   );
 }
 
+const ShareContainer = styled.div`
+  position: relative;
+  display: inline-block; // 버튼 크기에 맞게 조정
+`;
+
+const LeftSeparator = styled.span`
+display: inline-block;
+width: 1px;
+height: 30px;
+background-color: ${({ theme }) => theme.colors.grayScale[300]};
+margin: 0 13px;
+
+@media (max-width: 1199px) {
+    display: none;  
+  }
+`;
 const Separator = styled.span`
   display: inline-block;
   width: 1px;
-  height: 28px;
+  height: 30px;
   background-color: ${({ theme }) => theme.colors.grayScale[300]};
   margin: 0 13px;
+
+  @media (max-width: 768px) {
+    margin: 0 0px;
+  }
 `;
 
 const SeparatorContainer = styled.div`
@@ -163,6 +188,9 @@ const SeparatorContainer = styled.div`
 `;
 
 const InformationBarWrapper = styled.nav`
+  position:fixed;
+  z-index:998;
+  top:58px;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -184,7 +212,10 @@ const InformationBarContainer = styled.div`
     padding: 13px 24px;
   }
   @media (max-width: 767px) {
-    
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: 10px;
   }
 `;
 
@@ -192,6 +223,12 @@ const LeftSection = styled.div`
   flex: 1;
   display: flex;
   justify-content: flex-start;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
 `;
 
 const RightSection = styled.div`
@@ -199,6 +236,16 @@ const RightSection = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
+  margin-top: 10px;
+
+  @media (max-width: 1199px) {
+    margin-top:0px;
+  }
+  @media (max-width: 767px) {
+    margin-top:-8px;
+    justify-content: center;
+    gap: 10px;
+  }
 `;
 
 const ToName = styled.div`
@@ -208,12 +255,25 @@ const ToName = styled.div`
   line-height: 42px;
   letter-spacing: -0.01em;
   color: ${({ theme }) => theme.colors.grayScale[800]};
+  margin-right: 10px;
 
+  @media (max-width: 767px) {
+    left: 22px;
+    font-size: 24px;
+    margin-right: 0;
+    margin-bottom: 10px;
+    top:10px;
+    position: absolute;
+  }
 `;
 
 const WritedContainer = styled.div`
   display: inline-flex;
   align-items: center;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const WriteCount = styled.span`
@@ -223,8 +283,12 @@ const WriteCount = styled.span`
   font-size: 18px;
   letter-spacing: 0%;
   line-height: 27px;
+
   @media (max-width: 1199px) {
     display: none;  
+  }
+  @media (max-width: 767px) {
+    display: none;
   }
 `;
 
@@ -238,6 +302,9 @@ const WritedText = styled.span`
 
   @media (max-width: 1199px) {
     display: none;  
+  }
+  @media (max-width: 767px) {
+    display: none;
   }
 `;
 
@@ -272,12 +339,17 @@ const Avatar = styled.div`
   @media (max-width: 1199px) {
     display: none;  
   }
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Modal = styled.div`
-  padding: 10px 1px;
   position: absolute;
-  top: 122px;
+  padding: 12px 0px;
+  right:0px;
+  margin-top:10px;
+  top: 100%;
   background-color: ${({ theme }) => theme.colors.white};
   width: 140px;
   height: 120px;
@@ -296,10 +368,22 @@ const Modal = styled.div`
       transform: scale(1);
     }
   }
+  @@media (max-width: 1199px) {
+    right:7%;
+    bottom: 100%;
+    width: 140px;
+    height: 120px;
+  }
+  @media (max-width: 767px) {
+    right:7%;
+    bottom: 100%;
+    width: 140px;
+    height: 120px;
+  }
 `;
 
 const Option = styled.div`
-  padding: 10px;
+  padding: 12px;
   cursor: pointer;
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
@@ -332,6 +416,7 @@ const Toast = styled.div`
     height: 64px;
   }
 `;
+
 const ToastMessage = styled.span`
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
@@ -347,7 +432,6 @@ const IconTextWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
-
 
 const IconWrapper = styled.div`
   width: 24px;

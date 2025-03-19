@@ -86,7 +86,12 @@ function Emoji({ topReactions = [], setRecipientData }) {
               <ArrowDown alt="더 보기" />
             </ShowMoreButton>
           )}
-          <Button onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">추가</Button>
+          
+          <StyledIcon>
+          <StyledButton onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">
+            <StyledText>추가</StyledText>
+          </StyledButton>
+        </StyledIcon>
         </ActionsContainer>
       </Header>
 
@@ -113,6 +118,26 @@ function Emoji({ topReactions = [], setRecipientData }) {
 }
 
 export default Emoji;
+
+const StyledIcon = styled.div`
+  display: inline-block;
+`;
+
+const StyledButton = styled(Button)`
+  width: 88px;
+  height: 36px;
+
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 32px;
+  }
+`;
+
+const StyledText = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 const ServiceContainer = styled.div`
   top: 6px;
@@ -150,6 +175,7 @@ const TopEmojiItem = styled.div`
   gap: 2px;
   font-size: 20px;
   text-align: center;
+
 `;
 
 const EmojiImage = styled.span`
@@ -217,8 +243,8 @@ const AllEmojisContainer = styled.div`
 const MoreEmojisWrapper = styled.div`
   z-index: 10;
   position: absolute;
-  top: -16px;
-  right: -82px;
+  top: 100%;
+  right: -106px;
   width: 312px;
   background-color: ${(props) => props.theme.colors.white};
   border: 1px solid ${(props) => props.theme.colors.grayScale[300]};
@@ -228,7 +254,15 @@ const MoreEmojisWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
+  margin-top: -14px;
+  @media (max-width: 1199px) {
+  right: -54px;
+  }
+  @media (max-width: 767px) {
+  right: -156px;
+  }
 `;
+
 
 const AllEmojiItem = styled.div`
   display: flex;

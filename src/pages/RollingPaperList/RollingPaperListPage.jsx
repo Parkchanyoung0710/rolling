@@ -3,14 +3,15 @@ import CreateAtCardList from "../../components/domain/rollingpaper/Card/CreateAt
 import styled from "styled-components";
 import PopularCardList from "../../components/domain/rollingpaper/Card/PopularCardList";
 import Button from "../../components/common/Button/Button";
-
 import { textStyle } from "../../styles/textStyle";
-
 import { useEffect, useState, useCallback } from "react";
 
 const Container = styled.div`
   background-color: #ffffff;
+  width: 100%;
+  padding: 0 20px;
 `;
+
 const PageWrapper = styled.div`
   padding: 50px;
   display: flex;
@@ -26,9 +27,21 @@ const PageWrapper = styled.div`
     width: 100%;
   }
   @media (max-width: 767px) {
-    padding-top: 40px;
-  }   
+    padding: 20px;
+  }
+`;
+
+
+const TitleWrapper = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 10;
+  padding: 10px 0;
+ 
   
+
 `;
 
 const Title = styled.div`
@@ -54,12 +67,15 @@ const ButtonWrapper = styled.div`
   }  
 `;
 
+  
+
 const StyledCardList = styled.div`
   display: flex;
   gap: 20px;
   margin-bottom: 16px;
   width: max-content;
   flex-direction: column;
+
   @media (max-width: 1199px) {
     padding: 0;
     padding-left: 20px;
