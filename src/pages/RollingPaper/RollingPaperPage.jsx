@@ -10,11 +10,23 @@ import axios from "axios";
 const CardContainer = styled.div`
   display: flex;
   justify-content: center;
-  overflow-y: auto;
   height: 1140px;
   min-height: 50vh;
   padding: 100px 24px;
   width: 100%;
+  
+  background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
+  min-height: calc(100vh - 65px);
+  height: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: fixed;
+
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+  }
 `;
 
 const DivWrap = styled.div`
@@ -24,14 +36,22 @@ const DivWrap = styled.div`
   gap: 28px;
   opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
+  height: fit-content;
 `;
 
 const BackgroundWrap = styled.div`
   background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
   background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
-  min-height: calc(100vh - 65px);
-  background-size: cover;
-  background-position: center;
+  min-height: 100vh;
+  height: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: fixed;
+
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+  }
 `;
 
 function RollingPaperDetailPage() {
@@ -111,7 +131,8 @@ function RollingPaperDetailPage() {
         topReactions={recipientData?.topReactions ?? []}
         setRecipientData={setRecipientData}
       />
-      <CardContainer>
+      <CardContainer bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
+      backgroundImageURL={recipientData?.backgroundImageURL ?? null}>
         <DivWrap isLoaded={isLoaded}>
           <Card postData={null} />
           {messages.map((message, index) => (

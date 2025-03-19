@@ -19,11 +19,7 @@ const StyledButton = styled(Button)`
     cursor: not-allowed;
   }
 `;
-const Hello = styled.div`
-  width: 100%;
- 
 
-`;
 function ProfileInput() {
   const navigate = useNavigate();
   const { id } = useParams(); // URL에서 id를 가져옵니다.
