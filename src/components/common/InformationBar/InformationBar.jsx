@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-
 import Emoji from "../Emoji/Emoji";
 import styled from "styled-components";
 import {
@@ -173,11 +172,16 @@ const InformationBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 1207px;
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
   height: 64px;
-  padding: 13px 24px;
   background-color: ${({ theme }) => theme.colors.white};
+
+  @media (max-width: 1248px) {
+    padding: 0 24px;
+  }
 `;
 
 const LeftSection = styled.div`
