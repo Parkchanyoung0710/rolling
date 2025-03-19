@@ -68,14 +68,12 @@ function Input() {
       .postRecipients(requestBody)
       .then((response) => {
         const newId = response.data.id;
-        console.log(response);
         navigate(`/post/${newId}`);
       })
       .catch((error) => {
         console.error("ID 생성 실패:", error.response?.data || error.message);
       });
   }
-  console.log("cardContent 값.:", cardContent);
 
 
   return (

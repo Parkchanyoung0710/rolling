@@ -23,7 +23,6 @@ function InformationBar({
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("0e75199aafea8afc76aa6dd724c8f4bd");  // 🔥 여기에 JavaScript 키 입력
-      console.log("Kakao SDK Initialized");
     }
   }, []);
 

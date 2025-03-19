@@ -304,7 +304,6 @@ function PopularCardList() {
           };
         });
 
-        console.log(updatedRecipients);
         setSelectedRecipients(updatedRecipients);
       } catch (error) {
         console.error("받는 사람 데이터를 가져오지 못했습니다:", error);

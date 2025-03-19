@@ -195,7 +195,6 @@ const CardWrite = ({ message, onDelete }) => {
 
   const textAlign = "left";
   const fontFamily = message.font || "Noto Sans KR";
-    console.log(fontFamily)
   return (
     <>
       <CardContainer onClick={handleCardClick}>

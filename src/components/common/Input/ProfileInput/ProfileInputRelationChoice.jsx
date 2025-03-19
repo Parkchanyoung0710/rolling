@@ -24,10 +24,6 @@ function ProfileInputRelationChoice({ onSelectRelation }) {
     onSelectRelation(option);
   };
 
-  useEffect(() => {
-    console.log("선택된 관계:", selectedOption);
-  }, [selectedOption]);
-
   return (
     <Bone>
       <RelationText>상대와의 관계</RelationText>
