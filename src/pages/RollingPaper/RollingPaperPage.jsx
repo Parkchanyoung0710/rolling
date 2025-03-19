@@ -7,9 +7,17 @@ import styled from "styled-components";
 import recipientsService from "../../api/services/recipientsService"; // get 요청
 
 const CardContainer = styled.div`
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 1248px) {
+    padding: 0 24px;
+  }
 `;
 
 const DivWrap = styled.div`
@@ -18,6 +26,10 @@ const DivWrap = styled.div`
   grid-template-rows: repeat(2, auto);
   gap: 28px;
   padding-top: 112px;
+
+  @media (max-width: 1248px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const BackgroundWrap = styled.div.withConfig({
