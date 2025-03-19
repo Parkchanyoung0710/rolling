@@ -17,17 +17,24 @@ function InformationBar({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
   const [showToast, setShowToast] = useState(false);
-
   const buttonRef = useRef(null);
+
+  // ✅ 카카오 SDK 초기화 (한 번만 실행)
+  useEffect(() => {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("0e75199aafea8afc76aa6dd724c8f4bd");  // 🔥 여기에 JavaScript 키 입력
+      console.log("✅ Kakao SDK Initialized");
+    }
+  }, []);
 
   const shareToKakao = () => {
     if (window.Kakao) {
       window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
-          title: "웹사이트 공유 제목",
-          description: "웹사이트 설명",
-          imageUrl: "",
+          title: "롤링페이퍼 8팀",
+          description: "친구들에게 멋진 롤링페이퍼를 공유해 보세요!🎉",
+          imageUrl: "https://cdn-icons-png.flaticon.com/512/5220/5220478.png",
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,
@@ -117,7 +124,7 @@ function InformationBar({
           </Button>
           {isModalOpen && (
             <Modal ref={modalRef}>
-              <Option onClick={shareToKakao}>카카오톡 공유</Option>
+              <Option onClick={shareToKakao}> 카카오톡 공유</Option>
               <Option onClick={handleCopyUrl}>URL 공유</Option>
             </Modal>
           )}
