@@ -188,9 +188,9 @@ const SeparatorContainer = styled.div`
 `;
 
 const InformationBarWrapper = styled.nav`
-  position:fixed;
-  z-index:998;
-  top:58px;
+  position: sticky;
+  z-index:999;
+  top:65px;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -262,7 +262,7 @@ const ToName = styled.div`
     font-size: 24px;
     margin-right: 0;
     margin-bottom: 10px;
-    top:10px;
+    top:-52px;
     position: absolute;
   }
 `;
