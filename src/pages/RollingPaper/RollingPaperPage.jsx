@@ -8,16 +8,16 @@ import styled from "styled-components";
 import recipientsService from "../../api/services/recipientsService"; // get 요청
 
 const CardContainer = styled.div`
-  margin: auto;
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 100px 24px;
-  width: 100%;
-  box-sizing: border-box;
-  @media (max-width: 768px) {
-    background-attachment: scroll;
+  @media (max-width: 1248px) {
+    padding: 0 24px;
   }
 `;
 
@@ -25,9 +25,14 @@ const DivWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
+  padding-top: 112px;
 
   @media (max-width: 1248px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 
   opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
@@ -47,7 +52,7 @@ const BackgroundWrap = styled.div`
   background-attachment: fixed;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    background-attachment: scroll;
   }
 `;
 
@@ -57,7 +62,6 @@ const colorMap = {
   blue: "#B1E4FF",
   green: "#D0F5C3",
 };
-
 
 function RollingPaperDetailPage() {
   const { id } = useParams();
@@ -89,10 +93,8 @@ function RollingPaperDetailPage() {
     if (id) fetchInitialData();
   }, [id]);
 
-
-
   // 메시지 로드 함수
-const loadMoreMessages = async () => {
+  const loadMoreMessages = async () => {
     if (!nextUrl || isFetchingRef.current) return;
     isFetchingRef.current = true;
     try {
@@ -115,7 +117,6 @@ const loadMoreMessages = async () => {
     observer.observe(lastMessageRef.current);
     return () => observer.disconnect();
   }, [messages]);
-
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 100);
