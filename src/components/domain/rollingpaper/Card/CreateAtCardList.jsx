@@ -1,21 +1,45 @@
 import "../../../../styles/GlobalStyles";
 import { textStyle } from "../../../../styles/textStyle";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
 import recipientsService from "../../../../api/services/recipientsService";
 import ArrowButton from "../../../common/Button/ArrowButton";
 import { useNavigate } from "react-router-dom";
+
+// ★ 패턴 SVG import
+import pattern01 from "../../../../assets/images/pattern/pattern_01.svg";
+import pattern02 from "../../../../assets/images/pattern/pattern_02.svg";
+import pattern03 from "../../../../assets/images/pattern/pattern_03.svg";
+import pattern04 from "../../../../assets/images/pattern/pattern_04.svg";
+
+// 색상-코드 매핑
+const colorMap = {
+  beige: "#FFE2AD",
+  purple: "#ECD9FF",
+  blue: "#B1E4FF",
+  green: "#D0F5C3",
+};
+
+// 색상-패턴 매핑
+const patternMap = {
+  purple: pattern01,
+  beige: pattern02,
+  blue: pattern03,
+  green: pattern04,
+};
+
+// ============================ Styled Components ============================
 const BoneWrap = styled.div`
   width: 1160px;
   position: relative;
   overflow: visible;
   height: 260px;
   @media (max-width: 1199px) {
-   width: 100%;
+    width: 100%;
   }
   @media (max-width: 767px) {
-   height: 232px;
-  } 
+    height: 232px;
+  }
 `;
 
 const BoneContainer = styled.div`
@@ -25,13 +49,14 @@ const BoneContainer = styled.div`
   width: 100%;
   overflow: hidden;
   margin-bottom: 50px;
-   @media (max-width: 1199px) {
-   overflow: auto;
+
+  @media (max-width: 1199px) {
+    overflow: auto;
     scrollbar-width: none;
-    -ms-overflow-style: none; 
-    padding:0 20px;
+    -ms-overflow-style: none;
+    padding: 0 20px;
     &::-webkit-scrollbar {
-      display: none; 
+      display: none;
     }
   }
 `;
@@ -43,44 +68,53 @@ const Bone = styled.div`
   transition: transform 0.5s ease;
   transform: translateX(${(props) => props.scrollPosition}px);
   position: relative;
-  
 `;
 
 const BackgroundWrap = styled.div.withConfig({
   shouldForwardProp: (prop) =>
-    !["bgColor", "backgroundImageURL"].includes(prop),
+    !["isImageCard", "bgColor", "patternUrl", "backgroundImageUrl"].includes(prop),
 })`
-  background-color: ${({ bgColor }) => bgColor || "#FFFFFF"};
-  background-image: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   width: 275px;
   height: 260px;
   padding: 30px 24px;
   border-radius: 1rem;
-  color: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? "#ffffff;" : "#000000"};
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease,
-    background-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+
+  /* 이미지 카드 or 패턴 카드 분기 */
+  ${({ isImageCard, bgColor, patternUrl, backgroundImageUrl }) =>
+    isImageCard
+      ? css`
+          /* 배경 이미지 카드 */
+          background: url(${backgroundImageUrl}) center/cover no-repeat;
+          color: #fff;
+        `
+      : css`
+          /* 배경 색 + 패턴 카드 */
+          background-color: ${bgColor};
+          background-image: ${patternUrl ? `url("${patternUrl}")` : "none"};
+          background-repeat: no-repeat;
+          background-position: right bottom;
+          background-size: auto 150px; /* 여기서 패턴 크기 조절 가능 */
+          color: #000;
+        `}
 
   &:hover {
     transform: scale(1);
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
   }
-
   &:active {
     transform: scale(0.98);
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
   }
+
   @media (max-width: 767px) {
     width: 208px;
     height: 232px;
-  }  
+  }
 `;
+
 const TextDisplay = styled.div`
   display: flex;
   height: 36px;
@@ -91,6 +125,7 @@ const ToText = styled.div`
   ${(props) => textStyle(24, 700)(props)}
   margin-bottom: 0.75rem;
   height: 2.625rem;
+
   @media (max-width: 767px) {
     ${(props) => textStyle(18, 700)(props)}
   }
@@ -152,8 +187,8 @@ const ArrowButtonDisplay = styled.div`
   z-index: 2;
   transform: matrix(1, 0, 0, 1, 0, 108);
   transition: opacity 0.3s ease;
-}
 `;
+
 const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
   display: ${({ show }) => (show ? "block" : "none")};
   position: absolute;
@@ -161,19 +196,21 @@ const LeftArrowButtonDisplay = styled(ArrowButtonDisplay)`
   top: 30%;
   transform: translateY(42%);
   z-index: 1;
-    @media (max-width: 1199px) {
+
+  @media (max-width: 1199px) {
     display: none;
   }
 `;
 
 const RightArrowButtonDisplay = styled(ArrowButtonDisplay)`
-   display: ${({ show }) => (show ? "block" : "none")};
+  display: ${({ show }) => (show ? "block" : "none")};
   position: absolute;
   right: -24px;
   top: 30%;
   transform: translateY(42%);
   z-index: 1;
-    @media (max-width: 1199px) {
+
+  @media (max-width: 1199px) {
     display: none;
   }
 `;
@@ -205,6 +242,7 @@ const TopEmojiItem = styled.div`
     height: 32px;
   }
 `;
+
 const EmojiWrapper = styled.div`
   position: absolute;
   bottom: 0px;
@@ -226,6 +264,7 @@ const EmojiDiv = styled.div`
   width: 100%;
   box-sizing: border-box;
 `;
+
 const EmojiImage = styled.span`
   font-size: 20px;
 `;
@@ -235,28 +274,23 @@ const EmojiCount = styled.span`
   font-weight: bold;
 `;
 
+// ============================ 메인 컴포넌트 ============================
 function CreateAtCardList() {
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const cardWidth = 295;
   const navigate = useNavigate();
-  const colorMap = {
-    beige: "#FFE2AD",
-    purple: "#ECD9FF",
-    blue: "#B1E4FF",
-    green: "#D0F5C3",
-  };
 
   useEffect(() => {
     const loadRecipients = async () => {
       try {
-        const response = await recipientsService.getRecipients(
-          "/14-8/recipients/"
-        );
+        // createAt 기준 내림차순 정렬
+        const response = await recipientsService.getRecipients("/14-8/recipients/");
         const sortedRecipients = response.data.results.sort(
           (a, b) => b.createAt - a.createAt
         );
 
+        // 프로필 이미지 상위 3개 추려내기
         const updatedRecipients = sortedRecipients.map((recipient) => {
           const images = recipient.recentMessages?.slice(0, 3) || [];
           const imageUrls = images
@@ -278,6 +312,7 @@ function CreateAtCardList() {
     loadRecipients();
   }, []);
 
+  // 좌/우 화살표 버튼 핸들러
   const handleNext = () => {
     const maxScroll = -(selectedRecipients.length * cardWidth - 1160);
     setScrollPosition((prev) =>
@@ -290,37 +325,42 @@ function CreateAtCardList() {
   };
 
   const handleCardClick = (id) => {
-    // 클릭 시 해당 id로 페이지 이동
     navigate(`/post/${id}`);
   };
 
-  // 좌측 버튼 숨기기 조건
+  // 좌우 버튼 노출 조건
   const showLeftButton = scrollPosition !== 0;
-  // 우측 버튼 숨기기 조건
   const showRightButton =
     scrollPosition > -(selectedRecipients.length * cardWidth - 1160);
 
   return (
     <>
-      
       <BoneWrap>
         <LeftArrowButtonDisplay show={showLeftButton}>
-        <ArrowButton
-          direction="left"
-          onClick={handlePrev}
-          disabled={scrollPosition === 0}
-        />
-      </LeftArrowButtonDisplay>
+          <ArrowButton
+            direction="left"
+            onClick={handlePrev}
+            disabled={scrollPosition === 0}
+          />
+        </LeftArrowButtonDisplay>
+
         <BoneContainer>
           <Bone scrollPosition={scrollPosition}>
-            {selectedRecipients.map((recipient, index) => (
-              <BackgroundWrap
-                key={index}
-                bgColor={colorMap[recipient.backgroundColor] || "#FFFFFF"}
-                backgroundImageURL={recipient.backgroundImageURL || null}
-                onClick={() => handleCardClick(recipient.id)} // 클릭 시 해당 id로 이동
-              >
-                
+            {selectedRecipients.map((recipient, index) => {
+              // backgroundImageURL이 있으면 이미지 카드, 없으면 색+패턴 카드
+              const isImageCard = !!recipient.backgroundImageURL;
+              const bgColor = colorMap[recipient.backgroundColor] || "#FFFFFF";
+              const patternUrl = patternMap[recipient.backgroundColor] || null;
+
+              return (
+                <BackgroundWrap
+                  key={index}
+                  isImageCard={isImageCard}
+                  bgColor={bgColor}
+                  patternUrl={patternUrl}
+                  backgroundImageUrl={recipient.backgroundImageURL}
+                  onClick={() => handleCardClick(recipient.id)}
+                >
                   <TextDisplay>
                     <ToText>To.</ToText>
                     <ToText>
@@ -329,6 +369,7 @@ function CreateAtCardList() {
                         : recipient.name}
                     </ToText>
                   </TextDisplay>
+
                   <WritedContainer>
                     {recipient.profileImages?.slice(0, 3).map((url, i) => (
                       <Avatar key={i}>
@@ -339,40 +380,41 @@ function CreateAtCardList() {
                       <Avatar>+{recipient.messageCount - 3}</Avatar>
                     )}
                   </WritedContainer>
+
                   <WriteCountDisplay>
                     <WriteCount>{recipient.messageCount}</WriteCount>
                     <WritedText>명이 작성했어요!</WritedText>
                   </WriteCountDisplay>
-                <div>
-                <EmojiWrapper>
-                  <EmojiDiv>
-                    {/* 이모티콘 상위 3개 표시 */}
-                    <TopEmojisContainer>
-                      {recipient.topReactions.map(({ emoji, count }, i) => (
-                        <TopEmojiItem key={i}>
-                          <EmojiImage>{emoji}</EmojiImage>
-                          <EmojiCount>{count}</EmojiCount>
-                        </TopEmojiItem>
-                      ))}
-                    </TopEmojisContainer>
-                  </EmojiDiv>
+
+                  <EmojiWrapper>
+                    <EmojiDiv>
+                      <TopEmojisContainer>
+                        {recipient.topReactions.map(({ emoji, count }, i) => (
+                          <TopEmojiItem key={i}>
+                            <EmojiImage>{emoji}</EmojiImage>
+                            <EmojiCount>{count}</EmojiCount>
+                          </TopEmojiItem>
+                        ))}
+                      </TopEmojisContainer>
+                    </EmojiDiv>
                   </EmojiWrapper>
-                  </div>
-              </BackgroundWrap>
-            ))}
+                </BackgroundWrap>
+              );
+            })}
           </Bone>
         </BoneContainer>
+
         <RightArrowButtonDisplay show={showRightButton}>
-        <ArrowButton
-          direction="right"
-          onClick={handleNext}
-          disabled={
-            scrollPosition <= -(selectedRecipients.length * cardWidth - 1160)
-          }
-        />
-      </RightArrowButtonDisplay>
+          <ArrowButton
+            direction="right"
+            onClick={handleNext}
+            disabled={
+              scrollPosition <=
+              -(selectedRecipients.length * cardWidth - 1160)
+            }
+          />
+        </RightArrowButtonDisplay>
       </BoneWrap>
-      
     </>
   );
 }
