@@ -1,17 +1,37 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import InformationBar from "../../components/common/InformationBar/InformationBar";
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
-import Button from "../../components/common/Button/Button";
+import Button from '../../components/common/Button/Button'
 import styled from "styled-components";
 import recipientsService from "../../api/services/recipientsService";
-import messageService from "../../api/services/messagesService";
+import axios from "axios";
+
 
 const CardContainer = styled.div`
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
   display: flex;
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
+  height: 1140px;
+  min-height: 50vh;
+  padding: 100px 24px;
+  width: 100%;
+  
+  background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
+  min-height: calc(100vh - 65px);
+  height: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: fixed;
+
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+  }
 `;
 
 const DivWrap = styled.div`
@@ -19,20 +39,26 @@ const DivWrap = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
   gap: 28px;
+  opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
+  transition: opacity 0.5s ease-in-out;
+  height: fit-content;
   padding-top: 112px;
   position: relative;
 `;
 
-const BackgroundWrap = styled.div.withConfig({
-  shouldForwardProp: (prop) =>
-    !["bgColor", "backgroundImageURL"].includes(prop),
-})`
-  background-image: ${({ backgroundImageURL }) =>
-    backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
+const BackgroundWrap = styled.div`
+  background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
   background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
-  min-height: calc(100vh - 65px);
-  background-size: cover;
-  background-position: center;
+  min-height: 100vh;
+  height: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: fixed;
+
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -45,10 +71,15 @@ function EditRollingPaperPage() {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const [selectedRecipient, setSelectedRecipient] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [recipientData, setRecipientData] = useState({});
   const [messages, setMessages] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const observerRef = useRef(null);
+  const lastMessageRef = useRef(null);
+  const isFetchingRef = useRef(false);
+
   const colorMap = {
     beige: "#FFE2AD",
     purple: "#ECD9FF",
@@ -56,106 +87,54 @@ function EditRollingPaperPage() {
     green: "#D0F5C3",
   };
 
-  const observer = useRef(null);
 
-  const fetchMessages = async (page) => {
-    try {
-      const limit = 10;
-      const offset = (page - 1) * limit;
-      const response = await recipientsService.getRecipientsMessages(
-        id,
-        limit,
-        offset
-      );
-
-      setMessages((prevMessages) => {
-        const newMessages = response.data.results;
-
-        const uniqueMessages = [
-          ...prevMessages,
-          ...newMessages.filter(
-            (message) =>
-              !prevMessages.some((prevMessage) => prevMessage.id === message.id)
-          ),
-        ];
-
-        return uniqueMessages;
-      });
-
-      setLoading(false);
-    } catch (error) {
-      console.error("메시지 데이터를 가져오지 못했습니다:", error);
-      setLoading(false);
-    }
-  };
-
-  // recipients
-  const fetchRecipientData = async () => {
-    try {
-      const response = await recipientsService.getRecipients(
-        `/14-8/recipients/`
-      );
-      const foundRecipient = response.data.results.find(
-        (recipient) => recipient.id === Number(id)
-      );
-      setSelectedRecipient(foundRecipient);
-    } catch (error) {
-      console.error("받는 사람 데이터를 가져오지 못했습니다:", error);
-    }
-  };
-  // 메시지 로드 함수
-  const loadMoreMessages = () => {
-    if (loading) return;
-    setLoading(true);
-    setPage((prev) => prev + 1);
-  };
-  // id 로드
   useEffect(() => {
-    if (id) {
-      fetchRecipientData();
-    }
-  }, [id]);
-  // 메세지 로드
-  useEffect(() => {
-    if (!loading) {
-      const timer = setTimeout(() => {
-        fetchMessages(page);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [page, loading]);
-
-  // 밑에 스크롤 할 수 있음음
-  useEffect(() => {
-    if (!observer.current) {
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            loadMoreMessages();
-          }
-        },
-        { rootMargin: "100px" }
-      );
-    }
-
-    const lastCardElement = document.getElementById("last-card");
-    if (lastCardElement) {
-      observer.current.observe(lastCardElement);
-    }
-
-    return () => {
-      if (observer.current && lastCardElement) {
-        observer.current.unobserve(lastCardElement);
+    async function fetchInitialData() {
+      try {
+        const [messagesResponse, recipientResponse] = await Promise.all([
+          recipientsService.getRecipientsMessages(id, 8, 0),
+          recipientsService.getRecipientsId(id),
+        ]);
+        setMessages(messagesResponse.data.results);
+        setNextUrl(messagesResponse.data.next);
+        setRecipientData(recipientResponse.data);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      } finally {
+        setLoading(false);
       }
-    };
-  }, []);
+    }
+    if (id) fetchInitialData();
+  }, [id]);
 
-  const backgroundColor = selectedRecipient
-    ? colorMap[selectedRecipient.backgroundColor] || "#FFFFFF"
-    : "#FFFFFF";
-  const backgroundImageURL = selectedRecipient
-    ? selectedRecipient.backgroundImageURL || null
-    : null;
+
+  const loadMoreMessages = async () => {
+    if (!nextUrl || isFetchingRef.current) return;
+    isFetchingRef.current = true;
+    try {
+      const response = await axios.get(nextUrl);
+      setMessages((prev) => [...prev, ...response.data.results]);
+      setNextUrl(response.data.next);
+    } catch (error) {
+      console.error("Error loading messages:", error);
+    } finally {
+      isFetchingRef.current = false;
+    }
+  };
+
+  useEffect(() => {
+    if (!lastMessageRef.current) return;
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && loadMoreMessages(),
+      { root: null, rootMargin: "-50px" }
+    );
+    observerRef.current.observe(lastMessageRef.current);
+    return () => observerRef.current?.disconnect();
+  }, [messages.length]);
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 100);
+  }, []);
 
   const handleDeleteMessage = async (messageId) => {
     const confirmDelete = window.confirm("정말 이 메시지를 삭제하시겠습니까?");
@@ -186,24 +165,27 @@ function EditRollingPaperPage() {
 
   return (
     <BackgroundWrap
-      bgColor={backgroundColor}
-      backgroundImageURL={backgroundImageURL}
+      bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
+      backgroundImageURL={recipientData?.backgroundImageURL ?? null}
     >
-      <InformationBar />
-      <CardContainer>
-        <DivWrap>
+      <InformationBar
+        name={recipientData?.name ?? ""}
+        count={recipientData?.messageCount ?? 0}
+        profileImages={recipientData?.recentMessages?.map(({ profileImageURL }) => profileImageURL) || []}
+        topReactions={recipientData?.topReactions ?? []}
+        setRecipientData={setRecipientData}
+      />
+      <CardContainer bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
+      backgroundImageURL={recipientData?.backgroundImageURL ?? null}>
+        <DivWrap isLoaded={isLoaded}>
           <ButtonWrapper>
             <Button onClick={handleDeleteRollingPaper}>삭제하기</Button>
           </ButtonWrapper>
-          {messages?.map((message) => (
-            <CardWrite
-              key={message.id}
-              message={message}
-              fontFamily={message.font}
-              onDelete={handleDeleteMessage}
-            />
+          {messages.map((message, index) => (
+            <div key={message.id} ref={index === messages.length - 1 ? lastMessageRef : null}>
+              <CardWrite message={message} fontFamily={message.font} onDelete={handleDeleteMessage}/>
+            </div>
           ))}
-          {messages?.length > 0 && <div id="last-card"></div>}
         </DivWrap>
       </CardContainer>
     </BackgroundWrap>
