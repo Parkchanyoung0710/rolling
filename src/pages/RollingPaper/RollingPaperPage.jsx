@@ -45,7 +45,7 @@ const BackgroundWrap = styled.div`
       ? `linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.54) 100%), url(${backgroundImageURL})`
       : "ffffff"};
   background-color: ${({ bgColor }) => bgColor || "#ffffff"};
-  min-height: calc(100vh - 65px);
+  min-height: calc(100vh - 134px);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
