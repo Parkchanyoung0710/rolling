@@ -31,7 +31,15 @@ const EditorWrapper = styled.div.withConfig({
     text-align: ${(props) => props.$textAlign || "left"};
     overflow: hidden;
     white-space: pre-wrap;
-    word-wrap: break-word; 
+    word-wrap: break-word;
+     @media (max-width:1199px) {
+    width: 300px;
+    height: 100px;
+  }
+    @media (max-width:767px) {
+    width: 270px;
+    height: 80px;
+  }
   }
 
   .ql-picker.ql-font {
@@ -74,7 +82,14 @@ const CardContainer = styled.div`
   padding: 28px 24px;
   box-sizing: border-box;
   cursor: pointer; 
-
+  @media (max-width:1199px) {
+    width: 352px;
+    height: 284px;
+  }
+    @media (max-width:767px) {
+    width: 320px;
+    height: 230px;
+  }
   /*눌린듯한 느낌*/
   transition: transform 0.1s ease, box-shadow 0.1s ease; 
   &:hover {

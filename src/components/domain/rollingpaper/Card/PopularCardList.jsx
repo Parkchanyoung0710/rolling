@@ -31,6 +31,7 @@ const BoneContainer = styled.div`
    @media (max-width: 1199px) {
    overflow: auto;
     scrollbar-width: none;
+    padding:0 20px;
     -ms-overflow-style: none; 
     &::-webkit-scrollbar {
       display: none; 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState,useCallback,useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import InformationBar from "../../components/common/InformationBar/InformationBar";
 import CardWrite from "../../components/domain/rollingpaper/Card/CardWrite";
@@ -6,7 +6,7 @@ import Button from '../../components/common/Button/Button'
 import styled from "styled-components";
 import recipientsService from "../../api/services/recipientsService";
 import axios from "axios";
-
+import messageService from "../../api/services/messagesService";
 
 const CardContainer = styled.div`
   width: min(100%, 1200px);
@@ -44,6 +44,14 @@ const DivWrap = styled.div`
   height: fit-content;
   padding-top: 112px;
   position: relative;
+  @media (max-width: 1199px) {
+    grid-template-columns: repeat(2, 1fr);
+    padding-top: 0;
+    position: static;
+  }
+    @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const BackgroundWrap = styled.div`
@@ -56,20 +64,47 @@ const BackgroundWrap = styled.div`
   background-position: center top;
   background-attachment: fixed;
 
-  @media (max-width: 768px) {
+ @media (max-width: 767px) {
     background-attachment: scroll;
+    grid-template-columns: 1fr;
   }
 `;
 
 const ButtonWrapper = styled.div`
+ 
   position: absolute;
   top: 60px;
   right: -10px;
+  @media (max-width: 1199px) {
+    display: flex;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    bottom: 24px;
+    z-index:1000;
+    width:100%;
+    position: fixed;
+    align-self: flex-end;
+  }
+`;
+const StyledButton = styled(Button)`
+  width: ${({ isTablet }) => (isTablet ? "100%" : 92)};
 `;
 
 function EditRollingPaperPage() {
   const navigate = useNavigate();
+ const [isTablet, setIsTablet] = useState(window.innerWidth <= 1199);
 
+  const handleResize = useCallback(() => {
+    setIsTablet(window.innerWidth <= 1199);
+  }, []);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [recipientData, setRecipientData] = useState({});
@@ -179,7 +214,11 @@ function EditRollingPaperPage() {
       backgroundImageURL={recipientData?.backgroundImageURL ?? null}>
         <DivWrap isLoaded={isLoaded}>
           <ButtonWrapper>
-            <Button onClick={handleDeleteRollingPaper}>삭제하기</Button>
+            <StyledButton
+            variant="primary"
+            size={isTablet ? "56" : "40"}
+              width={isTablet ? "85%" : 92}
+              onClick={handleDeleteRollingPaper}>삭제하기</StyledButton>
           </ButtonWrapper>
           {messages.map((message, index) => (
             <div key={message.id} ref={index === messages.length - 1 ? lastMessageRef : null}>

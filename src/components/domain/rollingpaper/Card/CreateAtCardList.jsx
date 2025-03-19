@@ -29,6 +29,7 @@ const BoneContainer = styled.div`
    overflow: auto;
     scrollbar-width: none;
     -ms-overflow-style: none; 
+    padding:0 20px;
     &::-webkit-scrollbar {
       display: none; 
     }
