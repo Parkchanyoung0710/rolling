@@ -21,7 +21,6 @@ const NavbarContainer = styled.nav`
   height: 64px;
   padding: 11px 24px;
 `;
-
 const StyledLogo = styled(LogoImg)`
   display: flex;
   width: 106px;

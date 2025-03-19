@@ -185,7 +185,6 @@ const InformationBarContainer = styled.div`
   @media (max-width: 1199px) {
     padding: 13px 24px;
   }
-
   @media (max-width: 767px) {
     
   }

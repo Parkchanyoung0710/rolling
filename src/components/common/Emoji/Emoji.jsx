@@ -49,6 +49,7 @@ function Emoji({ topReactions = [], setRecipientData }) {
     }
   };
 
+  
   const fetchUpdatedReactions = async () => {
     try {
       const response = await recipientsService.getRecipientsReactions(id);
