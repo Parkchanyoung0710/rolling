@@ -122,10 +122,7 @@ const loadMoreMessages = async () => {
   }, []);
 
   return (
-    <BackgroundWrap
-      bgColor={colorMap[recipientData?.backgroundColor] ?? "#ffffff"}
-      backgroundImageURL={recipientData?.backgroundImageURL ?? null}
-    >
+    <div>
       <InformationBar
         name={recipientData?.name ?? ""}
         count={recipientData?.messageCount ?? 0}
@@ -134,7 +131,12 @@ const loadMoreMessages = async () => {
         )}
         topReactions={recipientData?.topReactions ?? []}
         setRecipientData={setRecipientData}
-      />
+        />
+
+    <BackgroundWrap
+    bgColor={colorMap[recipientData?.backgroundColor] ?? "#ffffff"}
+    backgroundImageURL={recipientData?.backgroundImageURL ?? null}
+    >
       <CardContainer>
         <DivWrap isLoaded={isLoaded}>
           <Card postData={null} />
@@ -147,6 +149,7 @@ const loadMoreMessages = async () => {
         </DivWrap>
       </CardContainer>
     </BackgroundWrap>
+          </div>
   );
 }
 

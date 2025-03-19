@@ -152,6 +152,7 @@ function InformationBar({
     </InformationBarWrapper>
   );
 }
+
 const ShareContainer = styled.div`
   position: relative;
   display: inline-block; // 버튼 크기에 맞게 조정
@@ -187,6 +188,9 @@ const SeparatorContainer = styled.div`
 `;
 
 const InformationBarWrapper = styled.nav`
+  position:fixed;
+  z-index:998;
+  top:58px;
   display: flex;
   justify-content: center;
   width: 100%;
