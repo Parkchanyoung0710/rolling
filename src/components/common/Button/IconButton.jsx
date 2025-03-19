@@ -59,6 +59,7 @@ const imageMap = {
 };
 
 const IconButton = ({ image, width, height, onClick, state = "enabled" }) => {
+  const IconComponent = imageMap[image];
   return (
     <IconButtonWrapper
       onClick={onClick}
