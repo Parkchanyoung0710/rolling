@@ -9,8 +9,10 @@ const Bone = styled.div`
   gap: 12px;
   flex-wrap: wrap;
   margin: 45px 0;
-  @media (max-width: 768px) {
-    justify-content: flex-start;
+  @media (max-width: 767px) {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr;
+    width: fit-content;
   }
 `;
 

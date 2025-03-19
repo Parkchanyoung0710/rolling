@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import IconButton from "../../../common/Button/IconButton";
 import { textStyle } from "../../../../styles/textStyle";
@@ -85,6 +85,16 @@ const CardContainer = styled.div`
     transform: scale(0.97); 
     box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.1); 
   }
+   @media (max-width: 767px) {
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    &:active {
+      transform: none;
+      box-shadow: none;
+    }
+  }  
 `;
 
 const Header = styled.div`
@@ -146,9 +156,22 @@ const ProfileWrap = styled.div`
 
 const CardWrite = ({ message, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); 
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  
   const handleCardClick = () => {
+  if (!isMobile) { // 모바일이 아닐 때만 모달 실행
     setIsModalOpen(true);
-  };
+  }
+};
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

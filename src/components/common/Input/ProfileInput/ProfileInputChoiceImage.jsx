@@ -10,7 +10,7 @@ const Bone = styled.div`
   margin: 3.125rem auto 3.125rem auto;
   width: 44.813rem;
   height: auto;
-  @media (max-width: 768px) {
+  @media (max-width: 1199px) {
     width: auto;
   }
 `;
@@ -34,10 +34,10 @@ const ProfileImg = styled.img`
   height: 5rem;
   margin-right: 2rem;
   border-radius: 50%;
-  @media (max-width: 768px) {
+  @media (max-width: 1199px) {
     margin-right: 1.76rem;
   }
-  @media (max-width: 360px) {
+  @media (max-width: 767px) {
     margin-right: 1.5rem;
   }
 `;
@@ -53,7 +53,7 @@ const ProfileImgChoice = styled.div`
   width: 37.813rem;
   height: 3.5rem;
   margin: 0.75rem 0 0 0;
-  @media (max-width: 768px) {
+  @media (max-width: 1199px) {
     display: flex;
     align-items: center;
     margin: 0.75rem 0 0 0;
@@ -62,6 +62,10 @@ const ProfileImgChoice = styled.div`
     justify-content: flex-start;
     width: auto;
     height: auto;
+  }
+  @media (max-width: 767px) {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr 1fr 1fr 1fr;
   }
 `;
 
@@ -83,7 +87,7 @@ const Image = styled.div.withConfig({
     props.selected
       ? "0 0 5px rgba(0, 162, 254, 0.5)"
       : "none"}; /* 선택 시 box-shadow 추가 */
-  @media (max-width: 360px) {
+  @media (max-width: 767px) {
     width: 40px;
     height: 40px;
   }

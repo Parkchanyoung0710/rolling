@@ -17,7 +17,7 @@ const Bone = styled.div`
   width: 100%;
   min-height: calc(100vh - 65px);
   padding: 49px 24px;
-  @media (max-width: 368px) {
-    padding: 50px 20px;
+  @media (max-width: 767px) {
+    padding: 0 20px;
   }
 `;
