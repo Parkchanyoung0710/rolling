@@ -9,12 +9,12 @@ import axios from "axios";
 
 
 const CardContainer = styled.div`
-  margin-inline: auto;
-  box-sizing: border-box;
+  margin: auto;
   display: flex;
   justify-content: center;
   padding: 100px 24px;
   width: 100%;
+  box-sizing: border-box;
   @media (max-width: 768px) {
     background-attachment: scroll;
   }
@@ -23,19 +23,17 @@ const CardContainer = styled.div`
 const DivWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, auto);
   gap: 28px;
   opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
-  height: fit-content;
 `;
 
 const BackgroundWrap = styled.div`
    background-image: ${({ backgroundImageURL }) =>
     backgroundImageURL
       ? `linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.54) 100%), url(${backgroundImageURL})`
-      : "none"};
-  background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
+      : "ffffff"};
+  background-color: ${({ bgColor }) => bgColor || "#ffffff"};
   min-height: calc(100vh - 65px);
   background-size: cover;
   background-repeat: no-repeat;
@@ -46,6 +44,13 @@ const BackgroundWrap = styled.div`
   }
 `;
 
+const colorMap = {
+  beige: "#FFE2AD",
+  purple: "#ECD9FF",
+  blue: "#B1E4FF",
+  green: "#D0F5C3",
+};
+
 function RollingPaperDetailPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -53,27 +58,16 @@ function RollingPaperDetailPage() {
   const [messages, setMessages] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const observerRef = useRef(null);
   const lastMessageRef = useRef(null);
   const isFetchingRef = useRef(false);
 
-  const colorMap = {
-    beige: "#FFE2AD",
-    purple: "#ECD9FF",
-    blue: "#B1E4FF",
-    green: "#D0F5C3",
-  };
-
-
   useEffect(() => {
     async function fetchInitialData() {
-      const limit = 5;
       try {
         const [messagesResponse, recipientResponse] = await Promise.all([
-          recipientsService.getRecipientsMessages(id, limit, 0),
+          recipientsService.getRecipientsMessages(id, 5, 0),
           recipientsService.getRecipientsId(id),
         ]);
-           console.log("Messages Response:", messagesResponse.data); 
         setMessages(messagesResponse.data.results);
         setNextUrl(messagesResponse.data.next);
         setRecipientData(recipientResponse.data);
@@ -85,7 +79,6 @@ function RollingPaperDetailPage() {
     }
     if (id) fetchInitialData();
   }, [id]);
-
 
   const loadMoreMessages = async () => {
     if (!nextUrl || isFetchingRef.current) return;
@@ -103,13 +96,13 @@ function RollingPaperDetailPage() {
 
   useEffect(() => {
     if (!lastMessageRef.current) return;
-    observerRef.current = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       ([entry]) => entry.isIntersecting && loadMoreMessages(),
       { root: null, rootMargin: "100px" }
     );
-    observerRef.current.observe(lastMessageRef.current);
-    return () => observerRef.current?.disconnect();
-  }, [messages.length]);
+    observer.observe(lastMessageRef.current);
+    return () => observer.disconnect();
+  }, [messages]);
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 100);
@@ -117,7 +110,7 @@ function RollingPaperDetailPage() {
 
   return (
     <BackgroundWrap
-      bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
+      bgColor={colorMap[recipientData?.backgroundColor] ?? "#ffffff"}
       backgroundImageURL={recipientData?.backgroundImageURL ?? null}
     >
       <InformationBar
@@ -127,8 +120,7 @@ function RollingPaperDetailPage() {
         topReactions={recipientData?.topReactions ?? []}
         setRecipientData={setRecipientData}
       />
-      <CardContainer bgColor={colorMap[recipientData?.backgroundColor] ?? colorMap.beige}
-      backgroundImageURL={recipientData?.backgroundImageURL ?? null}>
+      <CardContainer>
         <DivWrap isLoaded={isLoaded}>
           <Card postData={null} />
           {messages.map((message, index) => (
