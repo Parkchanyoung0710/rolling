@@ -86,7 +86,12 @@ function Emoji({ topReactions = [], setRecipientData }) {
               <ArrowDown alt="더 보기" />
             </ShowMoreButton>
           )}
-          <Button onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">추가</Button>
+          
+          <StyledIcon>
+          <StyledButton onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">
+            <StyledText>추가</StyledText>
+          </StyledButton>
+        </StyledIcon>
         </ActionsContainer>
       </Header>
 
@@ -113,6 +118,26 @@ function Emoji({ topReactions = [], setRecipientData }) {
 }
 
 export default Emoji;
+
+const StyledIcon = styled.div`
+  display: inline-block;
+`;
+
+const StyledButton = styled(Button)`
+  width: 88px;
+  height: 36px;
+
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 32px;
+  }
+`;
+
+const StyledText = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 const ServiceContainer = styled.div`
   top: 6px;
@@ -150,6 +175,7 @@ const TopEmojiItem = styled.div`
   gap: 2px;
   font-size: 20px;
   text-align: center;
+
 `;
 
 const EmojiImage = styled.span`
