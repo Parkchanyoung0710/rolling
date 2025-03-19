@@ -9,26 +9,18 @@ import axios from "axios";
 
 
 const CardContainer = styled.div`
-  width: min(100%, 1200px);
   margin-inline: auto;
-  padding: 0 24px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  height: 1140px;
-  min-height: 50vh;
   padding: 100px 24px;
   width: 100%;
-  
   background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
   background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
-  min-height: calc(100vh - 65px);
-  height: auto;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
   background-attachment: fixed;
-
   @media (max-width: 768px) {
     background-attachment: scroll;
   }
@@ -42,20 +34,16 @@ const DivWrap = styled.div`
   opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
   height: fit-content;
-  padding-top: 112px;
-
 `;
 
 const BackgroundWrap = styled.div`
   background-image: ${({ backgroundImageURL }) => backgroundImageURL ? `url(${backgroundImageURL})` : "none"};
   background-color: ${({ bgColor }) => bgColor || "#FFE2AD"};
-  min-height: 100vh;
-  height: auto;
-  background-size: contain;
+  min-height: calc(100vh - 65px);
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
   background-attachment: fixed;
-
   @media (max-width: 768px) {
     background-attachment: scroll;
   }
