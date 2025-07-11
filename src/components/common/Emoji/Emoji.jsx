@@ -9,75 +9,75 @@ import Button from "../Button/Button";
 const TOP_EMOJIS = 3;
 
 function Emoji({ topReactions = [], setRecipientData }) {
+  const { id } = useParams();
+  const LOCAL_STORAGE_KEY = `allReactions_${id}`;
+
   const [showPicker, setShowPicker] = useState(false);
   const [showAllEmojis, setShowAllEmojis] = useState(false);
   const [allReactions, setAllReactions] = useState(() => {
-
-    const storedReactions = localStorage.getItem("allReactions");
+    const storedReactions = localStorage.getItem(LOCAL_STORAGE_KEY);
     return storedReactions ? JSON.parse(storedReactions) : topReactions;
   });
 
   const moreEmojisRef = useRef(null);
   const pickerRef = useRef(null);
-  const { id } = useParams();
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        (moreEmojisRef.current && !moreEmojisRef.current.contains(event.target)) &&
-        (pickerRef.current && !pickerRef.current.contains(event.target))
-      ) {
-        setShowAllEmojis(false);
-        setShowPicker(false);
-      }
-    };
+  const handleClickOutside = (event) => {
+    const clickedOutsideMoreEmojis =
+      moreEmojisRef.current &&
+      !moreEmojisRef.current.contains(event.target);
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    const clickedOutsidePicker =
+      pickerRef.current &&
+      !pickerRef.current.contains(event.target);
 
-  // 이모티콘 추가 및 상태 업데이트
+    if (showAllEmojis && clickedOutsideMoreEmojis) {
+      setShowAllEmojis(false);
+    }
+
+    if (showPicker && clickedOutsidePicker) {
+      setShowPicker(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [showAllEmojis, showPicker]);
+
   const handleEmojiSelect = async (emojiObject) => {
-  const { emoji } = emojiObject;
-  const type = "increase";
+    const { emoji } = emojiObject;
+    const type = "increase";
 
-  try {
-    // 서버에 반응을 보냄
-    await recipientsService.postRecipientsReactions(id, { emoji, type });
+    try {
+      await recipientsService.postRecipientsReactions(id, { emoji, type });
+      await fetchUpdatedReactions();
+    } catch (error) {
+      console.error("Error sending reaction:", error);
+    }
+  };
 
-    // 반응 데이터 갱신
-    await fetchUpdatedReactions();
-  } catch (error) {
-    console.error("Error sending reaction:", error);
-  }
-};
+  const fetchUpdatedReactions = async () => {
+    try {
+      const response = await recipientsService.getRecipientsReactions(id);
+      const updatedReactions = response.data.results;
 
-const fetchUpdatedReactions = async () => {
-  try {
-    const response = await recipientsService.getRecipientsReactions(id);
-    const updatedReactions = response.data.results;
+      const topEmojis = updatedReactions.slice(0, TOP_EMOJIS);
+      const allEmojis = updatedReactions.length > 8 ? updatedReactions.slice(0, 8) : updatedReactions;
 
-  
-    const topEmojis = updatedReactions.slice(0, TOP_EMOJIS);
+      setRecipientData((prev) => ({
+        ...prev,
+        topReactions: topEmojis,
+      }));
 
-  
-    const allEmojis = updatedReactions.length > 8 ? updatedReactions.slice(0, 8) : updatedReactions;
-
-    
-    setRecipientData((prev) => ({
-      ...prev,
-      topReactions: topEmojis, 
-    }));
-
-    setAllReactions(allEmojis); 
-
-    
-    localStorage.setItem("allReactions", JSON.stringify(allEmojis));
-
-  } catch (error) {
-    console.error("Error fetching reactions:", error);
-  }
-};
+      setAllReactions(allEmojis);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(allEmojis));
+    } catch (error) {
+      console.error("Error fetching reactions:", error);
+    }
+  };
 
   return (
     <ServiceContainer>
@@ -97,12 +97,12 @@ const fetchUpdatedReactions = async () => {
               <ArrowDown alt="더 보기" />
             </ShowMoreButton>
           )}
-          
+
           <StyledIcon>
-          <StyledButton onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">
-            <StyledText>추가</StyledText>
-          </StyledButton>
-        </StyledIcon>
+            <StyledButton onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">
+              <StyledText>추가</StyledText>
+            </StyledButton>
+          </StyledIcon>
         </ActionsContainer>
       </Header>
 
@@ -129,26 +129,6 @@ const fetchUpdatedReactions = async () => {
 }
 
 export default Emoji;
-
-const StyledIcon = styled.div`
-  display: inline-block;
-`;
-
-const StyledButton = styled(Button)`
-  width: 88px;
-  height: 36px;
-
-  @media (max-width: 768px) {
-    width: 36px;
-    height: 32px;
-  }
-`;
-
-const StyledText = styled.div`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
 
 const ServiceContainer = styled.div`
   top: 6px;
@@ -186,7 +166,6 @@ const TopEmojiItem = styled.div`
   gap: 2px;
   font-size: 20px;
   text-align: center;
-
 `;
 
 const EmojiImage = styled.span`
@@ -210,6 +189,26 @@ const ShowMoreButton = styled.button`
   cursor: pointer;
   width: 36px;
   height: 36px;
+`;
+
+const StyledIcon = styled.div`
+  display: inline-block;
+`;
+
+const StyledButton = styled(Button)`
+  width: 88px;
+  height: 36px;
+
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 32px;
+  }
+`;
+
+const StyledText = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const PickerWrapper = styled.div`
@@ -266,14 +265,15 @@ const MoreEmojisWrapper = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
   margin-top: -14px;
+
   @media (max-width: 1199px) {
-  right: -54px;
+    right: -54px;
   }
+
   @media (max-width: 767px) {
-  right: -156px;
+    right: -156px;
   }
 `;
-
 
 const AllEmojiItem = styled.div`
   display: flex;
