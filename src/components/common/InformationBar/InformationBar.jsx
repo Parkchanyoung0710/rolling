@@ -22,7 +22,7 @@ function InformationBar({
 
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("0e75199aafea8afc76aa6dd724c8f4bd");  // 🔥 여기에 JavaScript 키 입력
+      window.Kakao.init("0e75199aafea8afc76aa6dd724c8f4bd");  
     }
   }, []);
 
@@ -59,7 +59,7 @@ function InformationBar({
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 5000); // 토스트 메시지 창 시간 설정하기 5초
+      setTimeout(() => setShowToast(false), 3000); // 토스트 메시지 창 시간 설정하기 5초
     });
   };
 
