@@ -14,45 +14,46 @@ function Emoji({ topReactions = [], setRecipientData }) {
 
   const [showPicker, setShowPicker] = useState(false);
   const [showAllEmojis, setShowAllEmojis] = useState(false);
-  const [allReactions, setAllReactions] = useState(() => {
-    const storedReactions = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return storedReactions ? JSON.parse(storedReactions) : topReactions;
-  });
+  const [allReactions, setAllReactions] = useState([]);
 
   const moreEmojisRef = useRef(null);
   const pickerRef = useRef(null);
 
   useEffect(() => {
-  const handleClickOutside = (event) => {
-    const clickedOutsideMoreEmojis =
-      moreEmojisRef.current &&
-      !moreEmojisRef.current.contains(event.target);
+    fetchUpdatedReactions();
+  }, []);
 
-    const clickedOutsidePicker =
-      pickerRef.current &&
-      !pickerRef.current.contains(event.target);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const clickedOutsideMoreEmojis =
+        moreEmojisRef.current && !moreEmojisRef.current.contains(event.target);
 
-    if (showAllEmojis && clickedOutsideMoreEmojis) {
-      setShowAllEmojis(false);
-    }
+      const clickedOutsidePicker =
+        pickerRef.current && !pickerRef.current.contains(event.target);
 
-    if (showPicker && clickedOutsidePicker) {
-      setShowPicker(false);
-    }
-  };
+      if (showAllEmojis && clickedOutsideMoreEmojis) {
+        setShowAllEmojis(false);
+      }
 
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [showAllEmojis, showPicker]);
+      if (showPicker && clickedOutsidePicker) {
+        setShowPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showAllEmojis, showPicker]);
 
   const handleEmojiSelect = async (emojiObject) => {
-    const { emoji } = emojiObject;
-    const type = "increase";
+    const emoji = emojiObject.emoji || emojiObject.native || emojiObject.unified;
 
     try {
-      await recipientsService.postRecipientsReactions(id, { emoji, type });
+      await recipientsService.postRecipientsReactions(id, {
+        emoji,
+        type: "increase",
+      });
       await fetchUpdatedReactions();
     } catch (error) {
       console.error("Error sending reaction:", error);
@@ -65,7 +66,10 @@ function Emoji({ topReactions = [], setRecipientData }) {
       const updatedReactions = response.data.results;
 
       const topEmojis = updatedReactions.slice(0, TOP_EMOJIS);
-      const allEmojis = updatedReactions.length > 8 ? updatedReactions.slice(0, 8) : updatedReactions;
+      const allEmojis =
+        updatedReactions.length > 8
+          ? updatedReactions.slice(0, 8)
+          : updatedReactions;
 
       setRecipientData((prev) => ({
         ...prev,
@@ -99,7 +103,11 @@ function Emoji({ topReactions = [], setRecipientData }) {
           )}
 
           <StyledIcon>
-            <StyledButton onClick={() => setShowPicker(!showPicker)} variant="outlined" image="add">
+            <StyledButton
+              onClick={() => setShowPicker(!showPicker)}
+              variant="outlined"
+              image="add"
+            >
               <StyledText>추가</StyledText>
             </StyledButton>
           </StyledIcon>
@@ -129,6 +137,7 @@ function Emoji({ topReactions = [], setRecipientData }) {
 }
 
 export default Emoji;
+
 
 const ServiceContainer = styled.div`
   top: 6px;

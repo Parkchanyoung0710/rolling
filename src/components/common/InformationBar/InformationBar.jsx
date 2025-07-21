@@ -59,7 +59,7 @@ function InformationBar({
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000); // 토스트 메시지 창 시간 설정하기 5초
+      setTimeout(() => setShowToast(false), 3000); 
     });
   };
 
